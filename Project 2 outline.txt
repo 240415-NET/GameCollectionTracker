@@ -1,9 +1,9 @@
 
 We have chosen to expand upon Phillip's GameTracker app.
 
-The core feaures of the app will be:
+The core features of the app will be:
 
-1. allow users to create a login.
+1. Allow users to create a login.
 - The methods for creating a user ID and recovering a user ID already exist
 	Currently, the existing app just asks for a name, which can be anything, but we will enforce the following for a user:
 	-user name
@@ -11,15 +11,13 @@ The core feaures of the app will be:
 	-first name 
 	-last name
 
-2. allow users to enter the games they own.
+2. Allow users to enter the games they own.
 - This was implemented in the ADO.NET version of the app, but will likely need to be reworked if we transition to EF Core.
-- we will want to add to the minimum and maximum number of players and the estimated play time as stored values. 
+- We will want to add to the minimum and maximum number of players and the estimated play time as stored values. 
 	This will facilitate improvements to the game randomizer functionality.
 
-	and could potentially be done for other records an admin-only function.
-
-3. Functionality to randomize a game to play from among the games in the user's collecton.
-	-this will newly include options to ask for the number of players and how long you have to play.
+3. Functionality to randomize a game to play from among the games in the user's collection.
+	-This will newly include options to ask for the number of players and how long you have to play.
 
 4. allow users to track individual plays of an owned game.
 - This would be new functionality over the original version of the app. 
@@ -27,6 +25,8 @@ The core feaures of the app will be:
 	and will allow the user to enter proxy ID's for players who do not have a login yet.
 	If possible, we would like the functionality to exist to link new logins to previously created proxy ID's.
 	this would be done on initial user creation if the provided first and last name match a proxy ID
+	and could potentially be done for other records an admin-only function.
+
 
 5. Reporting/statistics regarding game plays **NICE TO HAVE**
 - This would allow a user to see all the game plays they've been involved in regardless of which user recorded the play.
