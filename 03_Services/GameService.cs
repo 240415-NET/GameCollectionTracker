@@ -1,11 +1,13 @@
 
 
+using GameCollectionTracker.Models;
+
 namespace GameCollectionTracker.Services;
 
 public class GameService
 {
 
-    public async Task<> GetAllGamesForUserAsync(Guid userIdFromController)
+    /*public async Task<> GetAllGamesForUserAsync(Guid userIdFromController)
     {
         // List<Game> foundGames = new();
 
@@ -24,5 +26,10 @@ public class GameService
         // }
 
         // return foundItems;
+    }*/
+
+    public async Task<Game> GetGameForGameId(Guid gameIdFromController)
+    {
+        
     }
 }
