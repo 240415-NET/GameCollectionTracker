@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GameCollectionTracker.Migrations
 {
     [DbContext(typeof(GameContext))]
-    [Migration("20240606173436_IntitialCreate")]
-    partial class IntitialCreate
+    [Migration("20240607132642_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
