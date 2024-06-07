@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GameCollectionTracker.Data;
 
-public class GameStorageEFRepo
+public class GameStorageEFRepo : IGameStorageEFRepo
 {
     private readonly GameContext _context;
 
