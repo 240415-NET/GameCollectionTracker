@@ -1,4 +1,5 @@
 using GameCollectionTracker.Data;
+using GameCollectionTracker.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GameCollectionTracker.Controllers;
@@ -7,11 +8,11 @@ namespace GameCollectionTracker.Controllers;
 [Route("api/[controller]")]
 public class UserController : Controller
 {
-    private readonly GameContext _gameContext;
+    private readonly IUserService _userService;
 
-    public UserController(GameContext gameContext)
+    public UserController(IUserService userService)
     {
-        _gameContext = gameContext;
+        _userService = userService;
     }
 
 }
