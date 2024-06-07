@@ -7,7 +7,7 @@ public class GameContext : DbContext
 {
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlServer(File.ReadAllText("C:/Users/U0K0JI/Training/SQLConnection.txt"));//change this based on where we run
+        optionsBuilder.UseSqlServer(ConnectionStringHelper.GetConnectionString());
     }
 
     public DbSet<User> Users {get; set;}
