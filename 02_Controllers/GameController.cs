@@ -9,13 +9,12 @@ namespace GameCollectionTracker.Controllers;
 [Route("api/[controller]")]
 public class GameController : Controller
 {
-    private readonly GameContext _gameContext;
 
     private readonly GameService _gameService;
 
-    public GameController(GameContext gameContext)
+    public GameController(GameService gameService)
     {
-        _gameContext = gameContext;
+        _gameService = gameService;
     }
 
     [HttpGet("/Users/{usernameToFindFromFrontEnd}")] 
