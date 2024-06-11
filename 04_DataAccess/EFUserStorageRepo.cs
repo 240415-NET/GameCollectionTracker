@@ -98,4 +98,18 @@ public class EFUserStorageRepo : IEFUserStorageRepo
             throw new Exception($"Something went wrong... {e.Message}");
         }
     }
+
+    public async Task<User> LogPlayerInToApplicationAsync(UserLogin userInfo)
+    {
+        User foundUser = await _gameContext.Users.FirstAsync(e => e.GamerTag == userInfo.UserName);
+        if(foundUser.Password != userInfo.UserPass)
+        {
+            throw new Exception("Invalid Password!");
+        }
+        else
+        {
+            return foundUser;
+        }
+
+    }
 }

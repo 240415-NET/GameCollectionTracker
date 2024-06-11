@@ -40,4 +40,16 @@ public class UserService : IUserService
     {
         return await _userStorage.GetMatchingPlayersForNewUser(userInfo);
     }
+
+    public async Task<User> LoginUserAndReturnUserInfo(UserLogin userInfo)
+    {
+        try
+        {
+            return await _userStorage.LogPlayerInToApplicationAsync(userInfo);
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
+    }
 }

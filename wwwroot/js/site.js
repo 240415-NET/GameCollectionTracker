@@ -5,6 +5,8 @@
   const addGamePlayContainer = document.querySelector('#AddGamePlayContainer');
   const reviewPlayHistoryContainer = document.querySelector('#ReviewPlayHistoryContainer');
   const adminFormContainer = document.querySelector('#AdminFormContainer');
+  const loginButton = document.querySelector('#btnLogin')
+  const createUserButton = document.querySelector('#btnCreateUser')
   const newUserBtn = document.querySelector("#btnCreateNewUser");
   const resetNewUserFormBtn = document.querySelector("#btnResetForm");
   const foundPlayerContainer = document.querySelector("#FoundPlayerContainer");
@@ -19,13 +21,17 @@
   const firstNameMessage = document.querySelector("#FirstNameMessage");
   const lastNameMessage = document.querySelector("#LastNameMessage");
 
-  function resetForm() {
+  function resetNewUserForm() {
     newUserGamerTag.value = "";
     newUserFirstName.value = "";
     newUserLastName.value = "";
     newUserPassWord.value = "";
     newUserRePassWord.value = "";
     foundPlayerContainer.innerHTML = "";
+    resetNewUserWarnings();
+  }
+
+  function resetNewUserWarnings() {
     gamerTagMessage.textContent = "";
     passwordMessage.textContent = "";
     rePasswordMessage.textContent = "";
@@ -87,7 +93,7 @@
         "content-type": "application/json",
       },
     });
-    resetForm();
+    resetNewUserForm();
 
   }
 
@@ -109,12 +115,13 @@
           "content-type": "application/json",
         },
       });
-      resetForm();
+      resetNewUserForm();
 
     }
   }
 
   newUserBtn.addEventListener("click", async function () {
+    resetNewUserWarnings();
     if (newUserGamerTag.value == "") {
       gamerTagMessage.textContent = "Gamer Tag cannot be blank!";
     } else if (newUserPassWord.value == "") {
@@ -128,7 +135,7 @@
       lastNameMessage.textContent = "Last name cannot be blank!";
     } else {
       const response = await fetch(
-        `http://localhost:5071/api/User/api/FindPlayers/userInfo?GamerTag=${newUserGamerTag.value}&FirstName=${newUserFirstName.value}&LastName=${newUserLastName.value}`
+        `http://localhost:5071/api/User/FindPlayers/userInfo?GamerTag=${newUserGamerTag.value}&FirstName=${newUserFirstName.value}&LastName=${newUserLastName.value}`
       );
       const players = await response.json();
       if (players.length == 0) {
@@ -140,6 +147,15 @@
   });
 
   resetNewUserFormBtn.addEventListener("click", function () {
-    resetForm();
+    resetNewUserForm();
+  });
+
+  loginButton.addEventListener("click", () => {
+
+  });
+
+  createUserButton.addEventListener("click", () => {
+    loginContainer.classList.add('hidden');
+    newUserContainer.classList.remove('hidden');
   });
 });
