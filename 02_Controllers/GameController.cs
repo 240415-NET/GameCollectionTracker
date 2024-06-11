@@ -48,11 +48,10 @@ public class GameController : Controller
     }
 
 //Does game need a DTO?
-    [HttpPost]
-public async Task<IActionResult> AddNewGameToDB(User CurrentUser)
+[HttpPost]
+public async Task<IActionResult> AddNewGameToDB(Game newGame)
 {
-    Game newGame = new();
-    newGame.Owner = CurrentUser;
+    //newGame.Owner = CurrentUser;
     //Add a check for whether the game exists
     // if(! await _gameService.DoesGameExistAsync(newGame))
     // {
