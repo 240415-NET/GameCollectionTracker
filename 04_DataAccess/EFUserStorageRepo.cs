@@ -71,7 +71,7 @@ public class EFUserStorageRepo : IEFUserStorageRepo
         }
     }
 
-    public async Task<List<Player>> GetMatchingPlayersForNewUser(NewUserDTO userInfo)
+    public async Task<List<Player>> GetMatchingPlayersForNewUser(FindPlayer userInfo)
     {
         List<Player> foundPlayers = new();
         try

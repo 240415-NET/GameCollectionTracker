@@ -36,7 +36,7 @@ public class UserService : IUserService
         return await _userStorage.UserRepoDoesUserExistAsync(userName);
     }
 
-    public async Task<List<Player>> MatchingPlayersForNewUserAsync(NewUserDTO userInfo)
+    public async Task<List<Player>> MatchingPlayersForNewUserAsync(FindPlayer userInfo)
     {
         return await _userStorage.GetMatchingPlayersForNewUser(userInfo);
     }

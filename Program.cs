@@ -3,6 +3,17 @@ using GameCollectionTracker.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var myTerribleCORSPolicy = "_terribleCORSPolicy";
+
+builder.Services.AddCors(options => {
+    options.AddPolicy(name: myTerribleCORSPolicy,
+                    policy =>
+                    {
+                        policy.AllowAnyOrigin();
+                        policy.AllowAnyMethod();
+                        policy.AllowAnyHeader();
+                    });
+    });
 // Add services to the container.
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -24,7 +35,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseCors(policy => policy.AllowAnyMethod());
+app.UseCors(myTerribleCORSPolicy);
 
 app.UseAuthorization();
 
