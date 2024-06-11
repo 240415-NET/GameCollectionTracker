@@ -7,15 +7,34 @@
     <link rel="stylesheet" href="/wwwroot/css/site.css">
 </head>
 <body>
-    <h1>Create a new user</h1>
-    <input type="text" name="GamerTag" id="GamerTag" placeholder="Gamer Tag"><span class = "warningText" id="GamerTagMessage"></span></br>
-    <input type="password" name="Password" id="Password" placeholder="Password"><span class = "warningText" id="PasswordMessage"></span></br>
-    <input type="password" name="RePassword" id="RePassword" placeholder="Retype Password"><span class = "warningText" id="RePasswordMessage"></span></br>
-    <input type="text" name="FirstName" id="FirstName" placeholder="First Name"><span class = "warningText" id="FirstNameMessage"></span></br>
-    <input type="text" name="LastName" id="LastName" placeholder="Last Name"><span class = "warningText" id="LastNameMessage"></span></br>
-    <button id="btnCreateNewUser">Create New User</button>
-    <div id="FoundPlayerContainer"></div>
-    <button id="btnResetForm">Reset</button>
+    <div id="LoginContainer" class = "hidden">
+        <h1>Login</h1>
+        <input type="text" id="LoginGamerTag" placeholder="Gamer Tag"></br>
+        <input type="password" id="LoginPassword" placeholder="Password"></br>
+    </div>
+    <div id="NewUserContainer" >
+        <h1>Create a new user</h1>
+        <input type="text" id="newUserGamerTag" placeholder="Gamer Tag"><span class = "warningText" id="GamerTagMessage"></span></br>
+        <input type="password" id="newUserPassword" placeholder="Password"><span class = "warningText" id="PasswordMessage"></span></br>
+        <input type="password" id="newUserRePassword" placeholder="Retype Password"><span class = "warningText" id="RePasswordMessage"></span></br>
+        <input type="text" id="newUserFirstName" placeholder="First Name"><span class = "warningText" id="FirstNameMessage"></span></br>
+        <input type="text" id="newUserLastName" placeholder="Last Name"><span class = "warningText" id="LastNameMessage"></span></br>
+        <button id="btnCreateNewUser">Create New User</button>
+        <div id="FoundPlayerContainer"></div>
+        <button id="btnResetForm">Reset</button>
+    </div>
+    <div id="AddGameContainer" class="hidden">
+
+    </div>
+    <div id="AddGamePlayContainer" class="hidden">
+
+    </div>
+    <div id="ReviewPlayHistoryContainer" class="hidden">
+
+    </div>
+    <div id="AdminFormContainer" class="hidden">
+
+    </div>    
 <script src="/wwwroot/js/site.js"></script>
 </body>
 </html>
