@@ -24,7 +24,21 @@
         <button id="btnResetForm">Reset</button>
     </div>
     <div id="AddGameContainer" class="hidden">
+        <h1>Add a new game</h1>
+        <input type="text" id="addGameName" placeholder="Game Name"><span class="warningText" id="GameNameMessage"></span></br>
+        <input type="number" id="addGamePurchasePrice" placeholder="Purchase Price"><span class="warningText" id="GamePriceMessage"></span></br>
+        <input type="date" id="addGamePurchaseDate" placeholder="Purchase Date"><span class="warningText" id="DateMessage"></span></br>
+        <input type="number" id="addGameMinPlayers" placeholder="Minimum Number of Players"><span class="warningText" id="MinPlayersMessage"></span></br>
+        <input type="number" id="addGameMaxPlayers" placeholder="Maximum Number of Players"><span class="warningText" id="MaxPlayersMessage"></span></br>
+        <input type="number" id="addGameExpectedDuration" placeholder="Expected Game Duration"><span class="warningText" id="ExpectedDurationMessage"></span></br>
+        <!--public string? GameName { get; set; }
+        public double PurchasePrice { get; set; }
+        public DateOnly PurchaseDate { get; set; }
+        public int MinPlayers { get; set; }
+        public int MaxPlayers { get; set; }
+        public int ExpectedGameDuration { get; set; }-->
 
+        <button id="btnResetForm">Reset</button>
     </div>
     <div id="AddGamePlayContainer" class="hidden">
 

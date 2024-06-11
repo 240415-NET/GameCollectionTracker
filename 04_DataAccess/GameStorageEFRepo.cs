@@ -10,21 +10,12 @@ public class GameStorageEFRepo : IGameStorageEFRepo
 
     //constructor needed?
 
-    public async Task<List<Game?>> GetGamesFromDBForUserAsync (string gamertag)
+    public async Task<List<Game?>> GetGamesFromDBForUserAsync (Guid userIdFromService)
     {
         return await _context.Games
             .Include(game => game.Owner)
-            .Where(game => game.Owner.GamerTag == gamertag)
+            .Where(game => game.Owner.UserID == userIdFromService)
             .ToListAsync();
-
-
-            //Here we will ask the database for all items associated with the user who's guid matches
-        //the userIdFromService, using LINQ methods (and lambdas :c )
-
-        // return await _context.Items //So we ask our context for the collection of Item objects in the database
-        //     .Include(item => item.user) //We ask entity framework to also grab the associated User object from the User table
-        //     .Where(item => item.user.userId == userIdFromService) //We then ask for every item who's owner's UserId matches the userIdFromService
-        //     .ToListAsync(); //Finally, we turn those items into a list
 
     }
 
@@ -33,5 +24,27 @@ public class GameStorageEFRepo : IGameStorageEFRepo
         return await _context.Games.SingleOrDefaultAsync(game => game.GameID == gameId);
     }
 
+    public async Task<string> AddGameToDBAsync(Game gameInfo)
+    {
+        try
+        {
+            // Game newGame = new();
+            gameInfo.GameID = Guid.NewGuid();
+            // newGame.Owner = userId;
+            // newGame.GameName = gameInfo.GameName;
+            // newGame.PurchasePrice = gameInfo.PurchasePrice;
+            // newGame.PurchaseDate = 
+            // newGame.MinPlayers = 
+            // newGame.MaxPlayers = 
+            // newGame.ExpectedGameDuration = 
+            _context.Games.Add(gameInfo);
+            await _context.SaveChangesAsync();
+            return "Game added succesfully";
+        }
+        catch (Exception e)
+        {
+            throw new Exception($"Something went wrong... {e.Message}");
+        }
+    }
 }
 
