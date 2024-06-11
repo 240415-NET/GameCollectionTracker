@@ -9,8 +9,8 @@
   </head>
   <body>
     <div class="container">
-      <div class="notes__sidebar">
-          <img src="/wwwroot/board2.jpg" alt="" class="backImage" />
+      <div class="games_sidebar">
+        <img src="/wwwroot/board2.jpg" alt="" class="backImage" />
         <div id="LoginContainer">
           <h1>Login</h1>
           <input type="text" id="LoginGamerTag" placeholder="Gamer Tag" /><br />
@@ -59,12 +59,25 @@
           <br />
           <button id="btnResetForm">Reset</button>
         </div>
+        <div id="LoggedInMenu" class="hidden">
+          <!-- Might need some more stuff in here -->
+          <button id="btnViewMyGames">View My Games</button>
+          <button id="btnAddNewGame">Add a New Game</button>
+          <button id="btnUpdateGame">Update a Game</button>
+          <button id="btnRemoveGame">Remove a Game</button>
+          <button id="btnRecordNewGamePlay">Record a Game Play</button>
+          <button id="btnViewPlayHistory">View My Play History</button>
+        </div>
+        <div id="AdminMenu" class="hidden">
+          <!-- admin stuff -->
+        </div>
       </div>
     </div>
-    <div id="AddGameContainer" class="hidden"></div>
-    <div id="AddGamePlayContainer" class="hidden"></div>
-    <div id="ReviewPlayHistoryContainer" class="hidden"></div>
-    <div id="AdminFormContainer" class="hidden"></div>
+    <div class="games_container">
+      <div id="GameContainer" class="hidden"></div>
+      <div id="GamePlayContainer" class="hidden"></div>
+      <div id="PlayHistoryContainer" class="hidden"></div>
+    </div>
     <script src="/wwwroot/js/site.js"></script>
   </body>
 </html>
