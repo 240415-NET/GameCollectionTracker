@@ -15,7 +15,7 @@
   const gamesContainer = document.querySelector("#games_container");
   const gamePlayContainer = document.querySelector("#GamePlayContainer");
   const playHistoryContainer = document.querySelector("#PlayHistoryContainer");
-  const adminFormContainer = document.querySelector("#AdminFormContainer");
+  const adminMenu = document.querySelector("#AdminMenu");
   const loggedInMenu = document.querySelector("#LoggedInMenu");
 
   //create new user stuffs
@@ -57,6 +57,12 @@
     rePasswordMessage.textContent = "";
     firstNameMessage.textContent = "";
     lastNameMessage.textContent = "";
+  }
+
+  function resetLoginForm(){
+    loginGamerTag.value = "";
+    loginPassWord.value = "";
+    resetLoginWarnings();
   }
 
   function resetLoginWarnings() {
@@ -172,6 +178,7 @@
         UserID: data.userID,
         GamerTag: data.gamerTag,
         PlayerID: data.playerRecord.playerID,
+        IsAdmin: data.isAdmin
       };
       localStorage.setItem("user", JSON.stringify(userStorage));
     } else if (response.status == 404) {
@@ -179,6 +186,7 @@
     } else {
       loginPasswordError.textContent = "Password is not correct.";
     }
+    resetLoginForm();
     UserIsLoggedIn();
   }
 
@@ -189,6 +197,12 @@
     Greeting.textContent =
       JSON.parse(localStorage.getItem("user")).GamerTag + "'s Games";
     loggedInMenu.classList.remove("hidden");
+    if(JSON.parse(localStorage.getItem("user")).IsAdmin)
+      {
+        adminMenu.classList.remove("hidden");
+      }else{
+        adminMenu.classList.add("hidden");
+      }
   }
 
   function DisplayUsersGames(games)
@@ -273,6 +287,7 @@
     localStorage.removeItem("user");
     loginContainer.classList.remove("hidden");
     loggedInMenu.classList.add("hidden");
+    adminMenu.classList.add("hidden");
   });
 
 });
