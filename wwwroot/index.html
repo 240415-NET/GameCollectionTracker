@@ -13,13 +13,15 @@
         <img src="/wwwroot/board2.jpg" alt="" class="backImage" />
         <div id="LoginContainer">
           <h1>Login</h1>
+          <span id="LoginGamerTagError" class="warningText"></span>
           <input type="text" id="LoginGamerTag" placeholder="Gamer Tag" /><br />
+          <span id="LoginPasswordError" class="warningText"></span>
           <input
             type="password"
             id="LoginPassword"
             placeholder="Password"
           /><br /><br />
-          <button id="btnLogin">Login</button><br /><br />
+          <button id="btnLogin">Login</button>
           <button id="btnCreateUser">Create Account</button>
         </div>
         <div id="NewUserContainer" class="hidden">
@@ -58,26 +60,97 @@
           <div id="FoundPlayerContainer"></div>
           <br />
           <button id="btnResetForm">Reset</button>
+          <button id="btnBackToLogin">Back To Login</button>
         </div>
         <div id="LoggedInMenu" class="hidden">
-          <!-- Might need some more stuff in here -->
-          <button id="btnViewMyGames">View My Games</button>
-          <button id="btnAddNewGame">Add a New Game</button>
-          <button id="btnUpdateGame">Update a Game</button>
-          <button id="btnRemoveGame">Remove a Game</button>
-          <button id="btnRecordNewGamePlay">Record a Game Play</button>
-          <button id="btnViewPlayHistory">View My Play History</button>
+          <h1 id="UserGreeting"></h1>
+          <!-- Might need some more stuff in here or less depending on how we go -->
+          <!-- Kinda thinking we load all of the user's games by default and give options
+             when you click on one of the games to update/remove using a 'selected' property or something
+             and could still have an add button -->
+          <button id="btnViewMyGames">View My Games</button><br>
+          <button id="btnAddNewGame">Add a New Game</button><br>
+          <button id="btnUpdateGame">Update a Game</button><br>
+          <button id="btnRemoveGame">Remove a Game</button><br>
+          <button id="btnRecordNewGamePlay">Record a Game Play</button><br>
+          <button id="btnViewPlayHistory">View My Play History</button><br><br>
+          <button id="btnLogout">Logout</button>
+          <!-- Also need to figure out placement for the logout button maybe here-ish -->
         </div>
         <div id="AdminMenu" class="hidden">
           <!-- admin stuff -->
         </div>
       </div>
-    </div>
-    <div class="games_container">
-      <div id="GameContainer" class="hidden"></div>
+      <div class="games_container">
+        <div class="game">
+          <h3>Uno</h3>
+          <p>Min Players: 2</p>
+          <p>Max Players: 7</p>
+          <p>Play Time: 20 minutes</p>
+          <p>Purchase Date: 2/1/2024</p>
+          <p>Purchase Price: $10</p>
+        </div>
+        <div class="game">
+          <h3>Smallworld</h3>
+          <p>Min Players: 2</p>
+          <p>Max Players: 4</p>
+          <p>Play Time: 60 minutes</p>
+          <p>Purchase Date: 1/1/2023</p>
+          <p>Purchase Price: $15</p>
+        </div>
+        <div class="game">
+          <h3>Smallworld</h3>
+          <p>Min Players: 2</p>
+          <p>Max Players: 4</p>
+          <p>Play Time: 60 minutes</p>
+          <p>Purchase Date: 1/1/2023</p>
+          <p>Purchase Price: $15</p>
+        </div>
+        <div class="game">
+          <h3>Smallworld</h3>
+          <p>Min Players: 2</p>
+          <p>Max Players: 4</p>
+          <p>Play Time: 60 minutes</p>
+          <p>Purchase Date: 1/1/2023</p>
+          <p>Purchase Price: $15</p>
+        </div>
+        <div class="game">
+          <h3>Smallworld</h3>
+          <p>Min Players: 2</p>
+          <p>Max Players: 4</p>
+          <p>Play Time: 60 minutes</p>
+          <p>Purchase Date: 1/1/2023</p>
+          <p>Purchase Price: $15</p>
+        </div>
+        <div class="game">
+          <h3>Smallworld</h3>
+          <p>Min Players: 2</p>
+          <p>Max Players: 4</p>
+          <p>Play Time: 60 minutes</p>
+          <p>Purchase Date: 1/1/2023</p>
+          <p>Purchase Price: $15</p>
+        </div>
+        <div class="game">
+          <h3>Smallworld</h3>
+          <p>Min Players: 2</p>
+          <p>Max Players: 4</p>
+          <p>Play Time: 60 minutes</p>
+          <p>Purchase Date: 1/1/2023</p>
+          <p>Purchase Price: $15</p>
+        </div>
+        <div class="game">
+          <h3>Smallworld</h3>
+          <p>Min Players: 2</p>
+          <p>Max Players: 4</p>
+          <p>Play Time: 60 minutes</p>
+          <p>Purchase Date: 1/1/2023</p>
+          <p>Purchase Price: $15</p>
+        </div>
+      </div>
       <div id="GamePlayContainer" class="hidden"></div>
       <div id="PlayHistoryContainer" class="hidden"></div>
     </div>
+
     <script src="/wwwroot/js/site.js"></script>
   </body>
 </html>

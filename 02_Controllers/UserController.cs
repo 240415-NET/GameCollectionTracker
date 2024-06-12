@@ -57,19 +57,18 @@ public class UserController : Controller
             return BadRequest(e.Message);
         }
     }
-    [HttpGet("Login")]
-    public async Task<IActionResult> LogUserInToApplication(string UserName, string UsersPass)
+    [HttpPost("Login")]
+    public async Task<IActionResult> LogUserInToApplication(UserLogin userInfo)
     {
         try
         {
-            if (await _userService.DoesUserExistAsync(UserName))
-            {            
-            UserLogin userInfo = new UserLogin(UserName, UsersPass);
-            return Ok(await _userService.LoginUserAndReturnUserInfo(userInfo));
+            if (await _userService.DoesUserExistAsync(userInfo.userName))
+            {
+                return Ok(await _userService.LoginUserAndReturnUserInfo(userInfo));
             }
             else
             {
-                return BadRequest("No user by that name. Please check the entered information and, if needed, create an account instead");
+                return NotFound("No user by that name.");
             }
         }
         catch (Exception e)

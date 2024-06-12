@@ -12,10 +12,10 @@ public class GameStorageEFRepo : IGameStorageEFRepo
 
     public async Task<List<Game?>> GetGamesFromDBForUserAsync (string gamertag)
     {
-        return await _context.Games
-            .Include(game => game.Owner)
-            .Where(game => game.Owner.GamerTag == gamertag)
-            .ToListAsync();
+        return await _context.Games.Where(game => game.UserID == Guid.Empty).ToListAsync();
+            //.Include(game => game.Owner)
+            // .Where(game => game.Owner.GamerTag == gamertag)
+            // .ToListAsync();
 
 
             //Here we will ask the database for all items associated with the user who's guid matches
