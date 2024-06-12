@@ -5,7 +5,7 @@ using GameCollectionTracker.Models;
 
 namespace GameCollectionTracker.Services;
 
-public class GameService
+public class GameService : IGameService
 {
     private readonly GameStorageEFRepo _gameStorage;
     public async Task<List<Game>> GetAllGamesForUserAsync(Guid userIdFromController)

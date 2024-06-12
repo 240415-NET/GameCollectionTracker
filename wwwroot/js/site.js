@@ -145,20 +145,13 @@
 
 
   //New GameContainer
-  //const addGameContainer = document.querySelector('#AddGameContainer');
-
-  // <input type="text" id="addGameName" placeholder="Game Name"><span class="warningText" id="GameNameMessage"></span></br>
-  //       <input type="number" id="addGamePurchasePrice" placeholder="Purchase Price"><span class="warningText" id="GamePriceMessage"></span></br>
-  //       <input type="date" id="addGamePurchaseDate" placeholder="Purchase Date"><span class="warningText" id="DateMessage"></span></br>
-  //       <input type="number" id="addGameMinPlayers" placeholder="Minimum Number of Players"><span class="warningText" id="MinPlayersMessage"></span></br>
-  //       <input type="number" id="addGameMaxPlayers" placeholder="Maximum Number of Players"><span class="warningText" id="MaxPlayersMessage"></span></br>
-  //       <input type="number" id="addGameExpectedDuration" placeholder="Expected Game Duration"><span class="warningText" id="ExpectedDurationMessage"></span></br>
-  const addGameName = document.querySelector();
-  const addGamePurchasePrice = document.querySelector();
-  const addGamePurchaseDate = document.querySelector();
-  const addGameMinPlayers = document.querySelector();
-  const addGameMaxPlayers = document.querySelector();
-  const addGameExpectedDuration = document.querySelector();
+  const addGameName = document.querySelector('#addGameName');
+  const addGamePurchasePrice = document.querySelector('#addGamePurchasePrice');
+  const addGamePurchaseDate = document.querySelector("#addGamePurchaseDate");
+  const addGameMinPlayers = document.querySelector("#addGameMinPlayers");
+  const addGameMaxPlayers = document.querySelector("#addGameMaxPlayers");
+  const addGameExpectedDuration = document.querySelector("addGameExpectedDuration");
+  const btnResetGameForm = document.querySelector("#btnResetGameForm");
 
   function resetGameForm() {
     addGameName.value = "";
@@ -206,8 +199,8 @@
     addNewGame();
   });
 
-  resetNewUserFormBtn.addEventListener("click", function () {
-    resetForm();
+  btnResetGameForm.addEventListener("click", function () {
+    resetGameForm();
   });
 });
 
