@@ -9,16 +9,15 @@
   const loginPasswordError = document.querySelector("#LoginPasswordError");
 
   //MainMenu stuffs
-  const logoutButton = document.querySelector('#btnLogout');
+  const logoutButton = document.querySelector("#btnLogout");
 
   //future implementation stuffs
-  const addGameContainer = document.querySelector("#AddGameContainer");
-  const addGamePlayContainer = document.querySelector("#AddGamePlayContainer");
-  const reviewPlayHistoryContainer = document.querySelector(
-    "#ReviewPlayHistoryContainer"
-  );
+  const gamesContainer = document.querySelector("#games_container");
+  const gamePlayContainer = document.querySelector("#GamePlayContainer");
+  const playHistoryContainer = document.querySelector("#PlayHistoryContainer");
   const adminFormContainer = document.querySelector("#AdminFormContainer");
   const loggedInMenu = document.querySelector("#LoggedInMenu");
+
   //create new user stuffs
   const newUserContainer = document.querySelector("#NewUserContainer");
   const newUserBtn = document.querySelector("#btnCreateNewUser");
@@ -37,8 +36,8 @@
   const lastNameMessage = document.querySelector("#LastNameMessage");
 
   //For a reload with a user logged in
-  const storedUser = JSON.parse(localStorage.getItem('user'));
-  if(storedUser){
+  const storedUser = JSON.parse(localStorage.getItem("user"));
+  if (storedUser) {
     UserIsLoggedIn();
   }
 
@@ -123,7 +122,7 @@
     if (response.status != 200) {
       gamerTagMessage.textContent = await response.text();
     } else {
-      LogInUser(newUserGamerTag.value,newUserPassWord.value);      
+      LogInUser(newUserGamerTag.value, newUserPassWord.value);
       //resetNewUserForm();
     }
   }
@@ -149,10 +148,71 @@
       if (response.status != 200) {
         gamerTagMessage.textContent = await response.text();
       } else {
-        LogInUser(newUserGamerTag.value,newUserPassWord.value);  
+        LogInUser(newUserGamerTag.value, newUserPassWord.value);
         //resetNewUserForm();
       }
     }
+  }
+
+  async function LogInUser(UserName, UserPass) {
+    const body = {
+      userName: UserName,
+      userPass: UserPass,
+    };
+    const response = await fetch(`http://localhost:5071/api/User/Login`, {
+      method: "POST",
+      body: JSON.stringify(body),
+      headers: {
+        "content-type": "application/json",
+      },
+    });
+    if (response.status == 200) {
+      data = await response.json();
+      const userStorage = {
+        UserID: data.userID,
+        GamerTag: data.gamerTag,
+        PlayerID: data.playerRecord.playerID,
+      };
+      localStorage.setItem("user", JSON.stringify(userStorage));
+    } else if (response.status == 404) {
+      loginGamerTagError.textContent = "Account does not exist";
+    } else {
+      loginPasswordError.textContent = "Password is not correct.";
+    }
+    UserIsLoggedIn();
+  }
+
+  function UserIsLoggedIn() {
+    loginContainer.classList.add("hidden");
+    newUserContainer.classList.add("hidden");
+    const Greeting = document.getElementById("UserGreeting");
+    Greeting.textContent =
+      JSON.parse(localStorage.getItem("user")).GamerTag + "'s Games";
+    loggedInMenu.classList.remove("hidden");
+  }
+
+  function DisplayUsersGames(games)
+  {
+    let allGames = '';
+    games.forEach(game => {
+      const gameElement = `
+      <div class="game" data-id="${game.GameID}">
+      <h3>${game.GameName}</h3>
+      <p>Min Players: ${game.MinPlayers}</p>
+      <p>Max Players: ${game.MaxPlayers}</p>
+      <p>Play Time: ${game.ExpectedGameDuration} minutes</p>
+      <p>Purchase Date: ${game.PurchaseDate}</p>
+      <p>Purchase Price: $${game.PurchasePrice}</p>
+      </div>`;
+      allGames += gameElement;
+    });
+    gamesContainer.innerHTML = allGames;
+
+    document.querySelectorAll('.game').forEach(game => {
+      game.addEventListener('click', function () {
+        //function when game is clicked
+      });
+    })
   }
 
   newUserBtn.addEventListener("click", async function () {
@@ -198,42 +258,6 @@
     LogInUser(loginGamerTag.value, loginPassWord.value);
   });
 
-  async function LogInUser(UserName, UserPass) {
-    const body = {
-      userName: UserName,
-      userPass: UserPass
-    };
-    const response = await fetch(`http://localhost:5071/api/User/Login`, {
-      method: "POST",
-      body: JSON.stringify(body),
-      headers: {
-        "content-type": "application/json",
-      },
-    });
-    if (response.status == 200) {
-      data = await response.json();
-      const userStorage = {
-        UserID: data.userID,
-        GamerTag: data.gamerTag,
-        PlayerID: data.playerRecord.playerID,
-      };
-      localStorage.setItem("user", JSON.stringify(userStorage));
-    } else if (response.status == 404) {
-      loginGamerTagError.textContent = "Account does not exist";
-    } else{
-      loginPasswordError.textContent = "Password is not correct.";
-    }
-    UserIsLoggedIn();
-  }
-
-  function UserIsLoggedIn() {
-    loginContainer.classList.add("hidden");
-    newUserContainer.classList.add("hidden");
-    const Greeting = document.getElementById("UserGreeting");
-    Greeting.textContent = JSON.parse(localStorage.getItem('user')).GamerTag + "'s Games";
-    loggedInMenu.classList.remove("hidden");
-  }
-
   createUserButton.addEventListener("click", () => {
     loginContainer.classList.add("hidden");
     newUserContainer.classList.remove("hidden");
@@ -246,8 +270,9 @@
   });
 
   logoutButton.addEventListener("click", () => {
-    localStorage.removeItem('user');
+    localStorage.removeItem("user");
     loginContainer.classList.remove("hidden");
     loggedInMenu.classList.add("hidden");
   });
+
 });
