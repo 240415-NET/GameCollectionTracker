@@ -8,5 +8,5 @@ public interface IGameService
 
     public Task<Game> GetGameForGameId(Guid gameIdFromController);
 
-    public Task<string> AddNewGameToDBAsync(Game newGame);
+    // public Task<string> AddNewGameToDBAsync(Game newGame);
 }

@@ -7,7 +7,12 @@ namespace GameCollectionTracker.Services;
 
 public class GameService : IGameService
 {
-    private readonly GameStorageEFRepo _gameStorage;
+    private readonly IGameStorageEFRepo _gameStorage;
+
+     public GameService(IGameStorageEFRepo gameStorage)
+    {
+        _gameStorage = gameStorage;
+    }
     public async Task<List<Game>> GetAllGamesForUserAsync(Guid userIdFromController)
     {
         List<Game> foundGames = new();
@@ -42,16 +47,16 @@ public class GameService : IGameService
         }
     }
 
-    public async Task<string> AddNewGameToDBAsync(Game newGame)
-    {
-        try
-        {
+    // public async Task<string> AddNewGameToDBAsync(Game newGame)
+    // {
+    //     try
+    //     {
 
-                return await _gameStorage.AddGameToDBAsync(newGame);
-        }
-        catch (Exception e)
-        {
-            throw new Exception($"Game add failed: {e.Message}");
-        }
-    }
+    //             return await _gameStorage.AddGameToDBAsync(newGame);
+    //     }
+    //     catch (Exception e)
+    //     {
+    //         throw new Exception($"Game add failed: {e.Message}");
+    //     }
+    // }
 }
