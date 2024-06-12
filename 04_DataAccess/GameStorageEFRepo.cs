@@ -6,22 +6,25 @@ namespace GameCollectionTracker.Data;
 
 public class GameStorageEFRepo : IGameStorageEFRepo
 {
-    private readonly GameContext _context;
+    private readonly GameContext _gameContext;
 
-    //constructor needed?
+    public GameStorageEFRepo(GameContext gameContext)
+    {
+        _gameContext = gameContext;
+    }
 
     public async Task<List<Game?>> GetGamesFromDBForUserAsync (Guid userIdFromService)
     {
-        return await _context.Games
+        return await _gameContext.Games
             .Include(game => game.Owner)
             .Where(game => game.Owner.UserID == userIdFromService)
             .ToListAsync();
-
     }
 
     public async Task<Game> GetGameFromDBByGameId (Guid gameId)
     {
-        return await _context.Games.SingleOrDefaultAsync(game => game.GameID == gameId);
+        return await _gameContext.Games.SingleOrDefaultAsync(game => game.GameID == gameId);
+        //.Include(game => game.Owner) circular dependency issue
     }
 
     public async Task<string> AddGameToDBAsync(Game gameInfo)
@@ -37,8 +40,8 @@ public class GameStorageEFRepo : IGameStorageEFRepo
             // newGame.MinPlayers = 
             // newGame.MaxPlayers = 
             // newGame.ExpectedGameDuration = 
-            _context.Games.Add(gameInfo);
-            await _context.SaveChangesAsync();
+            _gameContext.Games.Add(gameInfo);
+            await _gameContext.SaveChangesAsync();
             return "Game added succesfully";
         }
         catch (Exception e)
