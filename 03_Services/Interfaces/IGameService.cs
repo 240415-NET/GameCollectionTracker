@@ -10,7 +10,9 @@ public interface IGameService
 
     public Task<List<Game>> GetAllGamesForUserAsync(Guid userIdFromController);
 
-    public Task<Game> GetGameForGameId(Guid gameIdFromController);
+    public Task<GameUserDTO> GetGameForGameId(Guid gameIdFromController);
 
-    // public Task<string> AddNewGameToDBAsync(Game newGame);
+    public Task<string> AddNewGameToDBAsync(Game newGame);
+
+    public Task<string> AddNewGameDTOToDBAsync(NewGameDTO newGame);
 }

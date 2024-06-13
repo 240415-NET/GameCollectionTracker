@@ -9,5 +9,9 @@ public interface IGameStorageEFRepo
 
   public Task<List<Game?>> GetGamesFromDBForUserAsync (Guid userIdFromService);
 
-  public Task<Game> GetGameFromDBByGameId (Guid gameId);
+  public Task<GameUserDTO> GetGameFromDBByGameId(Guid gameId);
+
+  public Task<string> AddGameToDBAsync(Game gameInfo);
+
+  public Task<string> AddGameDTOToDBAsync(NewGameDTO gameInfo);
 }

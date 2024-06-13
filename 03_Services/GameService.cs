@@ -9,7 +9,7 @@ public class GameService : IGameService
 {
     private readonly IGameStorageEFRepo _gameStorage;
 
-     public GameService(IGameStorageEFRepo gameStorage)
+    public GameService(IGameStorageEFRepo gameStorage)
     {
         _gameStorage = gameStorage;
     }
@@ -27,12 +27,12 @@ public class GameService : IGameService
         return foundGames;
     }
 
-    public async Task<Game> GetGameForGameId(Guid gameIdFromController)
+    public async Task<GameUserDTO> GetGameForGameId(Guid gameIdFromController)
     {
 
         try
         {
-            Game? foundGame = await _gameStorage.GetGameFromDBByGameId(gameIdFromController);
+            GameUserDTO? foundGame = await _gameStorage.GetGameFromDBByGameId(gameIdFromController);
 
             if (foundGame == null)
             {
@@ -88,16 +88,28 @@ public class GameService : IGameService
 
 
 
-    // public async Task<string> AddNewGameToDBAsync(Game newGame)
-    // {
-    //     try
-    //     {
+    public async Task<string> AddNewGameToDBAsync(Game newGame)
+    {
+        try
+        {
+            return await _gameStorage.AddGameToDBAsync(newGame);
+        }
+        catch (Exception e)
+        {
+            throw new Exception($"Game add failed: {e.Message}");
+        }
+    }
 
-    //             return await _gameStorage.AddGameToDBAsync(newGame);
-    //     }
-    //     catch (Exception e)
-    //     {
-    //         throw new Exception($"Game add failed: {e.Message}");
-    //     }
-    // }
+    public async Task<string> AddNewGameDTOToDBAsync(NewGameDTO newGame)
+    {
+        try
+        {
+            return await _gameStorage.AddGameDTOToDBAsync(newGame);
+        }
+        catch (Exception e)
+        {
+            throw new Exception($"Game add failed: {e.Message}");
+        }
+    }
+
 }
