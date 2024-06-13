@@ -142,4 +142,73 @@
   resetNewUserFormBtn.addEventListener("click", function () {
     resetForm();
   });
+
+
+  //New GameContainer
+  const addGameName = document.querySelector('#addGameName');
+  const addGamePurchasePrice = document.querySelector('#addGamePurchasePrice');
+  const addGamePurchaseDate = document.querySelector("#addGamePurchaseDate");
+  const addGameMinPlayers = document.querySelector("#addGameMinPlayers");
+  const addGameMaxPlayers = document.querySelector("#addGameMaxPlayers");
+  const addGameExpectedDuration = document.querySelector("#addGameExpectedDuration");
+  const newGameBtn = document.querySelector("#btnCreateNewGame");
+  const btnResetGameForm = document.querySelector("#btnResetGameForm");
+  const GameNameMessage = doucment.querySelector("#GameNameMessage");
+  const GamePriceMessage = document.querySelector("#GamePriceMessage");
+  const GamePurchaseDateMessage = document.querySelector("#GamePurchaseDateMessage");
+  const MinPlayersMessage = doucment.querySelector("#MinPlayersMessage");
+  const MaxPlayersMessage = doucment.querySelector("#MaxPlayersMessage");
+  const ExpectedDurationMessage = doucment.querySelector("#ExpectedDurationMessage")
+
+
+  function resetGameForm() {
+    addGameName.value = "";
+    addGamePurchasePrice.value = "";
+    addGamePurchaseDate.value = "";
+    addGameMinPlayers.value = "";
+    addGameMaxPlayers.value = "";
+    addGameExpectedDuration.value = "";
+  }
+
+  async function addNewGame() {
+    const body = {
+      GameName: addGameName.value,
+      PurchasePrice: parseFloat(addGamePurchasePrice.value),
+      PurchaseDate: addGamePurchaseDate.value,
+      MinPlayers: parseFloat(addGameMinPlayers.value),
+      MaxPlayers: parseFloat(addGameMaxPlayers.value),
+      ExpectedDuration: parseFloat(addGameExpectedDuration.value)
+    };
+    const response = await fetch(`http://localhost:5071/api/Game/`, {
+      method: "Post",
+      body: JSON.stringify(body),
+      headers: {
+        "content-type": "application/json",
+      },
+    });
+    resetGameForm();
+  }
+
+  newGameBtn.addEventListener("click", async function () {
+    if (addGameName.value == "") {
+      GameNameMessage.textContent = "Game Name cannot be blank!";
+    }
+    else if (addGamePurchasePrice.value == "") {
+      GamePriceMessage.textContent = "Game Price cannot be blank!";
+    } else if (addGamePurchaseDate.value == "") {
+      GamePurchaseDateMessage.textContent = "Purchase Date cannot be blank!";
+    } else if (addGameMinPlayers == "") {
+      MinPlayersMessage.textContent == "Min Players cannot be blank!";
+    } else if (addGameMaxPlayers == "") {
+      MaxPlayersMessage.textContent == "Min Players cannot be blank!";
+    } else if (addGameExpectedDuration == "") {
+      ExpectedDurationMessage.textContent == "Expected Duration cannot be blank!";
+    }
+    addNewGame();
+  });
+
+  btnResetGameForm.addEventListener("click", function () {
+    resetGameForm();
+  });
 });
+
