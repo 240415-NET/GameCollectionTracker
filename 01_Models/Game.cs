@@ -1,6 +1,7 @@
 
 
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace GameCollectionTracker.Models;
 
@@ -8,6 +9,7 @@ public class Game
 {
     [Key]
     public Guid GameID { get; set; }
+    [JsonIgnore]
     public User Owner { get; set; } = new();
     [MaxLength(50)]
     public string? GameName { get; set; }
