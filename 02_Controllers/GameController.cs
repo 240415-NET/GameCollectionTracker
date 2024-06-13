@@ -9,7 +9,6 @@ namespace GameCollectionTracker.Controllers;
 [Route("api/[controller]")]
 public class GameController : Controller
 {
-
     private readonly IGameService _gameService;
 
     public GameController(IGameService gameService)
@@ -76,4 +75,5 @@ public class GameController : Controller
 //     //     return BadRequest("Game already exists!");
 //     // }
 }
+
 

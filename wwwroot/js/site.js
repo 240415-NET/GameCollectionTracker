@@ -1,12 +1,28 @@
 ﻿document.addEventListener("DOMContentLoaded", () => {
-  const newUserContainer = document.querySelector('#NewUserContainer');
-  const loginContainer = document.querySelector('#LoginContainer');
-  const addGameContainer = document.querySelector('#AddGameContainer');
-  const addGamePlayContainer = document.querySelector('#AddGamePlayContainer');
-  const reviewPlayHistoryContainer = document.querySelector('#ReviewPlayHistoryContainer');
-  const adminFormContainer = document.querySelector('#AdminFormContainer');
+  //login page stuffs
+  const loginContainer = document.querySelector("#LoginContainer");
+  const loginButton = document.querySelector("#btnLogin");
+  const createUserButton = document.querySelector("#btnCreateUser");
+  const loginGamerTag = document.querySelector("#LoginGamerTag");
+  const loginPassWord = document.querySelector("#LoginPassword");
+  const loginGamerTagError = document.querySelector("#LoginGamerTagError");
+  const loginPasswordError = document.querySelector("#LoginPasswordError");
+
+  //MainMenu stuffs
+  const logoutButton = document.querySelector("#btnLogout");
+
+  //future implementation stuffs
+  const gamesContainer = document.querySelector("#games_container");
+  const gamePlayContainer = document.querySelector("#GamePlayContainer");
+  const playHistoryContainer = document.querySelector("#PlayHistoryContainer");
+  const adminMenu = document.querySelector("#AdminMenu");
+  const loggedInMenu = document.querySelector("#LoggedInMenu");
+
+  //create new user stuffs
+  const newUserContainer = document.querySelector("#NewUserContainer");
   const newUserBtn = document.querySelector("#btnCreateNewUser");
   const resetNewUserFormBtn = document.querySelector("#btnResetForm");
+  const newUserBackToLoginBtn = document.querySelector("#btnBackToLogin");
   const foundPlayerContainer = document.querySelector("#FoundPlayerContainer");
   const newUserGamerTag = document.querySelector("#newUserGamerTag");
   const newUserFirstName = document.querySelector("#newUserFirstName");
@@ -19,19 +35,41 @@
   const firstNameMessage = document.querySelector("#FirstNameMessage");
   const lastNameMessage = document.querySelector("#LastNameMessage");
 
-  function resetForm() {
+  //For a reload with a user logged in
+  const storedUser = JSON.parse(localStorage.getItem("user"));
+  if (storedUser) {
+    UserIsLoggedIn();
+  }
+
+  function resetNewUserForm() {
     newUserGamerTag.value = "";
     newUserFirstName.value = "";
     newUserLastName.value = "";
     newUserPassWord.value = "";
     newUserRePassWord.value = "";
     foundPlayerContainer.innerHTML = "";
+    resetNewUserWarnings();
+  }
+
+  function resetNewUserWarnings() {
     gamerTagMessage.textContent = "";
     passwordMessage.textContent = "";
     rePasswordMessage.textContent = "";
     firstNameMessage.textContent = "";
     lastNameMessage.textContent = "";
   }
+
+  function resetLoginForm(){
+    loginGamerTag.value = "";
+    loginPassWord.value = "";
+    resetLoginWarnings();
+  }
+
+  function resetLoginWarnings() {
+    loginGamerTagError.textContent = "";
+    loginPasswordError.textContent = "";
+  }
+
   function displayPlayers(players) {
     try {
       let allPlayers = "";
@@ -81,14 +119,18 @@
       LastName: newUserLastName.value,
     };
     const response = await fetch(`http://localhost:5071/api/User/`, {
-      method: "Post",
+      method: "POST",
       body: JSON.stringify(body),
       headers: {
         "content-type": "application/json",
       },
     });
-    resetForm();
-
+    if (response.status != 200) {
+      gamerTagMessage.textContent = await response.text();
+    } else {
+      LogInUser(newUserGamerTag.value, newUserPassWord.value);
+      //resetNewUserForm();
+    }
   }
 
   async function addNewUserWithPlayer(id) {
@@ -103,46 +145,153 @@
         playerID: id,
       };
       const response = await fetch(`http://localhost:5071/api/User/`, {
-        method: "Post",
+        method: "POST",
         body: JSON.stringify(body),
         headers: {
           "content-type": "application/json",
         },
       });
-      resetForm();
-
+      if (response.status != 200) {
+        gamerTagMessage.textContent = await response.text();
+      } else {
+        LogInUser(newUserGamerTag.value, newUserPassWord.value);
+        //resetNewUserForm();
+      }
     }
   }
 
+  async function LogInUser(UserName, UserPass) {
+    const body = {
+      userName: UserName,
+      userPass: UserPass,
+    };
+    const response = await fetch(`http://localhost:5071/api/User/Login`, {
+      method: "POST",
+      body: JSON.stringify(body),
+      headers: {
+        "content-type": "application/json",
+      },
+    });
+    if (response.status == 200) {
+      data = await response.json();
+      const userStorage = {
+        UserID: data.userID,
+        GamerTag: data.gamerTag,
+        PlayerID: data.playerRecord.playerID,
+        IsAdmin: data.isAdmin
+      };
+      localStorage.setItem("user", JSON.stringify(userStorage));
+    } else if (response.status == 404) {
+      loginGamerTagError.textContent = "Account does not exist";
+    } else {
+      loginPasswordError.textContent = "Password is not correct.";
+    }
+    resetLoginForm();
+    UserIsLoggedIn();
+  }
+
+  function UserIsLoggedIn() {
+    loginContainer.classList.add("hidden");
+    newUserContainer.classList.add("hidden");
+    const Greeting = document.getElementById("UserGreeting");
+    Greeting.textContent =
+      JSON.parse(localStorage.getItem("user")).GamerTag + "'s Games";
+    loggedInMenu.classList.remove("hidden");
+    if(JSON.parse(localStorage.getItem("user")).IsAdmin)
+      {
+        adminMenu.classList.remove("hidden");
+      }else{
+        adminMenu.classList.add("hidden");
+      }
+  }
+
+  function DisplayUsersGames(games)
+  {
+    let allGames = '';
+    games.forEach(game => {
+      const gameElement = `
+      <div class="game" data-id="${game.GameID}">
+      <h3>${game.GameName}</h3>
+      <p>Min Players: ${game.MinPlayers}</p>
+      <p>Max Players: ${game.MaxPlayers}</p>
+      <p>Play Time: ${game.ExpectedGameDuration} minutes</p>
+      <p>Purchase Date: ${game.PurchaseDate}</p>
+      <p>Purchase Price: $${game.PurchasePrice}</p>
+      </div>`;
+      allGames += gameElement;
+    });
+    gamesContainer.innerHTML = allGames;
+
+    document.querySelectorAll('.game').forEach(game => {
+      game.addEventListener('click', function () {
+        UsersGameClick(game.dataset.id);
+      });
+    })
+  }
+  function UsersGameClick(id) {
+
+  }
+
   newUserBtn.addEventListener("click", async function () {
-    if (newUserGamerTag.value == "") {
+    resetNewUserWarnings();
+    if (!newUserGamerTag.value) {
       gamerTagMessage.textContent = "Gamer Tag cannot be blank!";
-    } else if (newUserPassWord.value == "") {
+    } else if (!newUserPassWord.value) {
       passwordMessage.textContent = "Password cannot be blank!";
-    } else if (newUserRePassWord.value == "" || newUserRePassWord.value != newUserPassWord.value) {
+    } else if (
+      !newUserRePassWord.value ||
+      newUserRePassWord.value != newUserPassWord.value
+    ) {
       rePasswordMessage.textContent =
         "This must match your password and cannot be blank!";
-    } else if (newUserFirstName.value == "") {
+    } else if (!newUserFirstName.value) {
       firstNameMessage.textContent = "First name cannot be blank!";
-    } else if (newUserLastName.value == "") {
+    } else if (!newUserLastName.value) {
       lastNameMessage.textContent = "Last name cannot be blank!";
     } else {
       const response = await fetch(
-        `http://localhost:5071/api/User/api/FindPlayers/userInfo?GamerTag=${newUserGamerTag.value}&FirstName=${newUserFirstName.value}&LastName=${newUserLastName.value}`
+        `http://localhost:5071/api/User/FindPlayers/userInfo?GamerTag=${newUserGamerTag.value}&FirstName=${newUserFirstName.value}&LastName=${newUserLastName.value}`
       );
-      const players = await response.json();
-      if (players.length == 0) {
+      if (response.status == 404) {
         addNewUser();
       } else {
+        const players = await response.json();
         displayPlayers(players);
       }
     }
   });
 
   resetNewUserFormBtn.addEventListener("click", function () {
-    resetForm();
+    resetNewUserForm();
   });
 
+  loginButton.addEventListener("click", async () => {
+    resetLoginWarnings();
+    if (!loginGamerTag.value) {
+      loginGamerTagError.textContent = "Gamer Tag cannot be blank!";
+    } else if (!loginPassWord.value) {
+      loginPasswordError.textContent = "Password cannot be blank!";
+    }
+    LogInUser(loginGamerTag.value, loginPassWord.value);
+  });
+
+  createUserButton.addEventListener("click", () => {
+    loginContainer.classList.add("hidden");
+    newUserContainer.classList.remove("hidden");
+  });
+
+  newUserBackToLoginBtn.addEventListener("click", () => {
+    resetNewUserForm();
+    loginContainer.classList.remove("hidden");
+    newUserContainer.classList.add("hidden");
+  });
+
+  logoutButton.addEventListener("click", () => {
+    localStorage.removeItem("user");
+    loginContainer.classList.remove("hidden");
+    loggedInMenu.classList.add("hidden");
+    adminMenu.classList.add("hidden");
+  });
 
   //New GameContainer
   const addGameName = document.querySelector('#addGameName');

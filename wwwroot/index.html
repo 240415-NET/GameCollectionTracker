@@ -1,28 +1,126 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Game Colletion Tracker</title>
-    <link rel="stylesheet" href="/wwwroot/css/site.css">
-</head>
-<body>
-    <div id="LoginContainer" class = "hidden">
-        <h1>Login</h1>
-        <input type="text" id="LoginGamerTag" placeholder="Gamer Tag"></br>
-        <input type="password" id="LoginPassword" placeholder="Password"></br>
+    <link rel="stylesheet" href="/wwwroot/css/site.css" />
+    <link rel="icon" type="image/x-icon" href="/wwwroot/favicon.ico" />
+  </head>
+  <body>
+    <!-- <div id="HeaderBar"></div> -->
+    <div class="container">
+      <div class="games_sidebar">
+        <img src="/wwwroot/board2.jpg" alt="" class="backImage" />
+        <div id="LoginContainer">
+          <h1>Login</h1>
+          <span id="LoginGamerTagError" class="warningText"></span>
+          <input type="text" id="LoginGamerTag" placeholder="Gamer Tag" /><br />
+          <span id="LoginPasswordError" class="warningText"></span>
+          <input
+            type="password"
+            id="LoginPassword"
+            placeholder="Password"
+          /><br /><br />
+          <button id="btnLogin">Login</button>
+          <button id="btnCreateUser">Create Account</button>
+        </div>
+        <div id="NewUserContainer" class="hidden">
+          <h1>Create a New User</h1>
+          <span class="warningText" id="GamerTagMessage"></span>
+          <input
+            type="text"
+            id="newUserGamerTag"
+            placeholder="Gamer Tag"
+          /><br />
+          <span class="warningText" id="PasswordMessage"></span>
+          <input
+            type="password"
+            id="newUserPassword"
+            placeholder="Password"
+          /><br />
+          <span class="warningText" id="RePasswordMessage"></span>
+          <input
+            type="password"
+            id="newUserRePassword"
+            placeholder="Retype Password"
+          /><br />
+          <span class="warningText" id="FirstNameMessage"></span>
+          <input
+            type="text"
+            id="newUserFirstName"
+            placeholder="First Name"
+          /><br />
+          <span class="warningText" id="LastNameMessage"></span>
+          <input
+            type="text"
+            id="newUserLastName"
+            placeholder="Last Name"
+          /><br /><br />
+          <button id="btnCreateNewUser">Create New User</button><br /><br />
+          <div id="FoundPlayerContainer"></div>
+          <br />
+          <button id="btnResetForm">Reset</button>
+          <button id="btnBackToLogin">Back To Login</button>
+        </div>
+        <div id="LoggedInMenu" class="hidden">
+          <h1 id="UserGreeting"></h1>
+          <!-- Might need some more stuff in here or less depending on how we go -->
+          <!-- Kinda thinking we load all of the user's games by default and give options
+             when you click on one of the games to update/remove using a 'selected' property or something
+             and could still have an add button -->
+          <!-- <button id="btnViewMyGames">View My Games</button><br> -->
+          <button id="btnAddNewGame">Add a New Game</button><br>
+          <button id="btnUpdateGame" class = "hidden">Update a Game</button><br>
+          <button id="btnRemoveGame" class = "hidden">Remove a Game</button><br>
+          <button id="btnRecordNewGamePlay">Record a Game Play</button><br>
+          <button id="btnViewPlayHistory">View My Play History</button><br><br>
+          <button id="btnLogout">Logout</button>
+          <!-- Also need to figure out placement for the logout button maybe here-ish -->
+        </div>
+        <div id="AdminMenu" class="hidden">
+          <button>Do Admin Stuff</button><br>
+          <button>More Admin Stuff</button><br>
+        </div>
+      </div>
+      <div id="myGamesContainer" class="games_container">
+        <div class="game">
+          <h3>Smallworld</h3>
+          <p>Min Players: 2</p>
+          <p>Max Players: 4</p>
+          <p>Play Time: 60 minutes</p>
+          <p>Purchase Date: 1/1/2023</p>
+          <p>Purchase Price: $15</p>
+        </div>
+        <div class="game">
+          <h3>Smallworld</h3>
+          <p>Min Players: 2</p>
+          <p>Max Players: 4</p>
+          <p>Play Time: 60 minutes</p>
+          <p>Purchase Date: 1/1/2023</p>
+          <p>Purchase Price: $15</p>
+        </div>
+        <div class="game">
+          <h3>Smallworld</h3>
+          <p>Min Players: 2</p>
+          <p>Max Players: 4</p>
+          <p>Play Time: 60 minutes</p>
+          <p>Purchase Date: 1/1/2023</p>
+          <p>Purchase Price: $15</p>
+        </div>
+        <div class="game">
+          <h3>Smallworld</h3>
+          <p>Min Players: 2</p>
+          <p>Max Players: 4</p>
+          <p>Play Time: 60 minutes</p>
+          <p>Purchase Date: 1/1/2023</p>
+          <p>Purchase Price: $15</p>
+        </div>
+      </div>
+      <div id="myGamePlayContainer" class="games_container" style="display: none;"></div>
+      <div id="myPlayHistoryContainer" class="games_container" style="display: none;"></div>
     </div>
-    <div id="NewUserContainer" >
-        <h1>Create a new user</h1>
-        <input type="text" id="newUserGamerTag" placeholder="Gamer Tag"><span class = "warningText" id="GamerTagMessage"></span></br>
-        <input type="password" id="newUserPassword" placeholder="Password"><span class = "warningText" id="PasswordMessage"></span></br>
-        <input type="password" id="newUserRePassword" placeholder="Retype Password"><span class = "warningText" id="RePasswordMessage"></span></br>
-        <input type="text" id="newUserFirstName" placeholder="First Name"><span class = "warningText" id="FirstNameMessage"></span></br>
-        <input type="text" id="newUserLastName" placeholder="Last Name"><span class = "warningText" id="LastNameMessage"></span></br>
-        <button id="btnCreateNewUser">Create New User</button>
-        <div id="FoundPlayerContainer"></div>
-        <button id="btnResetForm">Reset</button>
-    </div>
+
     <div id="AddGameContainer">
         <h1>Add a new game</h1>
         <input type="text" id="addGameName" placeholder="Game Name"><span class="warningText" id="GameNameMessage"></span></br>
@@ -34,15 +132,6 @@
         <button id="btnCreateNewGame">Create New Game</button></br>
         <button id="btnResetGameForm">Reset</button>
     </div>
-    <div id="AddGamePlayContainer" class="hidden">
-
-    </div>
-    <div id="ReviewPlayHistoryContainer" class="hidden">
-
-    </div>
-    <div id="AdminFormContainer" class="hidden">
-
-    </div>    
-<script src="/wwwroot/js/site.js"></script>
-</body>
+    <script src="/wwwroot/js/site.js"></script>
+  </body>
 </html>

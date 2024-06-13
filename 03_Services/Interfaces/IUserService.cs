@@ -7,5 +7,6 @@ public interface IUserService
     public Task<string> AddNewUserToDBAsync(NewUserDTO userInfo);
     public Task<bool> DoesUserExistAsync(string userName);
     public Task<List<Player>> MatchingPlayersForNewUserAsync(FindPlayer userInfo);
+    public Task<User> LoginUserAndReturnUserInfo(UserLogin userInfo);
 }
 
