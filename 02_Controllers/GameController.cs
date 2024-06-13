@@ -30,7 +30,7 @@ public class GameController : Controller
             return NotFound(e.Message);
         }
     }
-[HttpGet("GamesPlayed/{userID}")]
+[HttpGet("AllGamesPlayed/{userID}")]
     public async Task<ActionResult<List<GamePlayed>>> ViewAllGamesPlayedByUser(Guid userID)
     {
         try
