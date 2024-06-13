@@ -46,6 +46,19 @@ public class GameController : Controller
             return NotFound(e.Message);
         }
     }
+[HttpGet("GamesPlayed/{userID}")] 
+    public async Task<ActionResult<List<GamePlayed>>> ViewPlaysOfSpecificGameByUser(Guid userID, Guid GameID)
+    {   
+        try
+        {
+            return await _gameService.ViewPlaysOfSpecificGameByUser(userID, GameID);
+        }
+        catch(Exception e)
+        {
+            return NotFound(e.Message);
+        }
+    }
+}
 
 //Does game need a DTO?
 // [HttpPost]
@@ -63,3 +76,4 @@ public class GameController : Controller
 //     //     return BadRequest("Game already exists!");
 //     // }
 }
+
