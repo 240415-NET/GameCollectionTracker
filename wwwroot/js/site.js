@@ -322,7 +322,7 @@
 
   async function addNewGame() {
     const body = {
-      UserID: JSON.parse(localStorage.getItem("user")).GamerTag,
+      UserID: JSON.parse(localStorage.getItem("user")).UserID,
       GameName: parseFloat(addGameName.value),
       PurchasePrice: parseFloat(addGamePurchasePrice.value),
       PurchaseDate: addGamePurchaseDate.value,
