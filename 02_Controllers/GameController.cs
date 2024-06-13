@@ -28,9 +28,19 @@ public class GameController : Controller
             return NotFound(e.Message);
         }
     }
-    //convert this to DTO
+
     [HttpGet("/Games/{userIdToFindFromFrontEnd}")]
     public async Task<ActionResult<GameListDTO>> GetGamesByUserId(Guid userIdToFindFromFrontEnd)
+    {
+        try
+        {
+            return await _gameService.GetAllGamesForUserAsync(userIdToFindFromFrontEnd);
+        }
+        catch (Exception e)
+        {
+            return NotFound(e.Message);
+        }
+    }
 
     [HttpGet("AllGamesPlayed/{userID}")]
     public async Task<ActionResult<List<GamePlayed>>> ViewAllGamesPlayedByUser(Guid userID)
