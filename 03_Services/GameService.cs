@@ -33,19 +33,60 @@ public class GameService
     {
 
         try
-        {   
-            Game? foundGame =  await _gameStorage.GetGameFromDBByGameId(gameIdFromController);
+        {
+            Game? foundGame = await _gameStorage.GetGameFromDBByGameId(gameIdFromController);
 
-            if(foundGame == null)
+            if (foundGame == null)
             {
                 throw new Exception("Game not found in DB?");
             }
 
             return foundGame;
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             throw new Exception(e.Message);
         }
     }
+
+    public async Task<List<GamePlayed>> ViewAllGamesPlayedByUser(Guid userIDFromController)
+    {
+
+        try
+        {
+            List<GamePlayed>? playlist = await _gameStorage.ViewAllGamesPlayedByUser(userIDFromController);
+
+            if (playlist.Count < 1)
+            {
+                throw new Exception("It doesn't appear that you've recorded any played games...");
+            }
+
+            return playlist;
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
+    }
+    public async Task<List<GamePlayed>> ViewPlaysOfSpecificGameByUser(Guid userIDFromController, Guid gameIDFromController)
+    {
+
+        try
+        {
+            List<GamePlayed>? playlist = await _gameStorage.ViewPlaysOfSpecificGameByUser(userIDFromController, gameIDFromController);
+
+            if (playlist.Count < 1)
+            {
+                throw new Exception("It doesn't appear that you've recorded any played games...");
+            }
+
+            return playlist;
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
+    }
+
+
 }

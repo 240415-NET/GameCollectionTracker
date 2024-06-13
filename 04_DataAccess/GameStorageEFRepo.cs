@@ -1,6 +1,8 @@
 using GameCollectionTracker.Models;
 using GameCollectionTracker.Data;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.PortableExecutable;
+using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel;
 
 namespace GameCollectionTracker.Data;
 
@@ -10,7 +12,7 @@ public class GameStorageEFRepo : IGameStorageEFRepo
 
     //constructor needed?
 
-    public async Task<List<Game?>> GetGamesFromDBForUserAsync (string gamertag)
+    public async Task<List<Game?>> GetGamesFromDBForUserAsync(string gamertag)
     {
         return await _context.Games
             .Include(game => game.Owner)
@@ -18,7 +20,7 @@ public class GameStorageEFRepo : IGameStorageEFRepo
             .ToListAsync();
 
 
-            //Here we will ask the database for all items associated with the user who's guid matches
+        //Here we will ask the database for all items associated with the user who's guid matches
         //the userIdFromService, using LINQ methods (and lambdas :c )
 
         // return await _context.Items //So we ask our context for the collection of Item objects in the database
@@ -28,10 +30,34 @@ public class GameStorageEFRepo : IGameStorageEFRepo
 
     }
 
-    public async Task<Game> GetGameFromDBByGameId (Guid gameId)
+    public async Task<Game> GetGameFromDBByGameId(Guid gameId)
     {
         return await _context.Games.SingleOrDefaultAsync(game => game.GameID == gameId);
     }
+    public async Task<List<GamePlayed>> ViewAllGamesPlayedByUser(Guid userID)
+    {
+
+        User currentUser = await _context.Users.FirstAsync(cu => cu.UserID == userID);
+
+        Player currentPlayer = await _context.Players
+        .Include(pd => pd.GamesPlayed)
+        .FirstAsync(cp => cp.PlayerID == currentUser.PlayerRecord.PlayerID);
+
+        return currentPlayer.GamesPlayed;
+    }
+    public async Task<List<GamePlayed>> ViewPlaysOfSpecificGameByUser(Guid userID, Guid gameID)
+    {
+
+        User currentUser = await _context.Users.FirstAsync(cu => cu.UserID == userID);
+        Game currentGame = await _context.Games.FirstAsync(cg => cg.GameID == gameID);
+
+        Player currentPlayer = await _context.Players
+        .Include(pd => pd.GamesPlayed).FirstAsync(cp => cp.PlayerID == currentUser.PlayerRecord.PlayerID);
+
+        return currentPlayer.GamesPlayed;
+    }
+
+
 
 }
 

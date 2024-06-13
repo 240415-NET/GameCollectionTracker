@@ -32,5 +32,28 @@ public class GameController : Controller
         }
     }
 
-
+    [HttpGet("GamesPlayed/{userID}")] 
+    public async Task<ActionResult<List<GamePlayed>>> ViewAllGamesPlayedByUser(Guid userID)
+    {   
+        try
+        {
+            return await _gameService.ViewAllGamesPlayedByUser(userID);
+        }
+        catch(Exception e)
+        {
+            return NotFound(e.Message);
+        }
+    }
+[HttpGet("GamesPlayed/{userID}")] 
+    public async Task<ActionResult<List<GamePlayed>>> ViewPlaysOfSpecificGameByUser(Guid userID, Guid GameID)
+    {   
+        try
+        {
+            return await _gameService.ViewPlaysOfSpecificGameByUser(userID, GameID);
+        }
+        catch(Exception e)
+        {
+            return NotFound(e.Message);
+        }
+    }
 }
