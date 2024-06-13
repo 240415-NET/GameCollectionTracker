@@ -323,13 +323,12 @@
   async function addNewGame() {
     const body = {
       UserID: JSON.parse(localStorage.getItem("user")).UserID,
-      GameName: parseFloat(addGameName.value),
+      GameName: addGameName.value,
       PurchasePrice: parseFloat(addGamePurchasePrice.value),
       PurchaseDate: addGamePurchaseDate.value,
-      MinPlayers: parseFloat(addGameMinPlayers.value),
-      MaxPlayers: parseFloat(addGameMaxPlayers.value),
-      ExpectedDuration: parseFloat(addGameExpectedDuration.value)
-      
+      MinPlayers: parseInt(addGameMinPlayers.value),
+      MaxPlayers: parseInt(addGameMaxPlayers.value),
+      expectedGameDuration: parseInt(addGameExpectedDuration.value)
     };
     const response = await fetch(`http://localhost:5071/api/Game/`, {
       method: "Post",
