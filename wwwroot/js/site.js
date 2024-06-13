@@ -224,9 +224,12 @@
 
     document.querySelectorAll('.game').forEach(game => {
       game.addEventListener('click', function () {
-        //function when game is clicked
+        UsersGameClick(game.dataset.id);
       });
     })
+  }
+  function UsersGameClick(id) {
+
   }
 
   newUserBtn.addEventListener("click", async function () {
