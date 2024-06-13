@@ -302,11 +302,11 @@
   const addGameExpectedDuration = document.querySelector("#addGameExpectedDuration");
   const newGameBtn = document.querySelector("#btnCreateNewGame");
   const btnResetGameForm = document.querySelector("#btnResetGameForm");
-  const GameNameMessage = doucment.querySelector("#GameNameMessage");
+  const GameNameMessage = document.querySelector("#GameNameMessage");
   const GamePriceMessage = document.querySelector("#GamePriceMessage");
   const GamePurchaseDateMessage = document.querySelector("#GamePurchaseDateMessage");
-  const MinPlayersMessage = doucment.querySelector("#MinPlayersMessage");
-  const MaxPlayersMessage = doucment.querySelector("#MaxPlayersMessage");
+  const MinPlayersMessage = document.querySelector("#MinPlayersMessage");
+  const MaxPlayersMessage = document.querySelector("#MaxPlayersMessage");
   const ExpectedDurationMessage = doucment.querySelector("#ExpectedDurationMessage")
 
 
