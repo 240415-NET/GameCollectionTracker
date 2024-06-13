@@ -38,27 +38,27 @@ public class GameStorageEFRepo : IGameStorageEFRepo
         return await _gameContext.Games.SingleOrDefaultAsync(game => game.GameID == gameId);
         //.Include(game => game.Owner) circular dependency issue
     }
-    public async Task<List<GamePlayed>> ViewAllGamesPlayedByUser(Guid userID)
+    public async Task<List<GamePlayed>> ViewAllGamesPlayedByUser(Guid playerID)
     {
 
-        User currentUser = await _gameContext.Users.FirstAsync(cu => cu.UserID == userID);
-
-        Player currentPlayer = await _gameContext.Players
-        .Include(pd => pd.GamesPlayed)
-        .FirstAsync(cp => cp.PlayerID == currentUser.PlayerRecord.PlayerID);
-
-        return currentPlayer.GamesPlayed;
+        Player currentPlayer = await _gameContext.Players.FirstAsync(p => p.PlayerID == playerID);
+        List<GamePlayed> gamesPlayed = await _gameContext.GamesPlayed.Include(p => p.Players).Where(gp => gp.Players.Contains(currentPlayer)).ToListAsync();
+        if(gamesPlayed.Count <1)
+        {
+            throw new Exception("Not games played");
+        }
+        return gamesPlayed;
     }
-    public async Task<List<GamePlayed>> ViewPlaysOfSpecificGameByUser(Guid userID, Guid gameID)
+    public async Task<List<GamePlayed>> ViewPlaysOfSpecificGameByUser(Guid playerID, Guid gameID)
     {
-
-        User currentUser = await _gameContext.Users.FirstAsync(cu => cu.UserID == userID);
-        Game currentGame = await _gameContext.Games.FirstAsync(cg => cg.GameID == gameID);
-
-        Player currentPlayer = await _gameContext.Players
-        .Include(pd => pd.GamesPlayed).FirstAsync(cp => cp.PlayerID == currentUser.PlayerRecord.PlayerID);
-
-        return currentPlayer.GamesPlayed;
+        Player currentPlayer = await _gameContext.Players.FirstAsync(p => p.PlayerID == playerID);
+        List<GamePlayed> gamesPlayed = await _gameContext.GamesPlayed.Include(p => p.Players).Where(gp => gp.Players.Contains(currentPlayer)).ToListAsync();
+        List<GamePlayed> returnList = gamesPlayed.Where(g => g.GameID == gameID).ToList();
+        if(returnList.Count <1)
+        {
+            throw new Exception("Not games played");
+        }        
+        return returnList;
     }
     public async Task<string> AddGameToDBAsync(Game gameInfo)
     {
