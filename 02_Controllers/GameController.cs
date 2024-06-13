@@ -16,11 +16,9 @@ public class GameController : Controller
         _gameService = gameService;
     }
 
-    [HttpGet("/Games/{gameIdToFindFromFrontEnd}")]
+    [HttpGet("/Games/")]
     public async Task<ActionResult<GameUserDTO>> GetGameByGameId(Guid gameIdToFindFromFrontEnd)
     {
-        //Again, we are going to start with a try catch, so that we can NOT crash our API if something goes wrong,
-        //and ideally, we can inform the front end so it can inform the user
         try
         {
             return await _gameService.GetGameForGameId(gameIdToFindFromFrontEnd);
@@ -31,11 +29,10 @@ public class GameController : Controller
         }
     }
 
+    //convert this to DTO
     [HttpGet("/Games/{userIdToFindFromFrontEnd}")]
-    public async Task<ActionResult<List<Game>>> GetGamesByUserId(Guid userIdToFindFromFrontEnd)
+    public async Task<ActionResult<GameListDTO>> GetGamesByUserId(Guid userIdToFindFromFrontEnd)
     {
-        //Again, we are going to start with a try catch, so that we can NOT crash our API if something goes wrong,
-        //and ideally, we can inform the front end so it can inform the user
         try
         {
             return await _gameService.GetAllGamesForUserAsync(userIdToFindFromFrontEnd);

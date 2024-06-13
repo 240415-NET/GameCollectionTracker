@@ -13,18 +13,20 @@ public class GameService : IGameService
     {
         _gameStorage = gameStorage;
     }
-    public async Task<List<Game>> GetAllGamesForUserAsync(Guid userIdFromController)
+    public async Task<GameListDTO> GetAllGamesForUserAsync(Guid userIdFromController)
     {
-        List<Game> foundGames = new();
+        // List<Game> foundGames = new();
 
-        var resultList = await _gameStorage.GetGamesFromDBForUserAsync(userIdFromController);
+        // var resultList = await _gameStorage.GetGamesFromDBForUserAsync(userIdFromController);
 
-        foreach (var game in resultList)
-        {
-            foundGames.Add(game);
-        }
+        // foreach (var game in resultList)
+        // {
+        //     foundGames.Add(game);
+        // }
 
-        return foundGames;
+        // return foundGames;
+
+        return await _gameStorage.GetGamesFromDBForUserAsync(userIdFromController);
     }
 
     public async Task<GameUserDTO> GetGameForGameId(Guid gameIdFromController)

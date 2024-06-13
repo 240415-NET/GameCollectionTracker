@@ -16,17 +16,20 @@ public class GameStorageEFRepo : IGameStorageEFRepo
     }
 
 
-    public async Task<List<Game?>> GetGamesFromDBForUserAsync(Guid userIdFromService)
+    public async Task<GameListDTO> GetGamesFromDBForUserAsync(Guid userIdFromService)
     {
         GameListDTO resultDTO = new();
-        List<Game?> foundGames= await _gameContext.Games
+        resultDTO.selectedGames = await _gameContext.Games
             //.Include(game => game.Owner)
             .Where(game => game.UserID == userIdFromService)
             .ToListAsync();
-        //resultDTO.selectedGames = foundGames;
+
+        User selectedUser = await _gameContext.Users.SingleAsync(user => user.UserID == userIdFromService);
+        resultDTO.UserID = selectedUser.UserID;
+        resultDTO.GamerTag = selectedUser.GamerTag;
 
         //return GameListDTO
-        return foundGames;
+        return resultDTO;
     }
 
     public async Task<GameUserDTO> GetGameFromDBByGameId(Guid gameId)
@@ -76,15 +79,6 @@ public class GameStorageEFRepo : IGameStorageEFRepo
     {
         try
         {
-            // Game newGame = new();
-            // gameInfo.GameID = Guid.NewGuid();
-            // newGame.UserID = gameInfo.UserID;
-            // newGame.GameName = gameInfo.GameName;
-            // newGame.PurchasePrice = gameInfo.PurchasePrice;
-            // newGame.PurchaseDate = gameInfo.PurchaseDate;
-            // newGame.MinPlayers = gameInfo.MinPlayers;
-            // newGame.MaxPlayers = gameInfo.MaxPlayers;
-            // newGame.ExpectedGameDuration = gameInfo.ExpectedGameDuration;
             _gameContext.Games.Add(gameInfo);
             await _gameContext.SaveChangesAsync();
             return "Game added succesfully";

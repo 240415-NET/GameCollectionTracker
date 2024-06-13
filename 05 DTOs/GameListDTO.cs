@@ -3,7 +3,7 @@ namespace GameCollectionTracker.Models;
 
 public class GameListDTO
 {
-    List<Game> selectedGames { get; set; }
+    public List<Game>? selectedGames { get; set; }
     
     public Guid UserID { get; set; }
 
