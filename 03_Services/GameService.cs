@@ -9,30 +9,32 @@ public class GameService : IGameService
 {
     private readonly IGameStorageEFRepo _gameStorage;
 
-     public GameService(IGameStorageEFRepo gameStorage)
+    public GameService(IGameStorageEFRepo gameStorage)
     {
         _gameStorage = gameStorage;
     }
-    public async Task<List<Game>> GetAllGamesForUserAsync(Guid userIdFromController)
+    public async Task<GameListDTO> GetAllGamesForUserAsync(Guid userIdFromController)
     {
-        List<Game> foundGames = new();
+        // List<Game> foundGames = new();
 
-        var resultList = await _gameStorage.GetGamesFromDBForUserAsync(userIdFromController);
+        // var resultList = await _gameStorage.GetGamesFromDBForUserAsync(userIdFromController);
 
-        foreach (var game in resultList)
-        {
-            foundGames.Add(game);
-        }
+        // foreach (var game in resultList)
+        // {
+        //     foundGames.Add(game);
+        // }
 
-        return foundGames;
+        // return foundGames;
+
+        return await _gameStorage.GetGamesFromDBForUserAsync(userIdFromController);
     }
 
-    public async Task<Game> GetGameForGameId(Guid gameIdFromController)
+    public async Task<GameUserDTO> GetGameForGameId(Guid gameIdFromController)
     {
 
         try
         {
-            Game? foundGame = await _gameStorage.GetGameFromDBByGameId(gameIdFromController);
+            GameUserDTO? foundGame = await _gameStorage.GetGameFromDBByGameId(gameIdFromController);
 
             if (foundGame == null)
             {
@@ -84,16 +86,16 @@ public class GameService : IGameService
             throw new Exception(e.Message);
         }
     }
-    // public async Task<string> AddNewGameToDBAsync(Game newGame)
-    // {
-    //     try
-    //     {
 
-    //             return await _gameStorage.AddGameToDBAsync(newGame);
-    //     }
-    //     catch (Exception e)
-    //     {
-    //         throw new Exception($"Game add failed: {e.Message}");
-    //     }
-    // }
+    public async Task<string> AddNewGameToDBAsync(Game newGame)
+    {
+        try
+        {
+            return await _gameStorage.AddGameToDBAsync(newGame);
+        }
+        catch (Exception e)
+        {
+            throw new Exception($"Game add failed: {e.Message}");
+        }
+    }
 }

@@ -307,7 +307,8 @@
   const GamePurchaseDateMessage = document.querySelector("#GamePurchaseDateMessage");
   const MinPlayersMessage = document.querySelector("#MinPlayersMessage");
   const MaxPlayersMessage = document.querySelector("#MaxPlayersMessage");
-  const ExpectedDurationMessage = document.querySelector("#ExpectedDurationMessage")
+  const ExpectedDurationMessage = document.querySelector("#ExpectedDurationMessage");
+  const btnCancelNewGame = document.querySelector("#btnCancelNewGame");
 
 
   function resetGameForm() {
@@ -321,12 +322,13 @@
 
   async function addNewGame() {
     const body = {
+      UserID: JSON.parse(localStorage.getItem("user")).UserID,
       GameName: addGameName.value,
       PurchasePrice: parseFloat(addGamePurchasePrice.value),
       PurchaseDate: addGamePurchaseDate.value,
-      MinPlayers: parseFloat(addGameMinPlayers.value),
-      MaxPlayers: parseFloat(addGameMaxPlayers.value),
-      ExpectedDuration: parseFloat(addGameExpectedDuration.value)
+      MinPlayers: parseInt(addGameMinPlayers.value),
+      MaxPlayers: parseInt(addGameMaxPlayers.value),
+      expectedGameDuration: parseInt(addGameExpectedDuration.value)
     };
     const response = await fetch(`http://localhost:5071/api/Game/`, {
       method: "Post",

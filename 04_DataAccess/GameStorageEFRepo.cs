@@ -15,28 +15,40 @@ public class GameStorageEFRepo : IGameStorageEFRepo
         _gameContext = gameContext;
     }
 
-    public async Task<List<Game?>> GetGamesFromDBForUserAsync (Guid userIdFromService)
+
+    public async Task<GameListDTO> GetGamesFromDBForUserAsync(Guid userIdFromService)
     {
-        return await _gameContext.Games
+        GameListDTO resultDTO = new();
+        resultDTO.selectedGames = await _gameContext.Games
             //.Include(game => game.Owner)
             .Where(game => game.UserID == userIdFromService)
             .ToListAsync();
 
+        User selectedUser = await _gameContext.Users.SingleAsync(user => user.UserID == userIdFromService);
+        resultDTO.UserID = selectedUser.UserID;
+        resultDTO.GamerTag = selectedUser.GamerTag;
 
-        //Here we will ask the database for all items associated with the user who's guid matches
-        //the userIdFromService, using LINQ methods (and lambdas :c )
-
-        // return await _context.Items //So we ask our context for the collection of Item objects in the database
-        //     .Include(item => item.user) //We ask entity framework to also grab the associated User object from the User table
-        //     .Where(item => item.user.userId == userIdFromService) //We then ask for every item who's owner's UserId matches the userIdFromService
-        //     .ToListAsync(); //Finally, we turn those items into a list
-
+        //return GameListDTO
+        return resultDTO;
     }
 
-    public async Task<Game> GetGameFromDBByGameId(Guid gameId)
+    public async Task<GameUserDTO> GetGameFromDBByGameId(Guid gameId)
     {
-        return await _gameContext.Games.SingleOrDefaultAsync(game => game.GameID == gameId);
-        //.Include(game => game.Owner) circular dependency issue
+        GameUserDTO newDTO = new();
+        Game selectedGame = await _gameContext.Games.SingleOrDefaultAsync(game => game.GameID == gameId);
+        User selectedUser = await _gameContext.Users.SingleAsync(user => user.UserID == selectedGame.UserID);
+
+
+        newDTO.GameName = selectedGame.GameName;
+        newDTO.UserID = selectedGame.UserID;
+        newDTO.PurchasePrice = selectedGame.PurchasePrice;
+        newDTO.PurchaseDate = selectedGame.PurchaseDate;
+        newDTO.MinPlayers = selectedGame.MinPlayers;
+        newDTO.MaxPlayers = selectedGame.MaxPlayers;
+        newDTO.ExpectedGameDuration = selectedGame.ExpectedGameDuration;
+        newDTO.GamerTag = selectedUser.GamerTag;
+        return newDTO;
+
     }
     public async Task<List<GamePlayed>> ViewAllGamesPlayedByUser(Guid playerID)
     {
@@ -64,16 +76,9 @@ public class GameStorageEFRepo : IGameStorageEFRepo
     {
         try
         {
-            // Game newGame = new();
-            gameInfo.GameID = Guid.NewGuid();
-            // newGame.Owner = userId;
-            // newGame.GameName = gameInfo.GameName;
-            // newGame.PurchasePrice = gameInfo.PurchasePrice;
-            // newGame.PurchaseDate = 
-            // newGame.MinPlayers = 
-            // newGame.MaxPlayers = 
-            // newGame.ExpectedGameDuration = 
-            _gameContext.Games.Add(gameInfo);
+            User currentUser = await _gameContext.Users.FirstAsync(user => user.UserID == gameInfo.UserID);
+            currentUser.Games.Add(gameInfo);
+           
             await _gameContext.SaveChangesAsync();
             return "Game added succesfully";
         }
@@ -82,5 +87,6 @@ public class GameStorageEFRepo : IGameStorageEFRepo
             throw new Exception($"Something went wrong... {e.Message}");
         }
     }
+
 }
 

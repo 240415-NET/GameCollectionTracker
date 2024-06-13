@@ -1,25 +1,18 @@
 
-// namespace GameCollectionTracker.Models;
+namespace GameCollectionTracker.Models;
 
-// public class NewGame
-// {
-//     public string GamerTag {get; set;}
-//     public string? Password {get; set;}
-//     public string FirstName {get; set;}
-//     public string LastName {get; set;}
-//     public Guid? PlayerID {get; set;} = Guid.Empty;
-// }
+public class GameUserDTO
+{
 
-// public class FindGames
-// {
-//     public string GamerTag {get; set;}
-//     public string FirstName {get; set;}
-//     public string LastName {get; set;}
+    public Guid GameID { get; set; }
+    public Guid UserID { get; set; }
+    public string? GameName { get; set; }
+    public double PurchasePrice { get; set; }
+    public DateOnly PurchaseDate { get; set; }
+    public int MinPlayers { get; set; }
+    public int MaxPlayers { get; set; }
+    public int ExpectedGameDuration { get; set; }
+    public string GamerTag {get; set;}
 
-//     public FindPlayer(string GamerTag, string FirstName, string LastName)
-//     {
-//         this.GamerTag = GamerTag;
-//         this.FirstName = FirstName;
-//         this.LastName = LastName;
-//     }
-// }
+}
+

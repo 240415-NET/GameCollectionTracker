@@ -8,9 +8,11 @@ public interface IGameService
 
     public Task<List<GamePlayed>> ViewPlaysOfSpecificGameByUser(Guid userIDFromController, Guid gameIDFromController);
 
-    public Task<List<Game>> GetAllGamesForUserAsync(Guid userIdFromController);
 
-    public Task<Game> GetGameForGameId(Guid gameIdFromController);
+    public Task<GameListDTO> GetAllGamesForUserAsync(Guid userIdFromController);
 
-    // public Task<string> AddNewGameToDBAsync(Game newGame);
+    public Task<GameUserDTO> GetGameForGameId(Guid gameIdFromController);
+
+    public Task<string> AddNewGameToDBAsync(Game newGame);
+
 }

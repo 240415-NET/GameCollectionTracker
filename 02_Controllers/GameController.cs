@@ -16,20 +16,22 @@ public class GameController : Controller
         _gameService = gameService;
     }
 
-    [HttpGet("/Games/")] 
-    public async Task<ActionResult<Game>> GetGameByGameId(Guid gameIdToFindFromFrontEnd)
-    {   
-        //Again, we are going to start with a try catch, so that we can NOT crash our API if something goes wrong,
-        //and ideally, we can inform the front end so it can inform the user
+    [HttpGet("/Games/")]
+    public async Task<ActionResult<GameUserDTO>> GetGameByGameId(Guid gameIdToFindFromFrontEnd)
+    {
         try
         {
             return await _gameService.GetGameForGameId(gameIdToFindFromFrontEnd);
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             return NotFound(e.Message);
         }
     }
+    //convert this to DTO
+    [HttpGet("/Games/{userIdToFindFromFrontEnd}")]
+    public async Task<ActionResult<GameListDTO>> GetGamesByUserId(Guid userIdToFindFromFrontEnd)
+
     [HttpGet("AllGamesPlayed/{userID}")]
     public async Task<ActionResult<List<GamePlayed>>> ViewAllGamesPlayedByUser(Guid userID)
     {
@@ -54,23 +56,14 @@ public class GameController : Controller
             return NotFound(e.Message);
         }
     }
-//Does game need a DTO?
-// [HttpPost]
-// public async Task<IActionResult> AddNewGameToDB(Game newGame)
-// {
-//     //newGame.Owner = CurrentUser;
-//     //Add a check for whether the game exists
-//     // if(! await _gameService.DoesGameExistAsync(newGame))
-//     // {
-//         await _gameService.AddNewGameToDBAsync(newGame);
-//         return Ok("Game added"); //Probably do the login here as well
-//     // }
-//     // else
-//     // {
-//     //     return BadRequest("Game already exists!");
-//     // }
-// }
 
+    [HttpPost]
+    public async Task<IActionResult> AddNewGameToDB(Game newGame)
+    {
+        newGame.GameID = new Guid();
+        await _gameService.AddNewGameToDBAsync(newGame);
+        return Ok("Game added"); 
+    }
 }
 
 
