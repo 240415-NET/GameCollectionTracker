@@ -30,34 +30,30 @@ public class GameController : Controller
             return NotFound(e.Message);
         }
     }
-
-    [HttpGet("/Games/{userIdToFindFromFrontEnd}")] 
-    public async Task<ActionResult<List<Game>>> GetGamesByUserId(Guid userIdToFindFromFrontEnd)
-    {   
-        //Again, we are going to start with a try catch, so that we can NOT crash our API if something goes wrong,
-        //and ideally, we can inform the front end so it can inform the user
+[HttpGet("GamesPlayed/{userID}")]
+    public async Task<ActionResult<List<GamePlayed>>> ViewAllGamesPlayedByUser(Guid userID)
+    {
         try
         {
-            return await _gameService.GetAllGamesForUserAsync(userIdToFindFromFrontEnd);
+            return await _gameService.ViewAllGamesPlayedByUser(userID);
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             return NotFound(e.Message);
         }
     }
-[HttpGet("GamesPlayed/{userID}")] 
+    [HttpGet("GamesPlayed/{userID}")]
     public async Task<ActionResult<List<GamePlayed>>> ViewPlaysOfSpecificGameByUser(Guid userID, Guid GameID)
-    {   
+    {
         try
         {
             return await _gameService.ViewPlaysOfSpecificGameByUser(userID, GameID);
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             return NotFound(e.Message);
         }
     }
-    
 //Does game need a DTO?
 // [HttpPost]
 // public async Task<IActionResult> AddNewGameToDB(Game newGame)

@@ -46,7 +46,6 @@ public class GameService : IGameService
             throw new Exception(e.Message);
         }
     }
-
     public async Task<List<GamePlayed>> ViewAllGamesPlayedByUser(Guid userIDFromController)
     {
 
@@ -85,9 +84,6 @@ public class GameService : IGameService
             throw new Exception(e.Message);
         }
     }
-
-
-
     // public async Task<string> AddNewGameToDBAsync(Game newGame)
     // {
     //     try

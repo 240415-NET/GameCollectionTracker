@@ -60,9 +60,6 @@ public class GameStorageEFRepo : IGameStorageEFRepo
 
         return currentPlayer.GamesPlayed;
     }
-
-
-
     public async Task<string> AddGameToDBAsync(Game gameInfo)
     {
         try
