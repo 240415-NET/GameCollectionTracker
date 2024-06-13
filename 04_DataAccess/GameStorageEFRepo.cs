@@ -18,8 +18,8 @@ public class GameStorageEFRepo : IGameStorageEFRepo
     public async Task<List<Game?>> GetGamesFromDBForUserAsync (Guid userIdFromService)
     {
         return await _gameContext.Games
-            .Include(game => game.Owner)
-            .Where(game => game.Owner.UserID == userIdFromService)
+            //.Include(game => game.Owner)
+            .Where(game => game.UserID == userIdFromService)
             .ToListAsync();
 
 
@@ -41,9 +41,9 @@ public class GameStorageEFRepo : IGameStorageEFRepo
     public async Task<List<GamePlayed>> ViewAllGamesPlayedByUser(Guid userID)
     {
 
-        User currentUser = await _context.Users.FirstAsync(cu => cu.UserID == userID);
+        User currentUser = await _gameContext.Users.FirstAsync(cu => cu.UserID == userID);
 
-        Player currentPlayer = await _context.Players
+        Player currentPlayer = await _gameContext.Players
         .Include(pd => pd.GamesPlayed)
         .FirstAsync(cp => cp.PlayerID == currentUser.PlayerRecord.PlayerID);
 
@@ -52,10 +52,10 @@ public class GameStorageEFRepo : IGameStorageEFRepo
     public async Task<List<GamePlayed>> ViewPlaysOfSpecificGameByUser(Guid userID, Guid gameID)
     {
 
-        User currentUser = await _context.Users.FirstAsync(cu => cu.UserID == userID);
-        Game currentGame = await _context.Games.FirstAsync(cg => cg.GameID == gameID);
+        User currentUser = await _gameContext.Users.FirstAsync(cu => cu.UserID == userID);
+        Game currentGame = await _gameContext.Games.FirstAsync(cg => cg.GameID == gameID);
 
-        Player currentPlayer = await _context.Players
+        Player currentPlayer = await _gameContext.Players
         .Include(pd => pd.GamesPlayed).FirstAsync(cp => cp.PlayerID == currentUser.PlayerRecord.PlayerID);
 
         return currentPlayer.GamesPlayed;

@@ -57,8 +57,7 @@ public class GameController : Controller
             return NotFound(e.Message);
         }
     }
-}
-
+    
 //Does game need a DTO?
 // [HttpPost]
 // public async Task<IActionResult> AddNewGameToDB(Game newGame)
@@ -74,6 +73,10 @@ public class GameController : Controller
 //     // {
 //     //     return BadRequest("Game already exists!");
 //     // }
+// }
+
 }
+
+
 
 
