@@ -20,6 +20,8 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IEFUserStorageRepo, EFUserStorageRepo>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IPlayerService, PlayerService>();
+builder.Services.AddScoped<IPlayerStorageEFRepo, PlayerStorageEFRepo>();
 builder.Services.AddScoped<IGameStorageEFRepo, GameStorageEFRepo>();
 builder.Services.AddScoped<IGameService, GameService>();
 
