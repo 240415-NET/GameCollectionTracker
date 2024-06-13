@@ -61,11 +61,11 @@ public class EFUserStorageRepo : IEFUserStorageRepo
             playerToLink.PlayerName = userInfo.GamerTag;
             playerToLink.ExistingUser = true;
             newUser.PlayerRecord = playerToLink;
-            _gameContext.Users.Add(newUser);  
+            _gameContext.Users.Add(newUser);
             await _gameContext.SaveChangesAsync();
-            return "User added succesfully";                      
+            return "User added succesfully";
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             throw new Exception($"Something went wrong... {e.Message}");
         }
@@ -77,15 +77,15 @@ public class EFUserStorageRepo : IEFUserStorageRepo
         try
         {
             List<Player> unaffiliatedPlayers = await _gameContext.Players.Where(e => e.ExistingUser == false).ToListAsync();
-            if(unaffiliatedPlayers.Count() < 1)
+            if (unaffiliatedPlayers.Count() < 1)
             {
                 return foundPlayers;
             }
             else
             {
-                foreach(Player player in unaffiliatedPlayers)
+                foreach (Player player in unaffiliatedPlayers)
                 {
-                    if(player.PlayerName == userInfo.GamerTag || player.PlayerName == userInfo.FirstName || player.PlayerName == userInfo.LastName || (player.PlayerName.Contains(userInfo.FirstName) && player.PlayerName.Contains(userInfo.LastName)))
+                    if (player.PlayerName == userInfo.GamerTag || player.PlayerName == userInfo.FirstName || player.PlayerName == userInfo.LastName || (player.PlayerName.Contains(userInfo.FirstName) && player.PlayerName.Contains(userInfo.LastName)))
                     {
                         foundPlayers.Add(player);
                     }
