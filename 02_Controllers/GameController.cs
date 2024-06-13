@@ -28,14 +28,16 @@ public class GameController : Controller
             return NotFound(e.Message);
         }
     }
-
     //convert this to DTO
     [HttpGet("/Games/{userIdToFindFromFrontEnd}")]
     public async Task<ActionResult<GameListDTO>> GetGamesByUserId(Guid userIdToFindFromFrontEnd)
+
+    [HttpGet("AllGamesPlayed/{userID}")]
+    public async Task<ActionResult<List<GamePlayed>>> ViewAllGamesPlayedByUser(Guid userID)
     {
         try
         {
-            return await _gameService.GetAllGamesForUserAsync(userIdToFindFromFrontEnd);
+            return await _gameService.ViewAllGamesPlayedByUser(userID);
         }
         catch (Exception e)
         {
@@ -55,7 +57,6 @@ public class GameController : Controller
         }
     }
 
-
     [HttpPost]
     public async Task<IActionResult> AddNewGameToDB(Game newGame)
     {
@@ -63,7 +64,6 @@ public class GameController : Controller
         await _gameService.AddNewGameToDBAsync(newGame);
         return Ok("Game added"); 
     }
-
 }
 
 
