@@ -10,13 +10,18 @@
 
   //MainMenu stuffs
   const logoutButton = document.querySelector("#btnLogout");
-
-  //future implementation stuffs
-  const gamesContainer = document.querySelector("#games_container");
-  const gamePlayContainer = document.querySelector("#GamePlayContainer");
-  const playHistoryContainer = document.querySelector("#PlayHistoryContainer");
+  const addGameButton = document.querySelector('#btnAddNewGame');
+  const updateGameButton = document.querySelector('#btnUpdateGame');
+  const removeGameButton = document.querySelector('#btnRemoveGame');
+  const clearSelectionButton = document.querySelector('#btnClearSelection');
   const adminMenu = document.querySelector("#AdminMenu");
   const loggedInMenu = document.querySelector("#LoggedInMenu");
+  const gamesContainer = document.querySelector("#myGamesContainer");
+
+  //future implementation stuffs
+  const gamePlayContainer = document.querySelector("#GamePlayContainer");
+  const playHistoryContainer = document.querySelector("#PlayHistoryContainer");
+
 
   //create new user stuffs
   const newUserContainer = document.querySelector("#NewUserContainer");
@@ -59,7 +64,7 @@
     lastNameMessage.textContent = "";
   }
 
-  function resetLoginForm(){
+  function resetLoginForm() {
     loginGamerTag.value = "";
     loginPassWord.value = "";
     resetLoginWarnings();
@@ -68,6 +73,18 @@
   function resetLoginWarnings() {
     loginGamerTagError.textContent = "";
     loginPasswordError.textContent = "";
+  }
+
+  async function getGamesOwnedByUser() {
+    const response = await fetch(
+      `http://localhost:5071/Games/${
+        JSON.parse(localStorage.getItem("user")).UserID
+      }`
+    );
+    if (response.status == 200) {
+      const responsedata = await response.json();
+      DisplayUsersGames(responsedata.selectedGames);
+    }
   }
 
   function displayPlayers(players) {
@@ -178,7 +195,7 @@
         UserID: data.userID,
         GamerTag: data.gamerTag,
         PlayerID: data.playerRecord.playerID,
-        IsAdmin: data.isAdmin
+        IsAdmin: data.isAdmin,
       };
       localStorage.setItem("user", JSON.stringify(userStorage));
     } else if (response.status == 404) {
@@ -197,40 +214,66 @@
     Greeting.textContent =
       JSON.parse(localStorage.getItem("user")).GamerTag + "'s Games";
     loggedInMenu.classList.remove("hidden");
-    if(JSON.parse(localStorage.getItem("user")).IsAdmin)
-      {
-        adminMenu.classList.remove("hidden");
-      }else{
-        adminMenu.classList.add("hidden");
-      }
+    if (JSON.parse(localStorage.getItem("user")).IsAdmin) {
+      adminMenu.classList.remove("hidden");
+    } else {
+      adminMenu.classList.add("hidden");
+    }
+    getGamesOwnedByUser();
   }
 
-  function DisplayUsersGames(games)
-  {
-    let allGames = '';
-    games.forEach(game => {
+  function DisplayUsersGames(games) {
+    let allGames = "";
+    games.forEach((game) => {
       const gameElement = `
-      <div class="game" data-id="${game.GameID}">
-      <h3>${game.GameName}</h3>
-      <p>Min Players: ${game.MinPlayers}</p>
-      <p>Max Players: ${game.MaxPlayers}</p>
-      <p>Play Time: ${game.ExpectedGameDuration} minutes</p>
-      <p>Purchase Date: ${game.PurchaseDate}</p>
-      <p>Purchase Price: $${game.PurchasePrice}</p>
+      <div class="game" data-id="${game.gameID}">
+      <h3>${game.gameName}</h3>
+      <p>Min Players: ${game.minPlayers}</p>
+      <p>Max Players: ${game.maxPlayers}</p>
+      <p>Play Time: ${game.expectedGameDuration} minutes</p>
+      <p>Purchase Date: ${game.purchaseDate}</p>
+      <p>Purchase Price: $${game.purchasePrice}</p>
       </div>`;
       allGames += gameElement;
     });
     gamesContainer.innerHTML = allGames;
 
-    document.querySelectorAll('.game').forEach(game => {
-      game.addEventListener('click', function () {
+    document.querySelectorAll(".game").forEach((game) => {
+      game.addEventListener("click", function () {
         UsersGameClick(game.dataset.id);
       });
-    })
+    });
   }
-  function UsersGameClick(id) {
 
+  function UsersGameClick(id) {
+    resetGameSelection();
+
+    const unselectedGameItems = document
+      .querySelectorAll(".game")
+      .forEach((game) => {
+        if (game.dataset.id == id) {
+          game.classList.remove("game");
+          game.classList.add("Selectedgame");
+        }
+      });
+      updateGameButton.classList.remove("hidden");
+      removeGameButton.classList.remove("hidden");
+      clearSelectionButton.classList.remove("hidden");
   }
+
+  function resetGameSelection() {
+    const selectedGameItems = document.getElementsByClassName("Selectedgame");
+    if (selectedGameItems.length > 0) {
+      selectedGameItems[0].classList.replace("Selectedgame","game");
+      }
+  }
+
+  clearSelectionButton.addEventListener("click", function () {
+    resetGameSelection();
+    updateGameButton.classList.add("hidden");
+    removeGameButton.classList.add("hidden");
+    clearSelectionButton.classList.add("hidden");
+  })
 
   newUserBtn.addEventListener("click", async function () {
     resetNewUserWarnings();
@@ -291,25 +334,39 @@
     loginContainer.classList.remove("hidden");
     loggedInMenu.classList.add("hidden");
     adminMenu.classList.add("hidden");
+    gamesContainer.innerHTML = "";
+    gamesContainer.style.display = "flex";
+    addGameContainer.classList.add("hidden");
   });
 
+  addGameButton.addEventListener("click", () => {
+    gamesContainer.style.display = "none";
+    addGameContainer.classList.remove("hidden");
+  })
+
   //New GameContainer
-  const addGameName = document.querySelector('#addGameName');
-  const addGamePurchasePrice = document.querySelector('#addGamePurchasePrice');
+  const addGameContainer = document.querySelector('#AddGameContainer');
+  const addGameName = document.querySelector("#addGameName");
+  const addGamePurchasePrice = document.querySelector("#addGamePurchasePrice");
   const addGamePurchaseDate = document.querySelector("#addGamePurchaseDate");
   const addGameMinPlayers = document.querySelector("#addGameMinPlayers");
   const addGameMaxPlayers = document.querySelector("#addGameMaxPlayers");
-  const addGameExpectedDuration = document.querySelector("#addGameExpectedDuration");
+  const addGameExpectedDuration = document.querySelector(
+    "#addGameExpectedDuration"
+  );
   const newGameBtn = document.querySelector("#btnCreateNewGame");
   const btnResetGameForm = document.querySelector("#btnResetGameForm");
   const GameNameMessage = document.querySelector("#GameNameMessage");
   const GamePriceMessage = document.querySelector("#GamePriceMessage");
-  const GamePurchaseDateMessage = document.querySelector("#GamePurchaseDateMessage");
+  const GamePurchaseDateMessage = document.querySelector(
+    "#GamePurchaseDateMessage"
+  );
   const MinPlayersMessage = document.querySelector("#MinPlayersMessage");
   const MaxPlayersMessage = document.querySelector("#MaxPlayersMessage");
-  const ExpectedDurationMessage = document.querySelector("#ExpectedDurationMessage");
+  const ExpectedDurationMessage = document.querySelector(
+    "#ExpectedDurationMessage"
+  );
   const btnCancelNewGame = document.querySelector("#btnCancelNewGame");
-
 
   function resetGameForm() {
     addGameName.value = "";
@@ -328,7 +385,7 @@
       PurchaseDate: addGamePurchaseDate.value,
       MinPlayers: parseInt(addGameMinPlayers.value),
       MaxPlayers: parseInt(addGameMaxPlayers.value),
-      expectedGameDuration: parseInt(addGameExpectedDuration.value)
+      expectedGameDuration: parseInt(addGameExpectedDuration.value),
     };
     const response = await fetch(`http://localhost:5071/api/Game/`, {
       method: "Post",
@@ -343,8 +400,7 @@
   newGameBtn.addEventListener("click", async function () {
     if (addGameName.value == "") {
       GameNameMessage.textContent = "Game Name cannot be blank!";
-    }
-    else if (addGamePurchasePrice.value == "") {
+    } else if (addGamePurchasePrice.value == "") {
       GamePriceMessage.textContent = "Game Price cannot be blank!";
     } else if (addGamePurchaseDate.value == "") {
       GamePurchaseDateMessage.textContent = "Purchase Date cannot be blank!";
@@ -353,7 +409,8 @@
     } else if (addGameMaxPlayers == "") {
       MaxPlayersMessage.textContent == "Min Players cannot be blank!";
     } else if (addGameExpectedDuration == "") {
-      ExpectedDurationMessage.textContent == "Expected Duration cannot be blank!";
+      ExpectedDurationMessage.textContent ==
+        "Expected Duration cannot be blank!";
     }
     addNewGame();
   });
@@ -361,5 +418,10 @@
   btnResetGameForm.addEventListener("click", function () {
     resetGameForm();
   });
-});
 
+  btnCancelNewGame.addEventListener("click", function () {
+    gamesContainer.style.display = "flex";
+    addGameContainer.classList.add("hidden");
+    getGamesOwnedByUser();
+  })
+});
