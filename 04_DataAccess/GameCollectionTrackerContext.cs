@@ -10,11 +10,11 @@ public class GameContext : DbContext
         optionsBuilder.UseSqlServer(ConnectionStringHelper.GetConnectionString());
     }
 
-    public DbSet<User> Users {get; set;}
-    public DbSet<Game> Games {get; set;}
-    public DbSet<GamePlayed> GamesPlayed {get; set;}
-    public DbSet<GamePlayer> GamePlayers {get; set;}
-    public DbSet<Player> Players {get; set;}
+    public DbSet<User> Users { get; set; }
+    public DbSet<Game> Games { get; set; }
+    public DbSet<GamePlayed> GamesPlayed { get; set; }
+    public DbSet<GamePlayer> GamePlayers { get; set; }
+    public DbSet<Player> Players { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -27,7 +27,7 @@ public class GameContext : DbContext
         .HasMany(e => e.GamesPlayed)
         .WithMany(e => e.Players)
         .UsingEntity<GamePlayer>();
-        
+
         modelBuilder.UseCollation("SQL_Latin1_General_CP1_CS_AS");
     }
 }

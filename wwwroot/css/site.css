@@ -8,7 +8,11 @@ html {
   }
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+.btn:focus,
+.btn:active:focus,
+.btn-link.nav-link:focus,
+.form-control:focus,
+.form-check-input:focus {
   box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
@@ -26,7 +30,7 @@ body {
   border: 3px;
   border-color: black;
   border-style: solid;
-  max-width: 10%;
+  max-width: 100%;
   min-width: 200px;
   text-align: center;
   background-color: aliceblue;
@@ -42,3 +46,90 @@ body {
   font-weight: bold;
 }
 
+.container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+}
+
+.games_sidebar {
+  width: 300px;
+  height: 100vh;
+  border-right: 2px solid #ccc;
+  padding: 50px;
+}
+
+.games_sidebar input {
+  width: 100%;
+  margin-bottom: 10px;
+  font-size: 13px;
+  padding: 10px;
+}
+
+.games_sidebar button {
+  margin-bottom: 10px;
+  outline: none;
+  border: none;
+  background-color: #353535;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.games_container {
+  width: 100%;
+  padding: 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.game {
+  padding: 10px;
+  width: 20%;
+  overflow: hidden;
+  margin-right: 30px;
+  margin-bottom: 30px;
+  background-color: aliceblue;
+  min-width: 150px;
+  max-width: 250px;
+  border: 2px solid #353535;
+  cursor: pointer;
+}
+
+.game:hover {
+  background-color: rgba(93, 102, 126, 0.322);
+}
+
+.game h3 {
+  margin-bottom: 10px;
+}
+
+.game p {
+  max-height: 200px;
+  overflow: auto;
+  margin-bottom: 10px;
+  font-size: 15px;
+}
+
+.Selectedgame {
+  padding: 10px;
+  width: 20%;
+  overflow: hidden;
+  margin-right: 30px;
+  margin-bottom: 30px;
+  background-color: rgb(93, 226, 171);
+  min-width: 150px;
+  max-width: 250px;
+}
+
+#HeaderBar {
+  width: 100%;
+  border-bottom: 2px solid #ccc;
+  height: 20px;
+}
