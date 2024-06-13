@@ -7,7 +7,6 @@ public interface IGameStorageEFRepo
 
   public Task<List<GamePlayed>> ViewPlaysOfSpecificGameByUser(Guid userID, Guid gameID);
 
-  //public Task<List<Game?>> GetGamesFromDBForUserAsync (Guid userIdFromService);
 
   public Task<GameListDTO> GetGamesFromDBForUserAsync(Guid userIdFromService);
 
@@ -15,5 +14,4 @@ public interface IGameStorageEFRepo
 
   public Task<string> AddGameToDBAsync(Game gameInfo);
 
-  public Task<string> AddGameDTOToDBAsync(NewGameDTO gameInfo);
 }

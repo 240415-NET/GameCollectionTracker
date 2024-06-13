@@ -8,7 +8,6 @@ public interface IGameService
 
     public Task<List<GamePlayed>> ViewPlaysOfSpecificGameByUser(Guid userIDFromController, Guid gameIDFromController);
 
-    //public Task<List<Game>> GetAllGamesForUserAsync(Guid userIdFromController);
 
     public Task<GameListDTO> GetAllGamesForUserAsync(Guid userIdFromController);
 
@@ -16,5 +15,4 @@ public interface IGameService
 
     public Task<string> AddNewGameToDBAsync(Game newGame);
 
-    public Task<string> AddNewGameDTOToDBAsync(NewGameDTO newGame);
 }

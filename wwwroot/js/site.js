@@ -307,7 +307,8 @@
   const GamePurchaseDateMessage = document.querySelector("#GamePurchaseDateMessage");
   const MinPlayersMessage = document.querySelector("#MinPlayersMessage");
   const MaxPlayersMessage = document.querySelector("#MaxPlayersMessage");
-  const ExpectedDurationMessage = document.querySelector("#ExpectedDurationMessage")
+  const ExpectedDurationMessage = document.querySelector("#ExpectedDurationMessage");
+  const btnCancelNewGame = document.querySelector("#btnCancelNewGame");
 
 
   function resetGameForm() {

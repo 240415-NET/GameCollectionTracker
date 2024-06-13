@@ -102,16 +102,5 @@ public class GameService : IGameService
         }
     }
 
-    public async Task<string> AddNewGameDTOToDBAsync(NewGameDTO newGame)
-    {
-        try
-        {
-            return await _gameStorage.AddGameDTOToDBAsync(newGame);
-        }
-        catch (Exception e)
-        {
-            throw new Exception($"Game add failed: {e.Message}");
-        }
-    }
 
 }

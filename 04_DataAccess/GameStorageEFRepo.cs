@@ -79,7 +79,9 @@ public class GameStorageEFRepo : IGameStorageEFRepo
     {
         try
         {
-            _gameContext.Games.Add(gameInfo);
+            User currentUser = await _gameContext.Users.FirstAsync(user => user.UserID == gameInfo.UserID);
+            currentUser.Games.Add(gameInfo);
+           
             await _gameContext.SaveChangesAsync();
             return "Game added succesfully";
         }
@@ -89,27 +91,5 @@ public class GameStorageEFRepo : IGameStorageEFRepo
         }
     }
 
-    public async Task<string> AddGameDTOToDBAsync(NewGameDTO gameInfo)
-    {
-        try
-        {
-            Game newGame = new();
-            newGame.GameID = gameInfo.GameID;
-            newGame.UserID = gameInfo.UserID;
-            newGame.GameName = gameInfo.GameName;
-            newGame.PurchasePrice = gameInfo.PurchasePrice;
-            newGame.PurchaseDate = gameInfo.PurchaseDate;
-            newGame.MinPlayers = gameInfo.MinPlayers;
-            newGame.MaxPlayers = gameInfo.MaxPlayers;
-            newGame.ExpectedGameDuration = gameInfo.ExpectedGameDuration;
-            _gameContext.Games.Add(newGame);
-            await _gameContext.SaveChangesAsync();
-            return "Game added succesfully (with DTO)";
-        }
-        catch (Exception e)
-        {
-            throw new Exception($"Something went wrong... {e.Message}");
-        }
-    }
 }
 

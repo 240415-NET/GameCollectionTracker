@@ -64,12 +64,6 @@ public class GameController : Controller
         return Ok("Game added"); 
     }
 
-    [HttpPost("Games/DTO")]
-    public async Task<IActionResult> AddNewGameDTO(NewGameDTO newGame)
-    {
-        await _gameService.AddNewGameDTOToDBAsync(newGame);
-        return Ok("Game added"); 
-    }
 }
 
 
