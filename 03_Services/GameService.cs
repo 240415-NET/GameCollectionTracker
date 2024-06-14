@@ -2,6 +2,7 @@
 
 using GameCollectionTracker.Data;
 using GameCollectionTracker.Models;
+using Microsoft.IdentityModel.Tokens;
 
 namespace GameCollectionTracker.Services;
 
@@ -39,7 +40,6 @@ public class GameService : IGameService
     }
     public async Task<List<GamePlayed>> ViewAllGamesPlayedByUser(Guid userIDFromController)
     {
-
         try
         {
             List<GamePlayed>? playlist = await _gameStorage.ViewAllGamesPlayedByUser(userIDFromController);
@@ -75,7 +75,44 @@ public class GameService : IGameService
             throw new Exception(e.Message);
         }
     }
+    ///
+    public async Task<string> AllGamesPlayedByUserStats(Guid playerIDFromController)
+    {
+        try
+        {
+            string? gameStats = await _gameStorage.AllGamesPlayedByUserStats(playerIDFromController);
 
+            if (gameStats.IsNullOrEmpty())
+            {
+                throw new Exception("It doesn't appear that you've recorded any played games...");
+            }
+
+            return gameStats;
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
+    }
+    public async Task<string> SpecificGameplayedByUserStats(Guid playerIDFromController, Guid gameIDFromController)
+    {
+        try
+        {
+            string? gameStats = await _gameStorage.SpecificGameplayedByUserStats(playerIDFromController, gameIDFromController);
+
+            if (gameStats.IsNullOrEmpty())
+            {
+                throw new Exception("It doesn't appear that you've recorded any played games...");
+            }
+
+            return gameStats;
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
+    }
+    ///
     public async Task<string> AddNewGameToDBAsync(Game newGame)
     {
         try

@@ -8,6 +8,9 @@ public interface IGameService
 
     public Task<List<GamePlayed>> ViewPlaysOfSpecificGameByUser(Guid userIDFromController, Guid gameIDFromController);
 
+    public Task<string> SpecificGameplayedByUserStats(Guid playerID, Guid gameID);
+
+    public Task<string> AllGamesPlayedByUserStats(Guid playerID);
 
     public Task<GameListDTO> GetAllGamesForUserAsync(Guid userIdFromController);
 
