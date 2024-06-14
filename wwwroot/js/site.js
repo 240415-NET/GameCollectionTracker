@@ -343,8 +343,7 @@
   newGameBtn.addEventListener("click", async function () {
     if (addGameName.value == "") {
       GameNameMessage.textContent = "Game Name cannot be blank!";
-    }
-    else if (addGamePurchasePrice.value == "") {
+    } else if (addGamePurchasePrice.value == "") {
       GamePriceMessage.textContent = "Game Price cannot be blank!";
     } else if (addGamePurchaseDate.value == "") {
       GamePurchaseDateMessage.textContent = "Purchase Date cannot be blank!";
