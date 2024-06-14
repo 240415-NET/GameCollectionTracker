@@ -14,4 +14,8 @@ public interface IGameStorageEFRepo
 
   public Task<string> AddGameToDBAsync(Game gameInfo);
 
+  public Task<string> DeleteGameFromDBAsync(Guid gameId);
+
+  public Task<string> UpdateGameInDBAsync(UpdateGameDTO gameDTO);
+
 }

@@ -15,17 +15,6 @@ public class GameService : IGameService
     }
     public async Task<GameListDTO> GetAllGamesForUserAsync(Guid userIdFromController)
     {
-        // List<Game> foundGames = new();
-
-        // var resultList = await _gameStorage.GetGamesFromDBForUserAsync(userIdFromController);
-
-        // foreach (var game in resultList)
-        // {
-        //     foundGames.Add(game);
-        // }
-
-        // return foundGames;
-
         return await _gameStorage.GetGamesFromDBForUserAsync(userIdFromController);
     }
 
@@ -92,6 +81,30 @@ public class GameService : IGameService
         try
         {
             return await _gameStorage.AddGameToDBAsync(newGame);
+        }
+        catch (Exception e)
+        {
+            throw new Exception($"Game add failed: {e.Message}");
+        }
+    }
+
+    public async Task<string> DeleteGameFromDBAsync(Guid gameId)
+    {
+        try
+        {
+            return await _gameStorage.DeleteGameFromDBAsync(gameId);
+        }
+        catch (Exception e)
+        {
+            throw new Exception($"Game add failed: {e.Message}");
+        }
+    }
+
+    public async Task<string> UpdateGameInDBAsync(UpdateGameDTO gameDTO)
+    {
+        try
+        {
+            return await _gameStorage.UpdateGameInDBAsync(gameDTO);
         }
         catch (Exception e)
         {

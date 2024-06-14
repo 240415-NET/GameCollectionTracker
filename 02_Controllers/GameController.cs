@@ -70,9 +70,23 @@ public class GameController : Controller
     [HttpPost]
     public async Task<IActionResult> AddNewGameToDB(Game newGame)
     {
-        newGame.GameID = new Guid();
+        //newGame.GameID = new Guid();
         await _gameService.AddNewGameToDBAsync(newGame);
         return Ok("Game added"); 
+    }
+
+    [HttpDelete]
+    public async Task<IActionResult> DeleteGameFromDB(Guid GameId)
+    {
+        await _gameService.DeleteGameFromDBAsync(GameId);
+        return Ok("Game Deleted"); 
+    }
+
+    [HttpPatch]
+    public async Task<IActionResult> UpdateGameInDB(UpdateGameDTO gameDTO)
+    {
+        await _gameService.UpdateGameInDBAsync(gameDTO);
+        return Ok("Game Updated"); 
     }
 }
 
