@@ -21,4 +21,19 @@ namespace GameCollectionTracker.Services;
 
              //return await _playerStorageEFRepo.AddPlayerAsync(player);
         }
+
+        
+        public async Task<List<Player>> GetOtherPlayers(Guid loggedInPlayerId)
+        {
+
+        try
+        {
+            return await _playerStorageEFRepo.GetAllPlayersExcept(loggedInPlayerId);
+
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
+        }
     }

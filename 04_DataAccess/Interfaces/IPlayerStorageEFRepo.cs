@@ -3,5 +3,7 @@ using GameCollectionTracker.Data;
 
     public interface IPlayerStorageEFRepo
     {
-        Task<string> AddPlayerAsync(Player player);
+        public Task<string> AddPlayerAsync(Player player);
+        public Task<List<Player>> GetAllPlayersExcept(Guid loggedInPlayerId);
+
     }
