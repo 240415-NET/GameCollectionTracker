@@ -76,8 +76,7 @@ public class GameStorageEFRepo : IGameStorageEFRepo
     {
         try
         {
-            User currentUser = await _gameContext.Users.FirstAsync(user => user.UserID == gameInfo.UserID);
-            currentUser.Games.Add(gameInfo);
+            await _gameContext.Games.AddAsync(gameInfo);
            
             await _gameContext.SaveChangesAsync();
             return "Game added succesfully";
@@ -92,7 +91,11 @@ public class GameStorageEFRepo : IGameStorageEFRepo
     {
         try
         {
-            Game selectedGame = await _gameContext.Games.FirstOrDefaultAsync(game => game.GameID == gameId);
+            Game? selectedGame = await _gameContext.Games.FirstOrDefaultAsync(game => game.GameID == gameId);
+            if(selectedGame == null)
+            {
+                throw new Exception($"Game was null... {gameId}");
+            }
             _gameContext.Games.Remove(selectedGame);
            
             await _gameContext.SaveChangesAsync();
