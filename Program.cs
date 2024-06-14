@@ -1,6 +1,7 @@
 using GameCollectionTracker.Data;
 using GameCollectionTracker.Services;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 var myTerribleCORSPolicy = "_terribleCORSPolicy";
