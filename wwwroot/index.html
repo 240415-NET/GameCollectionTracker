@@ -9,8 +9,10 @@
   </head>
   <body>
     <div class="container">
+<!-- This is the start of the left side-bar section -->
       <div class="games_sidebar">
         <img src="/wwwroot/board2.jpg" alt="" class="backImage" />
+<!-- This is the standard login container -->
         <div id="LoginContainer">
           <h1>Login</h1>
           <span id="LoginGamerTagError" class="warningText"></span>
@@ -24,6 +26,7 @@
           <button id="btnLogin">Login</button>
           <button id="btnCreateUser">Create Account</button>
         </div>
+<!-- This section is used to create a new user and log them in -->
         <div id="NewUserContainer" class="hidden">
           <h1>Create a New User</h1>
           <span class="warningText" id="GamerTagMessage"></span>
@@ -62,28 +65,27 @@
           <button id="btnResetForm">Reset</button>
           <button id="btnBackToLogin">Back To Login</button>
         </div>
+<!-- This is the section for buttons on the side-bar once you are logged in  -->
         <div id="LoggedInMenu" class="hidden">
           <h1 id="UserGreeting"></h1>
-          <!-- Might need some more stuff in here or less depending on how we go -->
-          <!-- Kinda thinking we load all of the user's games by default and give options
-             when you click on one of the games to update/remove using a 'selected' property or something
-             and could still have an add button -->
-          <!-- <button id="btnViewMyGames">View My Games</button><br> -->
           <button id="btnAddNewGame">Add a New Game</button><br>
           <button id="btnUpdateGame" class = "hidden">Update a Game</button><br>
           <button id="btnRemoveGame" class = "hidden">Remove a Game</button><br>
           <button id="btnClearSelection" class = "hidden">Clear Game Selection</button><br>
-          <button id="btnRecordNewGamePlay">Record a Game Play</button><br>
+          <button id="btnRecordNewGamePlay" class = "hidden">Record a Game Play</button><br>
           <button id="btnViewPlayHistory">View My Play History</button><br><br>
           <button id="btnLogout">Logout</button>
         </div>
+<!-- This section holds the Admin buttons which will be displayed in the side-bar if the logged in user is an Admin -->
         <div id="AdminMenu" class="hidden">
           <button>Do Admin Stuff</button><br>
           <button>More Admin Stuff</button><br>
         </div>
+<!-- End of the Left SideBar section -->
       </div>
+<!-- This section has the controls needed to Add a game and is reused for Updating a game as well and will appear in the right side of the screen-->
       <div id="AddGameContainer" class="hidden">
-        <h1>Add a new game</h1>
+        <h1 id="AddUpdateHeader">Add a new game</h1>
         <input type="text" id="addGameName" placeholder="Game Name"><span class="warningText" id="GameNameMessage"></span></br>
         <input type="number" id="addGamePurchasePrice" placeholder="Purchase Price"><span class="warningText" id="GamePriceMessage"></span></br>
         <input type="date" id="addGamePurchaseDate" placeholder="Purchase Date"><span class="warningText" id="GamePurchaseDateMessage"></span></br>
@@ -91,18 +93,20 @@
         <input type="number" id="addGameMaxPlayers" placeholder="Maximum Number of Players"><span class="warningText" id="MaxPlayersMessage"></span></br>
         <input type="number" id="addGameExpectedDuration" placeholder="Expected Game Duration"><span class="warningText" id="ExpectedDurationMessage"></span></br>
         <button id="btnCreateNewGame">Create New Game</button></br>
-        <button id="btnUpdateGame" class="hidden">Update Game</button><br>
+        <button id="btnUpdateGameForm" class="hidden">Update Game</button><br>
         <button id="btnResetGameForm">Reset</button>
         <button id="btnResetUpdateGame" class = "hidden">Reset</button>        
         <button id="btnCancelNewGame">Cancel</button>
-    </div> 
+        <button id="btnCancelUpdateGame" class="hidden">Cancel</button>
+    </div>
+<!-- This section holds the game in the right side of the screen. HTML is added programmatically through JS -->
       <div id="myGamesContainer" class="games_container">
       </div>
+<!-- This will hold the HTML used to display games played and HTML will be added programmatically through JS -->
       <div id="myGamePlayContainer" class="games_container" style="display: none;">
-
       </div>
+<!-- This will hold the HTML used to display gameplay history for the user and HTML will be added programmatically through JS -->
       <div id="myPlayHistoryContainer" class="games_container" style="display: none;">
-        
       </div>
     </div>
     <script src="/wwwroot/js/site.js"></script>

@@ -14,6 +14,6 @@ public class User
     [MaxLength(50)]
     public string? LastName { get; set; }
     public bool IsAdmin { get; set; }
-    public List<Game> Games { get; set; } = [];
+    public List<Game> Games { get; set; } = new();
     public Player PlayerRecord { get; set; } = new();
 }

@@ -75,7 +75,7 @@ public class GameController : Controller
         return Ok("Game added"); 
     }
 
-    [HttpDelete]
+    [HttpDelete("Remove")]
     public async Task<IActionResult> DeleteGameFromDB(Guid GameId)
     {
         await _gameService.DeleteGameFromDBAsync(GameId);
