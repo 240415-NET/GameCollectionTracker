@@ -88,5 +88,41 @@ public class GameStorageEFRepo : IGameStorageEFRepo
         }
     }
 
+    public async Task<string> DeleteGameFromDBAsync(Guid gameId)
+    {
+        try
+        {
+            Game selectedGame = await _gameContext.Games.FirstAsync(game => game.GameID == gameId);
+            _gameContext.Games.Remove(selectedGame);
+           
+            await _gameContext.SaveChangesAsync();
+            return "Game deleted succesfully";
+        }
+        catch (Exception e)
+        {
+            throw new Exception($"Something went wrong... {e.Message}");
+        }
+    }
+
+    public async Task<string> UpdateGameInDBAsync(UpdateGameDTO gameDTO)
+    {
+        try
+        {
+            Game gameToUpdate= await _gameContext.Games.FirstAsync(game => game.GameID == gameDTO.GameID);
+            if(gameDTO.GameName != null) gameToUpdate.GameName = gameDTO.GameName;
+            if(gameDTO.PurchasePrice != null) gameToUpdate.PurchasePrice = (double) gameDTO.PurchasePrice;
+            if(gameDTO.PurchaseDate != null) gameToUpdate.PurchaseDate = (DateOnly) gameDTO.PurchaseDate;
+            if(gameDTO.MaxPlayers != null) gameToUpdate.MaxPlayers = (int) gameDTO.MaxPlayers;
+            if(gameDTO.MinPlayers != null) gameToUpdate.MinPlayers = (int)gameDTO.MinPlayers;
+            if(gameDTO.ExpectedGameDuration != null) gameToUpdate.ExpectedGameDuration = (int)gameDTO.ExpectedGameDuration;
+
+            await _gameContext.SaveChangesAsync();
+            return "Game updated successfully";
+        }
+        catch (Exception e)
+        {
+            throw new Exception($"Something went wrong... {e.Message}");
+        }
+    }
 }
 

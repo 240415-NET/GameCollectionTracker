@@ -15,4 +15,8 @@ public interface IGameService
 
     public Task<string> AddNewGameToDBAsync(Game newGame);
 
+    public Task<string> DeleteGameFromDBAsync(Guid gameId);
+
+    public Task<string> UpdateGameInDBAsync(UpdateGameDTO updatedGame);
+
 }
