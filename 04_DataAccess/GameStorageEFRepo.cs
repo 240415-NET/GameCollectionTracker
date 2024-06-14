@@ -92,7 +92,7 @@ public class GameStorageEFRepo : IGameStorageEFRepo
     {
         try
         {
-            Game selectedGame = await _gameContext.Games.FirstAsync(game => game.GameID == gameId);
+            Game selectedGame = await _gameContext.Games.FirstOrDefaultAsync(game => game.GameID == gameId);
             _gameContext.Games.Remove(selectedGame);
            
             await _gameContext.SaveChangesAsync();
@@ -108,7 +108,7 @@ public class GameStorageEFRepo : IGameStorageEFRepo
     {
         try
         {
-            Game gameToUpdate= await _gameContext.Games.FirstAsync(game => game.GameID == gameDTO.GameID);
+            Game gameToUpdate= await _gameContext.Games.FirstOrDefaultAsync(game => game.GameID == gameDTO.GameID);
             if(gameDTO.GameName != null) gameToUpdate.GameName = gameDTO.GameName;
             if(gameDTO.PurchasePrice != null) gameToUpdate.PurchasePrice = (double) gameDTO.PurchasePrice;
             if(gameDTO.PurchaseDate != null) gameToUpdate.PurchaseDate = (DateOnly) gameDTO.PurchaseDate;

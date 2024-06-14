@@ -100,11 +100,11 @@ public class GameService : IGameService
         }
     }
 
-    public async Task<string> UpdateGameInDBAsync(UpdateGameDTO updatedGame)
+    public async Task<string> UpdateGameInDBAsync(UpdateGameDTO gameDTO)
     {
         try
         {
-            return await _gameStorage.UpdateGameInDBAsync(updatedGame);
+            return await _gameStorage.UpdateGameInDBAsync(gameDTO);
         }
         catch (Exception e)
         {
