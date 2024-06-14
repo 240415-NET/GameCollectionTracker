@@ -4,5 +4,6 @@ namespace GameCollectionTracker.Services;
 
   public interface IPlayerService
     {
-        Task<string> AddPlayerAsync(Player player);
+        public Task<string> AddPlayerAsync(Player player);
+        public Task<List<Player>> GetOtherPlayers(Guid loggedInPlayerId);
     }

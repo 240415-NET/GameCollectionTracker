@@ -34,5 +34,12 @@ namespace GameCollectionTracker.Data;
            // return playerToAdd;
         }
 
+         
+    public async Task<List<Player>> GetAllPlayersExcept(Guid loggedInPlayerId)
+    {
+        return await _context.Players.Where(player => player.PlayerID != loggedInPlayerId).ToListAsync();
+        
+    }
+
 
     }
