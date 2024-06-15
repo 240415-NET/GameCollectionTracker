@@ -11,13 +11,22 @@
   //MainMenu stuffs
   const logoutButton = document.querySelector("#btnLogout");
   const addGameButton = document.querySelector("#btnAddNewGame");
+  const addGameButtonBox = document.querySelector("#AddGameButtonBox");
   const updateGameButton = document.querySelector("#btnUpdateGame");
+  const updateGameButtonBox = document.querySelector("#UpdateGameButtonBox");
   const removeGameButton = document.querySelector("#btnRemoveGame");
+  const removeGameButtonBox = document.querySelector("#RemoveGameButtonBox");
   const clearSelectionButton = document.querySelector("#btnClearSelection");
+  const clearSelectionButtonBox = document.querySelector(
+    "#ClearSelectionButtonBox"
+  );
   const adminMenu = document.querySelector("#AdminMenu");
   const loggedInMenu = document.querySelector("#LoggedInMenu");
   const gamesContainer = document.querySelector("#myGamesContainer");
   const recordGamePlayButton = document.querySelector("#btnRecordNewGamePlay");
+  const recordGamePlayButtonBox = document.querySelector(
+    "#RecordGamePlayButtonBox"
+  );
 
   //future implementation stuffs
   const gamePlayContainer = document.querySelector("#GamePlayContainer");
@@ -229,7 +238,7 @@
     games.forEach((game) => {
       const gameElement = `
       <div class="game" data-id="${game.gameID}">
-      <h3>${game.gameName}</h3>
+      <h2>${game.gameName}</h2>
       <p>Min Players: ${game.minPlayers}</p>
       <p>Max Players: ${game.maxPlayers}</p>
       <p>Play Time: ${game.expectedGameDuration} minutes</p>
@@ -274,19 +283,22 @@
     };
 
     localStorage.setItem("selectedGame", JSON.stringify(gameToAdd));
-    updateGameButton.classList.remove("hidden");
-    removeGameButton.classList.remove("hidden");
-    clearSelectionButton.classList.remove("hidden");
-    recordGamePlayButton.classList.remove("hidden");
-    addGameButton.classList.add("hidden");
+    updateGameButtonBox.classList.remove("hidden");
+    removeGameButtonBox.classList.remove("hidden");
+    clearSelectionButtonBox.classList.remove("hidden");
+    recordGamePlayButtonBox.classList.remove("hidden");
+    addGameButtonBox.classList.add("hidden");
   }
 
   removeGameButton.addEventListener("click", function () {
     const response = fetch(
-      `http://localhost:5071/api/Game/Remove?GameId=${JSON.parse(localStorage.getItem("selectedGame")).gameID}`,
-      {method: "DELETE"});
-      localStorage.removeItem("selectedGame");
-      location.reload();
+      `http://localhost:5071/api/Game/Remove?GameId=${
+        JSON.parse(localStorage.getItem("selectedGame")).gameID
+      }`,
+      { method: "DELETE" }
+    );
+    localStorage.removeItem("selectedGame");
+    location.reload();
   });
 
   updateGameButton.addEventListener("click", function () {
@@ -394,11 +406,11 @@
 
   clearSelectionButton.addEventListener("click", function () {
     resetGameSelection();
-    updateGameButton.classList.add("hidden");
-    removeGameButton.classList.add("hidden");
-    clearSelectionButton.classList.add("hidden");
-    recordGamePlayButton.classList.add("hidden");
-    addGameButton.classList.remove("hidden");
+    updateGameButtonBox.classList.add("hidden");
+    removeGameButtonBox.classList.add("hidden");
+    clearSelectionButtonBox.classList.add("hidden");
+    recordGamePlayButtonBox.classList.add("hidden");
+    addGameButtonBox.classList.remove("hidden");
   });
 
   newUserBtn.addEventListener("click", async function () {
@@ -506,6 +518,16 @@
     addGameMinPlayers.value = "";
     addGameMaxPlayers.value = "";
     addGameExpectedDuration.value = "";
+    resetGameFormWarnings();
+  }
+
+  function resetGameFormWarnings() {
+    GameNameMessage.textContent = "";
+    GamePriceMessage.textContent = "";
+    GamePurchaseDateMessage.textContent = "";
+    MinPlayersMessage.textContent = "";
+    MaxPlayersMessage.textContent = "";
+    ExpectedDurationMessage.textContent = "";
   }
 
   async function addNewGame() {
@@ -526,21 +548,25 @@
       },
     });
     resetGameForm();
+    gamesContainer.style.display = "flex";
+    addGameContainer.classList.add("hidden");
+    location.reload();
   }
 
   newGameBtn.addEventListener("click", async function () {
-    if (addGameName.value == "") {
+    resetGameFormWarnings();
+    if (!addGameName.value) {
       GameNameMessage.textContent = "Game Name cannot be blank!";
-    } else if (addGamePurchasePrice.value == "") {
+    } else if (!addGamePurchasePrice.value) {
       GamePriceMessage.textContent = "Game Price cannot be blank!";
-    } else if (addGamePurchaseDate.value == "") {
+    } else if (!addGamePurchaseDate.value) {
       GamePurchaseDateMessage.textContent = "Purchase Date cannot be blank!";
-    } else if (addGameMinPlayers == "") {
-      MinPlayersMessage.textContent == "Min Players cannot be blank!";
-    } else if (addGameMaxPlayers == "") {
-      MaxPlayersMessage.textContent == "Min Players cannot be blank!";
-    } else if (addGameExpectedDuration == "") {
-      ExpectedDurationMessage.textContent ==
+    } else if (!addGameMinPlayers.value) {
+      MinPlayersMessage.textContent = "Min Players cannot be blank!";
+    } else if (!addGameMaxPlayers.value) {
+      MaxPlayersMessage.textContent = "Min Players cannot be blank!";
+    } else if (!addGameExpectedDuration.value) {
+      ExpectedDurationMessage.textContent =
         "Expected Duration cannot be blank!";
     } else {
       addNewGame();
