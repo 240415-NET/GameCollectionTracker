@@ -60,12 +60,12 @@ body {
 .foundPlayer {
   cursor: pointer;
   border: 3px;
-  border-color: black;
+  border-color: light-dark(black,#2b7ac4);
   border-style: solid;
   max-width: 100%;
   min-width: 200px;
   text-align: center;
-  background-color: aliceblue;
+  background-color: light-dark(aliceblue, #1f1e27);
 }
 
 .hidden {
