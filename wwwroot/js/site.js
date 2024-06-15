@@ -316,6 +316,7 @@
     });
 
     btnCancelUpdateGame.addEventListener("click", function () {
+      resetGameForm();
       resetGameUpdate();
     });
     PopulateUpdateGameForm();
@@ -359,6 +360,7 @@
       },
     });
     if ((response.status = 200)) {
+      resetGameForm();
       resetGameUpdate();
     }
   }
