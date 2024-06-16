@@ -62,6 +62,16 @@ public class GameStorageEFRepo : IGameStorageEFRepo
         }
         return gamesPlayed;
     }
+        public async Task<string> AllGamesPlayedByUserStats(Guid playerID)
+    {
+        Player currentPlayer = await _gameContext.Players.FirstAsync(p => p.PlayerID == playerID);
+        List<GamePlayed> allGamesPlayed = await _gameContext.GamesPlayed.Include(p => p.Players).Where(gp => gp.Players.Contains(currentPlayer)).ToListAsync();
+        List<string> gameListWinners = allGamesPlayed.Where(winner => !string.IsNullOrEmpty(winner.WinnerName)).Select(winner => winner.WinnerName).ToList();
+        int playerWins = gameListWinners.Count(winner => winner == currentPlayer.PlayerName);
+        int plays = allGamesPlayed.Count;
+
+        return $"Plays: {plays} Wins: {playerWins} Win %: {(float)(playerWins/plays):P2}";
+    }
     public async Task<List<GamePlayed>> ViewPlaysOfSpecificGameByUser(Guid playerID, Guid gameID)
     {
         Player currentPlayer = await _gameContext.Players.FirstAsync(p => p.PlayerID == playerID);
@@ -73,17 +83,6 @@ public class GameStorageEFRepo : IGameStorageEFRepo
         }
         return singleGameList;
     }
-    ///
-    public async Task<string> AllGamesPlayedByUserStats(Guid playerID)
-    {
-        Player currentPlayer = await _gameContext.Players.FirstAsync(p => p.PlayerID == playerID);
-        List<GamePlayed> allGamesPlayed = await _gameContext.GamesPlayed.Include(p => p.Players).Where(gp => gp.Players.Contains(currentPlayer)).ToListAsync();
-        List<string> gameListWinners = allGamesPlayed.Where(winner => !string.IsNullOrEmpty(winner.WinnerName)).Select(winner => winner.WinnerName).ToList();
-        int playerWins = gameListWinners.Count(winner => winner == currentPlayer.PlayerName);
-        int plays = allGamesPlayed.Count;
-
-        return $"Plays: {plays} Wins: {playerWins}";
-    }
     public async Task<string> SpecificGameplayedByUserStats(Guid playerID, Guid gameID)
     {
         Player currentPlayer = await _gameContext.Players.FirstAsync(p => p.PlayerID == playerID);
@@ -93,7 +92,7 @@ public class GameStorageEFRepo : IGameStorageEFRepo
         int playerWins = gameListWinners.Count(winner => winner == currentPlayer.PlayerName);
         int plays = singleGameList.Count;
 
-        return $"Plays: {plays} Wins: {playerWins}";
+        return $"Plays: {plays} Wins: {playerWins} Win %: {(float)(playerWins/plays):P2}";
     }
     ///
     public async Task<string> AddGameToDBAsync(Game gameInfo)
