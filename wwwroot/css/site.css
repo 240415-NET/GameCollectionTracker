@@ -1,5 +1,31 @@
-html {
-  font-size: 14px;
+:root {
+  color-scheme: light dark;
+
+  --light-bg: ghostwhite;
+  --light-color: rgb(0, 0, 0);
+  --light-code: tomato;
+
+  --dark-bg: #222335c9;
+  --dark-color: #69a2ee;
+  --dark-code: gold;
+}
+
+* {
+  background-color: light-dark(var(--light-bg), var(--dark-bg));
+  color: light-dark(var(--light-color), var(--dark-color));
+}
+code {
+  color: light-dark(var(--light-code), var(--dark-code));
+}
+
+.light {
+  /* forces light color-scheme */
+  color-scheme: light;
+}
+
+.dark {
+  /* forces dark color-scheme */
+  color-scheme: dark;
 }
 
 @media (min-width: 768px) {
@@ -8,32 +34,38 @@ html {
   }
 }
 
-.btn:focus,
+/* .btn:focus,
 .btn:active:focus,
 .btn-link.nav-link:focus,
 .form-control:focus,
 .form-check-input:focus {
   box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
+} */
 
 html {
   position: relative;
   min-height: 100%;
+  font-size: 14px;
 }
 
 body {
   margin-bottom: 60px;
 }
 
+::placeholder {
+  color: light-dark(rgb(102, 98, 98),#3e6597);
+  opacity: 1; /* Firefox */
+}
+
 .foundPlayer {
   cursor: pointer;
   border: 3px;
-  border-color: black;
+  border-color: light-dark(black,#2b7ac4);
   border-style: solid;
   max-width: 100%;
   min-width: 200px;
   text-align: center;
-  background-color: aliceblue;
+  background-color: light-dark(aliceblue, #1f1e27);
 }
 
 .hidden {
@@ -72,11 +104,12 @@ body {
   margin-bottom: 10px;
   outline: none;
   border: none;
-  background-color: #353535;
-  color: #fff;
+  background-color: light-dark(#353535,#041525);
+  color: light-dark(#fff,#69a2ee);
   padding: 10px 20px;
   border-radius: 10px;
   cursor: pointer;
+  font-weight: bold;
 }
 
 .games_container {
@@ -84,7 +117,7 @@ body {
   padding: 20px;
   flex: 1;
   display: flex;
-  flex-direction: row;
+  flex-direction:row;
   flex-wrap: wrap;
   justify-content: left;
 }
@@ -95,19 +128,22 @@ body {
   overflow: hidden;
   margin-right: 30px;
   margin-bottom: 30px;
-  background-color: aliceblue;
+  background-color: light-dark(aliceblue, #1f1e27);
   min-width: 150px;
   max-width: 250px;
-  border: 2px solid #353535;
+  border: 2px solid light-dark(#353535,#2b7ac4);
   cursor: pointer;
+  font-weight: bold;
 }
 
 .game:hover {
   background-color: rgba(93, 102, 126, 0.322);
 }
 
-.game h3 {
+.game h2 {
   margin-bottom: 10px;
+  background-color: inherit;
+  text-align: center;
 }
 
 .game p {
@@ -115,6 +151,7 @@ body {
   overflow: auto;
   margin-bottom: 10px;
   font-size: 15px;
+  background-color: inherit;
 }
 
 .Selectedgame {
@@ -123,19 +160,66 @@ body {
   overflow: hidden;
   margin-right: 30px;
   margin-bottom: 30px;
-  background-color: rgb(93, 226, 171);
+  background-color: light-dark(rgb(93, 226, 171), #0b0633);
   min-width: 150px;
   max-width: 250px;
-  border: 2px solid #353535;
+  border: 2px solid light-dark(#353535,#9cc5fc);
   cursor: pointer;
+  font-weight: bold;
 }
 
-#AddGameContainer {
+.Selectedgame h2 {
+  margin-bottom: 10px;
+  background-color: inherit;
+  text-align: center;
+}
+
+.Selectedgame p {
+  max-height: 200px;
+  overflow: auto;
+  margin-bottom: 10px;
+  font-size: 15px;
+  background-color: inherit;
+}
+
+.addGameContainer {
   padding: 10px;
   width: 20%;
   overflow: hidden;
   margin-left: 30px;
   margin-bottom: 30px;
   min-width: 150px;
-  max-width: 250px;
+  max-width: 450px;
+  font-size: 14;
+}
+
+.addGameContainer h1 {
+  color: light-dark(black,#69a2ee);
+  text-align: center;
+
+}
+
+.addGameContainer input {
+  width: 90%;
+  margin-bottom: 10px;
+  font-size: 15px;
+  padding: 10px;
+  font-weight: bold;
+  border: 3px solid #464a50;
+}
+
+.addGameContainer button {
+  margin-bottom: 10px;
+  outline: none;
+  border: none;
+  background-color: light-dark(#353535,#041525);
+  color: light-dark(#fff,#69a2ee);
+  padding: 10px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.backImage {
+  border: 5px solid black;
 }
