@@ -52,4 +52,14 @@ public class UserService : IUserService
             throw new Exception(e.Message);
         }
     }
+
+    public async Task<List<User>> GetAllUsersFromDB();
+    {
+
+    }
+
+    public async Task<List<Player>> GetAllUnMatchedPlayersFromDB();
+    {
+        
+    }
 }
