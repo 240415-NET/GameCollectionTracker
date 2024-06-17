@@ -113,12 +113,26 @@ public class EFUserStorageRepo : IEFUserStorageRepo
 
     }
 
-    public async Task<List<User>> GetUsersFromDBForService()
+    public async Task<List<UserAdminDTO>> GetUsersFromDBForService()
     {
         try
         {
-            List<User> userList = await _gameContext.Users.AsNoTracking().ToListAsync();
-            return userList;
+            List<UserAdminDTO> returnlist = new();
+            List<User> userList = await _gameContext.Users.Include(p=> p.PlayerRecord).AsNoTracking().ToListAsync();
+            foreach (User user in userList)
+            {
+                UserAdminDTO tempDTO = new()
+                {
+                    UserID = user.UserID,
+                    PlayerID = user.PlayerRecord.PlayerID,
+                    GamerTag = user.GamerTag,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    IsAdmin = user.IsAdmin
+                };
+                returnlist.Add(tempDTO);
+            }
+            return returnlist;
         }
         catch (Exception e)
         {
@@ -132,11 +146,12 @@ public class EFUserStorageRepo : IEFUserStorageRepo
         {
             List<PlayerHasGamesDTO> returnList = new();
             List<Player> playerList = await _gameContext.Players.Where(p => p.ExistingUser == false).ToListAsync();
-            for(int i=0; i < playerList.Count; i++)
+            for (int i = 0; i < playerList.Count; i++)
             {
-                if(await _gameContext.GamesPlayed.Include(p => p.Players).AnyAsync(pl => pl.Players.Contains(playerList[i])))
+                if (await _gameContext.GamesPlayed.Include(p => p.Players).AnyAsync(pl => pl.Players.Contains(playerList[i])))
                 {
-                    PlayerHasGamesDTO playerToAdd = new() {
+                    PlayerHasGamesDTO playerToAdd = new()
+                    {
                         playerID = playerList[i].PlayerID,
                         playerName = playerList[i].PlayerName,
                         hasGamesPlayed = true
@@ -145,7 +160,8 @@ public class EFUserStorageRepo : IEFUserStorageRepo
                 }
                 else
                 {
-                    PlayerHasGamesDTO playerToAdd = new() {
+                    PlayerHasGamesDTO playerToAdd = new()
+                    {
                         playerID = playerList[i].PlayerID,
                         playerName = playerList[i].PlayerName,
                         hasGamesPlayed = false

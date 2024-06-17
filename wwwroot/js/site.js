@@ -32,7 +32,20 @@
 
   //future implementation stuffs
   const gamePlayContainer = document.querySelector("#GamePlayContainer");
+
+  //this is play history stuff
   const playHistoryContainer = document.querySelector("#PlayHistoryContainer");
+  const viewPlayHistoryButton = document.querySelector("#btnViewPlayHistory");
+  //added the button to return to main and the boxes to control visibility (boxes are so we can hide the breaks as well)
+  const returnToMainButtonBox = document.querySelector(
+    "#ReturnFromPlayHistoryButtonBox"
+  );
+  const returnToMainButton = document.querySelector(
+    "#btnReturnFromPlayHistory"
+  );
+  const viewPlayHistoryButtonBox = document.querySelector(
+    "#ViewPlayHistoryButtonBox"
+  );
 
   //create new user stuffs
   const newUserContainer = document.querySelector("#NewUserContainer");
@@ -385,6 +398,7 @@
     addGameExpectedDuration.value = JSON.parse(
       localStorage.getItem("selectedGame")
     ).expectedPlayTime;
+    resetGameFormWarnings();
   }
 
   function resetGameUpdate() {
@@ -587,47 +601,236 @@
   });
 
   //Admin Functions
-  const adminUserContainer = document.querySelector("#AdminFunctionUserContainer");
-  const adminPlayerContainer = document.querySelector("#AdminFunctionPlayerContainer");
+  const adminUserContainer = document.querySelector(
+    "#AdminFunctionUserContainer"
+  );
+  const adminPlayerContainer = document.querySelector(
+    "#AdminFunctionPlayerContainer"
+  );
 
-  async function getUsersForAdmin() {
-
+  async function getUsersForAdmin(forAdmin) {
+    const response = await fetch(
+      `http://localhost:5071/api/User/GetUsersForAdminStatus`
+    );
+    try {
+      const responseData = await response.json();
+      if (forAdmin) {
+        displayUsersForAdmin(responseData);
+      } else {
+        displayUsersForMerge(responseData);
+      }
+    } catch (error) {
+      //This would mean the JSON is empty or contained an error message instead of users.  Empty shouldn't be possible.
+    }
   }
 
   async function getPlayersForAdmin() {
-
+    const response = await fetch(
+      `http://localhost:5071/api/User/GetMergePlayers`
+    );
+    try {
+      const responseData = await response.json();
+      displayPlayersForMerge(responseData);
+    } catch (error) {
+      //This would mean the JSON is empty or contained an error message instead of users.  Could be possible.
+    }
   }
 
-  async function updateAdminStatus(userID,newStatus)
-  {
-
+  async function updateAdminStatus(userID, newStatus) {
+    const response = await fetch(
+      `http://localhost:5071/api/User/UpdateAdminStatus?userID=${userID}`,
+      {
+        method: "Patch",
+        body: newStatus,
+        headers: {
+          "content-type": "application/json",
+        },
+      }
+    );
+    if (newStatus) {
+      addClickEventToAdmins();
+    } else {
+      addClickEventToNonAdmins();
+    }
   }
 
-  async function mergePlayers(keepPlayerID, removePlayerID)
-  {
-
+  function addClickEventToAdmins() {
+    document.querySelectorAll(".userAdmin").forEach((user) => {
+      user.addEventListener("click", function () {
+        user.classList.replace("userAdmin", "userNonAdmin");
+        let newHTML = user.innerHTML;
+        newHTML = newHTML.replace("<p>Admin</p>", "<p>Not an Admin</p>");
+        user.innerHTML = newHTML;
+        updateAdminStatus(user.dataset.id, false);
+      });
+    });
   }
-  
+
+  function addClickEventToNonAdmins() {
+    document.querySelectorAll(".userNonAdmin").forEach((user) => {
+      user.addEventListener("click", function () {
+        user.classList.replace("userNonAdmin", "userAdmin");
+        let newHTML = user.innerHTML;
+        newHTML = newHTML.replace("<p>Not an Admin</p>", "<p>Admin</p>");
+        user.innerHTML = newHTML;
+        updateAdminStatus(user.dataset.id, true);
+      });
+    });
+  }
+  async function mergePlayers(keepPlayerID, removePlayerID) {}
+
   function displayUsersForAdmin(allUsers) {
+    let userHTML = `<div class = "userAdminHeader">
+    <h1>User Admin Status</h1>
+    <p>Click a user to toggle their admin status</p>
+    </div>`;
+    allUsers.forEach((user) => {
+      if (user.userID != JSON.parse(localStorage.getItem("user")).UserID) {
+        let userElement = "";
+        if (user.isAdmin) {
+          userElement = `
+      <div class = "userAdmin" data-id="${user.userID}">
+      <h2>${user.gamerTag}</h2>
+      <p>${user.firstName} ${user.lastName}</p>
+      <p>Admin</p>
+      </div>`;
+        } else {
+          userElement = `
+      <div class = "userNonAdmin" data-id="${user.userID}">
+      <h2>${user.gamerTag}</h2>
+      <p>${user.firstName} ${user.lastName}</p>
+      <p>Not an Admin</p>
+      </div>`;
+        }
+        userHTML += userElement;
+      }
+      adminUserContainer.innerHTML = userHTML;
+      addClickEventToAdmins();
+      addClickEventToNonAdmins();
+    });
+  }
+
+  function clearSelectedUserForAdmin()
+  {
+    document.querySelectorAll(".userAdmin").forEach((user) => {
+      user.classList.replace("userAdmin", "userNonAdmin");
+    });
+  }
+
+  function clearSelectedPlayerForAdmin()
+  {
+    document.querySelectorAll(".selectedPlayerAdmin").forEach((player) => {
+      player.classList.replace("selectedPlayerAdmin","playerAdmin");
+    });
+  }
+
+  function addClickEventToUsersForMerge()
+  {
+    document.querySelectorAll(".userNonAdmin").forEach((user) => {
+      user.addEventListener("click", function () {
+        clearSelectedUserForAdmin();
+        user.classList.replace("userNonAdmin","userAdmin");
+        addClickEventToUsersForMerge();
+      });
+    });
+  }
+
+  function addClickEventToPlayersForMerge() 
+  {
+    document.querySelectorAll(".playerAdmin").forEach((player) => {
+      player.addEventListener("click", function () {
+        clearSelectedPlayerForAdmin();
+        player.classList.replace("playerAdmin","selectedPlayerAdmin");
+        addClickEventToPlayersForMerge();
+      });
+    });
+  }
+
+  function checkIfDisplayMergeButton()
+  {
 
   }
 
   function displayPlayersForMerge(unmatchedPlayers) {
-
+    let userHTML = `<div class = "playerAdminHeader">
+    <h1>Current Unmatched Players</h1>
+    <p>Select one to merge</p>
+    </div>`;
+    unmatchedPlayers.forEach((user) => {
+      let userElement = "";
+      if (user.hasGamesPlayed) {
+        userElement = `
+      <div class = "playerAdmin" data-id="${user.playerID}">
+      <h2>${user.playerName}</h2>
+      <p>Has played games</p>
+      </div>`;
+      } else {
+        userElement = `
+      <div class = "playerAdmin" data-id="${user.playerID}">
+      <h2>${user.playerName}</h2>
+      <p>No played games</p>
+      </div>`;
+      }
+      userHTML += userElement;
+    });
+    adminPlayerContainer.innerHTML = userHTML;
+    addClickEventToPlayersForMerge();
   }
 
   function displayUsersForMerge(allUsers) {
-
+    let userHTML = `<div class = "playerAdminHeader">
+    <h1>Current Users</h1>
+    <p>Select one to merge into</p>
+    </div>`;
+    allUsers.forEach((user) => {
+      let userElement = "";
+      userElement = `
+      <div class = "userNonAdmin" data-id="${user.playerID}">
+      <h2>${user.gamerTag}</h2>
+      <p>${user.firstName} ${user.lastName}</p>
+      </div>`;
+      userHTML += userElement;
+    });
+    adminUserContainer.innerHTML = userHTML;
+    addClickEventToUsersForMerge();
   }
 
+  function UpdateSideBarForAdmin() {
+    addGameButtonBox.classList.add("hidden");
+    updateGameButtonBox.classList.add("hidden");
+    removeGameButtonBox.classList.add("hidden");
+    clearSelectionButtonBox.classList.add("hidden");
+    viewPlayHistoryButtonBox.classList.add("hidden");
+    recordGamePlayButtonBox.classList.add("hidden");
+    returnToMainButtonBox.classList.remove("hidden");
+    manageAdminButton.classList.add("hidden");
+    mergePlayerButton.classList.add("hidden");
+    returnToMainButton.addEventListener("click", function () {
+      UpdateSideBarForAdminReturn();
+    });
+  }
+  function UpdateSideBarForAdminReturn() {
+    addGameButtonBox.classList.remove("hidden");
+    viewPlayHistoryButtonBox.classList.remove("hidden");
+    returnToMainButtonBox.classList.add("hidden");
+    manageAdminButton.classList.remove("hidden");
+    mergePlayerButton.classList.remove("hidden");
+    resetGameSelection();
+    location.reload();
+  }
   mergePlayerButton.addEventListener("click", function () {
     gamesContainer.style.display = "none";
     adminUserContainer.style.display = "flex";
     adminPlayerContainer.style.display = "flex";
+    UpdateSideBarForAdmin();
+    getUsersForAdmin(false);
+    getPlayersForAdmin();
   });
 
   manageAdminButton.addEventListener("click", function () {
     gamesContainer.style.display = "none";
     adminUserContainer.style.display = "flex";
+    UpdateSideBarForAdmin();
+    getUsersForAdmin(true);
   });
 });
