@@ -34,6 +34,16 @@
   //this is play history stuff
   const playHistoryContainer = document.querySelector("#PlayHistoryContainer");
   const viewPlayHistoryButton = document.querySelector("#btnViewPlayHistory");
+  //added the button to return to main and the boxes to control visibility (boxes are so we can hide the breaks as well)
+  const returnToMainButtonBox = document.querySelector(
+    "#ReturnFromPlayHistoryButtonBox"
+  );
+  const returnToMainButton = document.querySelector(
+    "#btnReturnFromPlayHistory"
+  );
+  const viewPlayHistoryButtonBox = document.querySelector(
+    "#ViewPlayHistoryButtonBox"
+  );
 
   //create new user stuffs
   const newUserContainer = document.querySelector("#NewUserContainer");
@@ -589,116 +599,128 @@
   });
   // View Gameplay code
 
-  async function GetAllGameplayDataForUser(){
+  async function GetAllGameplayDataForUser() {
     const playerID = JSON.parse(localStorage.getItem("user")).PlayerID;
     const response = await fetch(
-    `http://localhost:5071/api/Game/AllGamesPlayed/${playerID}`);
+      `http://localhost:5071/api/Game/AllGamesPlayed/${playerID}`
+    );
     try {
       const responseData = await response.json();
-      //calling out to the HTML elements
+      DisplayGameplays(responseData);
     } catch (error) {
-      //need to add error display
+      playHistoryContainer.innerHTML += `<div class = "game"><h2>No Games Played</h2></div>`;
+      UpdateSideBarForGameHistory();
     }
-}
-  async function GetAllGameplayStatsForUser(){
+  }
+  async function GetAllGameplayStatsForUser() {
     const playerID = JSON.parse(localStorage.getItem("user")).PlayerID;
     const response = await fetch(
-      `http://localhost:5071/api/Game/AllGamesStats/${playerID}`);
-      try {
-        const responseData = await response.text();
-        return responseData;
-      } catch (error) {
-        return "No gameplays to display"
+      `http://localhost:5071/api/Game/AllGamesStats/${playerID}`
+    );
+    try {
+      const responseData = await response.text();
+      if (responseData == "Attempted to divide by zero.") {
+        responseData = "No games played";
       }
+      DisplayAllGameplayHeader(responseData);
+    } catch (error) {
+      //need to add error display or handle the error in some way.  Maybe... maybe not. I mean, it already works?
+    }
   }
-  async function GetSelectedGameplayDataForUser(){
-    console.log("we got to GetSelectedGameplayDataForUser");
+  async function GetSelectedGameplayDataForUser() {
     const playerID = JSON.parse(localStorage.getItem("user")).PlayerID;
     const gameID = JSON.parse(localStorage.getItem("selectedGame")).gameID;
-    console.log(playerID);
-    console.log(gameID);
     const response = await fetch(
-      `http://localhost:5071/api/Game/GamesPlayed/${playerID}?GameID=${gameID}`);
-      console.log(response);
-            try {
-        const responseData = await response.json();
-        return responseData;
-      } catch (error) {
-        return "No gameplays to display"
-      }
+      `http://localhost:5071/api/Game/GamesPlayed/${playerID}?GameID=${gameID}`
+    );
+    console.log(response);
+    try {
+      const responseData = await response.json();
+      DisplayGameplays(responseData);
+    } catch (error) {
+      playHistoryContainer.innerHTML += `<div class = "game"><h2>No Games Played</h2></div>`;
+      UpdateSideBarForGameHistory();
+    }
   }
-    async function GetSelectedGameplayStatsForUser(){
-      const playerID = JSON.parse(localStorage.getItem("user")).PlayerID;
-      const gameID = JSON.parse(localStorage.getItem("selectedGame")).gameID;
-      console.log(gameID);
-      console.log("GetSelectedGameplayStatsForUser");
-      const response = await fetch(
-        `http://localhost:5071/api/Game/SingleGameStats/${playerID}?gameID=${gameID}`);
-        try {
-          const responseData = await response.text();
-          DisplaySelectedGameplayHeader(responseData);
-        } catch (error) {
-          //need to add error display
-        }
+  async function GetSelectedGameplayStatsForUser() {
+    const playerID = JSON.parse(localStorage.getItem("user")).PlayerID;
+    const gameID = JSON.parse(localStorage.getItem("selectedGame")).gameID;
+    const response = await fetch(
+      `http://localhost:5071/api/Game/SingleGameStats/${playerID}?gameID=${gameID}`
+    );
+    try {
+      let responseData = await response.text();
+      if (responseData == "Attempted to divide by zero.") {
+        responseData = "No games played";
+      }
+      DisplaySelectedGameplayHeader(responseData);
+    } catch (error) {
+      //need to add error display or handle the error in some way.  Maybe... maybe not. I mean, it already works?
     }
-    function DisplayAllGameplayHeader(winLoss){
-      playHistoryContainer
-    }
-
-    function DisplaySelectedGameplayHeader(winLoss){
-      playHistoryContainer.innerHTML =`<div class = "gameHeader"><h1>${JSON.parse(localStorage.getItem("selectedGame")).gameName}</h1>
+  }
+  function DisplayAllGameplayHeader(winLoss) {
+    playHistoryContainer.innerHTML = `<div class = "gamesHeader">
       <p>${winLoss}</p></div>`;
-      DisplayGameplays();
-    }
-    function DisplayGameplays(){
-      console.log("We got here");
-      if (JSON.parse(localStorage.getItem("selectedGame")).gameID) {
-        const gamePlays = GetSelectedGameplayDataForUser();
-      } else {
-        const gamePlays = GetAllGameplayDataForUser();
-      }
-      console.log(gamePlays);
-      if(gamePlays == "No gameplays to display"){
-        playHistoryContainer.innerHTML += `<div class = "game"><h2>No games played</h2></div>`
-      }
-      else{
-        let gameplaysHTML = "";
-        gameplays.forEach((gameplay)=> {
-          console.log(gameplay.gameName)
-          let gameplayElement = `
-          <div class = "game">
-          <h2>${gameplay.gameName}</h2>
-          <p>Winner: ${gameplay.winnerName}</p>
-          <ul>Players:`
-          gameplay.players.forEach((player) => {
-            gameplayElement += `<li>${player.playerName}</li>`
-          });
-          gameplayElement +=`</ul>
-          </div>`
-          gameplaysHTML += gameplayElement;
-        });
-        playHistoryContainer.innerHTML += gameplaysHTML;
-      }
-    }
+    GetAllGameplayDataForUser();
+  }
 
+  function DisplaySelectedGameplayHeader(winLoss) {
+    playHistoryContainer.innerHTML = `<div class = "gameHeader"><h1>${
+      JSON.parse(localStorage.getItem("selectedGame")).gameName
+    }</h1>
+      <p>${winLoss}</p></div>`;
+    DisplayGameplays();
+  }
+  function DisplayGameplays(responseData) {
+    let gameplaysHTML = "";
+    responseData.forEach((responseData) => {
+      console.log(responseData.gameName);
+      let gameplayElement = `
+          <div class = "game">
+          <h2>${responseData.gameName}</h2>
+          <p>Winner: ${responseData.winnerName}</p>
+          <ul>Players:`;
+      responseData.players.forEach((player) => {
+        gameplayElement += `<li>${player.playerName}</li>`;
+      });
+      gameplayElement += `</ul>
+          </div>`;
+      gameplaysHTML += gameplayElement;
+    });
+    playHistoryContainer.innerHTML += gameplaysHTML;
+    UpdateSideBarForGameHistory();
+  }
+    function UpdateSideBarForGameHistory() {
+      addGameButtonBox.classList.add("hidden");
+      updateGameButtonBox.classList.add("hidden");
+      removeGameButtonBox.classList.add("hidden");
+      clearSelectionButtonBox.classList.add("hidden");
+      viewPlayHistoryButtonBox.classList.add("hidden");
+      recordGamePlayButtonBox.classList.add("hidden");
+      returnToMainButtonBox.classList.remove("hidden");
+      returnToMainButton.addEventListener("click", function () {
+        UpdateSideBarForGameHistoryReturn();
+      });
+    }
+    function UpdateSideBarForGameHistoryReturn() {
+      addGameButtonBox.classList.remove("hidden");
+      viewPlayHistoryButtonBox.classList.remove("hidden");
+      returnToMainButtonBox.classList.add("hidden");
+      resetGameSelection();
+      location.reload();
+    }
   viewPlayHistoryButton.addEventListener("click", function () {
     gamesContainer.style.display = "none";
     playHistoryContainer.style.display = "flex";
-    if (JSON.parse(localStorage.getItem("selectedGame")).gameID) {
+    try{
+      let gameID = JSON.parse(localStorage.getItem("selectedGame")).gameID;
       GetSelectedGameplayStatsForUser();
-    } else {
-
-
     }
-
-
+    catch(error)
+    {
+      GetAllGameplayStatsForUser()
+    }
   });
-
-
 //End of gameplay history
 });
 
-// if (response.status == 200) {
-//   const responsedata = await response.json();
-//   DisplayUsersGames(responsedata.selectedGames);
-// }

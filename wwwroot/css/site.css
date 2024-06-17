@@ -142,7 +142,14 @@ body {
   cursor: pointer;
   font-weight: bold;
 }
-
+.game ul {
+  background-color: inherit;
+  font-size: 15px;
+  }
+  .game li {
+  background-color: inherit;
+  font-size: 13px;;
+  }
 .game:hover {
   background-color: rgba(93, 102, 126, 0.322);
 }
