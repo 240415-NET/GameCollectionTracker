@@ -30,7 +30,10 @@
 
   //future implementation stuffs
   const gamePlayContainer = document.querySelector("#GamePlayContainer");
+
+  //this is play history stuff
   const playHistoryContainer = document.querySelector("#PlayHistoryContainer");
+  const viewPlayHistoryButton = document.querySelector("#btnViewPlayHistory");
 
   //create new user stuffs
   const newUserContainer = document.querySelector("#NewUserContainer");
@@ -584,4 +587,118 @@
     addGameContainer.classList.add("hidden");
     getGamesOwnedByUser();
   });
+  // View Gameplay code
+
+  async function GetAllGameplayDataForUser(){
+    const playerID = JSON.parse(localStorage.getItem("user")).PlayerID;
+    const response = await fetch(
+    `http://localhost:5071/api/Game/AllGamesPlayed/${playerID}`);
+    try {
+      const responseData = await response.json();
+      //calling out to the HTML elements
+    } catch (error) {
+      //need to add error display
+    }
+}
+  async function GetAllGameplayStatsForUser(){
+    const playerID = JSON.parse(localStorage.getItem("user")).PlayerID;
+    const response = await fetch(
+      `http://localhost:5071/api/Game/AllGamesStats/${playerID}`);
+      try {
+        const responseData = await response.text();
+        return responseData;
+      } catch (error) {
+        return "No gameplays to display"
+      }
+  }
+  async function GetSelectedGameplayDataForUser(){
+    console.log("we got to GetSelectedGameplayDataForUser");
+    const playerID = JSON.parse(localStorage.getItem("user")).PlayerID;
+    const gameID = JSON.parse(localStorage.getItem("selectedGame")).gameID;
+    console.log(playerID);
+    console.log(gameID);
+    const response = await fetch(
+      `http://localhost:5071/api/Game/GamesPlayed/${playerID}?GameID=${gameID}`);
+      console.log(response);
+            try {
+        const responseData = await response.json();
+        return responseData;
+      } catch (error) {
+        return "No gameplays to display"
+      }
+  }
+    async function GetSelectedGameplayStatsForUser(){
+      const playerID = JSON.parse(localStorage.getItem("user")).PlayerID;
+      const gameID = JSON.parse(localStorage.getItem("selectedGame")).gameID;
+      console.log(gameID);
+      console.log("GetSelectedGameplayStatsForUser");
+      const response = await fetch(
+        `http://localhost:5071/api/Game/SingleGameStats/${playerID}?gameID=${gameID}`);
+        try {
+          const responseData = await response.text();
+          DisplaySelectedGameplayHeader(responseData);
+        } catch (error) {
+          //need to add error display
+        }
+    }
+    function DisplayAllGameplayHeader(winLoss){
+      playHistoryContainer
+    }
+
+    function DisplaySelectedGameplayHeader(winLoss){
+      playHistoryContainer.innerHTML =`<div class = "gameHeader"><h1>${JSON.parse(localStorage.getItem("selectedGame")).gameName}</h1>
+      <p>${winLoss}</p></div>`;
+      DisplayGameplays();
+    }
+    function DisplayGameplays(){
+      console.log("We got here");
+      if (JSON.parse(localStorage.getItem("selectedGame")).gameID) {
+        const gamePlays = GetSelectedGameplayDataForUser();
+      } else {
+        const gamePlays = GetAllGameplayDataForUser();
+      }
+      console.log(gamePlays);
+      if(gamePlays == "No gameplays to display"){
+        playHistoryContainer.innerHTML += `<div class = "game"><h2>No games played</h2></div>`
+      }
+      else{
+        let gameplaysHTML = "";
+        gameplays.forEach((gameplay)=> {
+          console.log(gameplay.gameName)
+          let gameplayElement = `
+          <div class = "game">
+          <h2>${gameplay.gameName}</h2>
+          <p>Winner: ${gameplay.winnerName}</p>
+          <ul>Players:`
+          gameplay.players.forEach((player) => {
+            gameplayElement += `<li>${player.playerName}</li>`
+          });
+          gameplayElement +=`</ul>
+          </div>`
+          gameplaysHTML += gameplayElement;
+        });
+        playHistoryContainer.innerHTML += gameplaysHTML;
+      }
+    }
+
+  viewPlayHistoryButton.addEventListener("click", function () {
+    gamesContainer.style.display = "none";
+    playHistoryContainer.style.display = "flex";
+    if (JSON.parse(localStorage.getItem("selectedGame")).gameID) {
+      GetSelectedGameplayStatsForUser();
+    } else {
+
+
+    }
+
+
+  });
+
+
+//End of gameplay history
 });
+
+// if (response.status == 200) {
+//   const responsedata = await response.json();
+//   DisplayUsersGames(responsedata.selectedGames);
+// }

@@ -51,16 +51,25 @@ public class GameStorageEFRepo : IGameStorageEFRepo
         return newDTO;
 
     }
-    public async Task<List<GamePlayed>> ViewAllGamesPlayedByUser(Guid playerID)
+    public async Task<List<GamePlayDTO>> ViewAllGamesPlayedByUser(Guid playerID)
     {
-
+        List<GamePlayDTO> returnList = new();
         Player currentPlayer = await _gameContext.Players.FirstAsync(p => p.PlayerID == playerID);
         List<GamePlayed> gamesPlayed = await _gameContext.GamesPlayed.Include(p => p.Players).Where(gp => gp.Players.Contains(currentPlayer)).ToListAsync();
         if (gamesPlayed.Count < 1)
         {
             throw new Exception("Not games played");
         }
-        return gamesPlayed;
+        else
+        {
+            foreach(GamePlayed gameplay in gamesPlayed)
+            {
+                Game tempGame = await _gameContext.Games.FirstAsync(g => g.GameID == gameplay.GameID);
+                GamePlayDTO tempGamePlayDTO = new GamePlayDTO(gameplay, tempGame.GameName);
+                returnList.Add(tempGamePlayDTO);
+            }
+        }
+        return returnList;
     }
         public async Task<string> AllGamesPlayedByUserStats(Guid playerID)
     {
@@ -72,16 +81,26 @@ public class GameStorageEFRepo : IGameStorageEFRepo
 
         return $"Plays: {plays} Wins: {playerWins} Win %: {(float)(playerWins/plays):P2}";
     }
-    public async Task<List<GamePlayed>> ViewPlaysOfSpecificGameByUser(Guid playerID, Guid gameID)
+    public async Task<List<GamePlayDTO>> ViewPlaysOfSpecificGameByUser(Guid playerID, Guid gameID)
     {
+        List<GamePlayDTO> returnList = new();
         Player currentPlayer = await _gameContext.Players.FirstAsync(p => p.PlayerID == playerID);
+        Game selectedGame = await _gameContext.Games.FirstAsync(g => g.GameID == gameID);
         List<GamePlayed> allgamesPlayed = await _gameContext.GamesPlayed.Include(p => p.Players).Where(gp => gp.Players.Contains(currentPlayer)).ToListAsync();
         List<GamePlayed> singleGameList = allgamesPlayed.Where(g => g.GameID == gameID).ToList();
         if (singleGameList.Count < 1)
         {
             throw new Exception("Not games played");
         }
-        return singleGameList;
+        else
+        {
+            foreach(GamePlayed gameplay in singleGameList)
+            {
+                GamePlayDTO tempGamePlayDTO = new GamePlayDTO(gameplay, selectedGame.GameName);
+                returnList.Add(tempGamePlayDTO);
+            }
+        return returnList;
+        }
     }
     public async Task<string> SpecificGameplayedByUserStats(Guid playerID, Guid gameID)
     {
@@ -92,7 +111,7 @@ public class GameStorageEFRepo : IGameStorageEFRepo
         int playerWins = gameListWinners.Count(winner => winner == currentPlayer.PlayerName);
         int plays = singleGameList.Count;
 
-        return $"Plays: {plays} Wins: {playerWins} Win %: {(float)(playerWins/plays):P2}";
+        return $"Plays - {plays} Wins - {playerWins} Win % - {(float)(playerWins/plays):P2}";
     }
     ///
     public async Task<string> AddGameToDBAsync(Game gameInfo)

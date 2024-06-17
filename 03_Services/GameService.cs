@@ -38,11 +38,11 @@ public class GameService : IGameService
             throw new Exception(e.Message);
         }
     }
-    public async Task<List<GamePlayed>> ViewAllGamesPlayedByUser(Guid userIDFromController)
+    public async Task<List<GamePlayDTO>> ViewAllGamesPlayedByUser(Guid playerIDFromController)
     {
         try
         {
-            List<GamePlayed>? playlist = await _gameStorage.ViewAllGamesPlayedByUser(userIDFromController);
+            List<GamePlayDTO>? playlist = await _gameStorage.ViewAllGamesPlayedByUser(playerIDFromController);
 
             if (playlist.Count < 1)
             {
@@ -56,12 +56,12 @@ public class GameService : IGameService
             throw new Exception(e.Message);
         }
     }
-    public async Task<List<GamePlayed>> ViewPlaysOfSpecificGameByUser(Guid userIDFromController, Guid gameIDFromController)
+    public async Task<List<GamePlayDTO>> ViewPlaysOfSpecificGameByUser(Guid playerIDFromController, Guid gameIDFromController)
     {
 
         try
         {
-            List<GamePlayed>? playlist = await _gameStorage.ViewPlaysOfSpecificGameByUser(userIDFromController, gameIDFromController);
+            List<GamePlayDTO>? playlist = await _gameStorage.ViewPlaysOfSpecificGameByUser(playerIDFromController, gameIDFromController);
 
             if (playlist.Count < 1)
             {
