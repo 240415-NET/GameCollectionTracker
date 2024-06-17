@@ -78,8 +78,8 @@
         </div>
 <!-- This section holds the Admin buttons which will be displayed in the side-bar if the logged in user is an Admin -->
         <div id="AdminMenu" class="hidden">
-          <div class = "hidden"><button>Do Admin Stuff</button><br></div>
-          <div class = "hidden"><button>More Admin Stuff</button><br></div>
+          <br><br><div><button id="MergePlayerBtn">Manage Player Records</button><br></div>
+          <div><button id="AdminStatusBtn">Manage Admin Status</button><br></div>
         </div>
 <!-- End of the Left SideBar section -->
       </div>
@@ -103,10 +103,13 @@
       <div id="myGamesContainer" class="games_container">
       </div>
 <!-- This will hold the HTML used to display games played and HTML will be added programmatically through JS -->
-      <div id="myGamePlayContainer" class="games_container" style="display: none;">
+      <div id="GamePlayContainer" class="games_container" style="display: none;">
       </div>
 <!-- This will hold the HTML used to display gameplay history for the user and HTML will be added programmatically through JS -->
-      <div id="myPlayHistoryContainer" class="games_container" style="display: none;">
+      <div id="PlayHistoryContainer" class="games_container" style="display: none;">
+<!-- This will hold the HTML used to display admin functions and HTML will be added programmatically through JS -->
+      <div id="AdminFunctionUserContainer" class="games_container" style="display: none;">    
+      <div id="AdminFunctionPlayerContainer" class="games_container" style="display: none;">    
       </div>
     </div>
     <script src="/wwwroot/js/site.js"></script>

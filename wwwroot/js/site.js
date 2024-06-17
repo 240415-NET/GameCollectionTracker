@@ -27,6 +27,8 @@
   const recordGamePlayButtonBox = document.querySelector(
     "#RecordGamePlayButtonBox"
   );
+  const mergePlayerButton = document.querySelector("#MergePlayerBtn");
+  const manageAdminButton = document.querySelector("#AdminStatusBtn");
 
   //future implementation stuffs
   const gamePlayContainer = document.querySelector("#GamePlayContainer");
@@ -181,7 +183,6 @@
         gamerTagMessage.textContent = await response.text();
       } else {
         LogInUser(newUserGamerTag.value, newUserPassWord.value);
-        //resetNewUserForm();
       }
     }
   }
@@ -583,5 +584,50 @@
     gamesContainer.style.display = "flex";
     addGameContainer.classList.add("hidden");
     getGamesOwnedByUser();
+  });
+
+  //Admin Functions
+  const adminUserContainer = document.querySelector("#AdminFunctionUserContainer");
+  const adminPlayerContainer = document.querySelector("#AdminFunctionPlayerContainer");
+
+  async function getUsersForAdmin() {
+
+  }
+
+  async function getPlayersForAdmin() {
+
+  }
+
+  async function updateAdminStatus(userID,newStatus)
+  {
+
+  }
+
+  async function mergePlayers(keepPlayerID, removePlayerID)
+  {
+
+  }
+  
+  function displayUsersForAdmin(allUsers) {
+
+  }
+
+  function displayPlayersForMerge(unmatchedPlayers) {
+
+  }
+
+  function displayUsersForMerge(allUsers) {
+
+  }
+
+  mergePlayerButton.addEventListener("click", function () {
+    gamesContainer.style.display = "none";
+    adminUserContainer.style.display = "flex";
+    adminPlayerContainer.style.display = "flex";
+  });
+
+  manageAdminButton.addEventListener("click", function () {
+    gamesContainer.style.display = "none";
+    adminUserContainer.style.display = "flex";
   });
 });
