@@ -42,51 +42,76 @@ public class GameController : Controller
         }
     }
 
-    [HttpGet("AllGamesPlayed/{userID}")]
-    public async Task<ActionResult<List<GamePlayed>>> ViewAllGamesPlayedByUser(Guid userID)
+    [HttpGet("AllGamesPlayed/{playerID}")]
+    public async Task<ActionResult<List<GamePlayDTO>>> ViewAllGamesPlayedByUser(Guid playerID)
     {
         try
         {
-            return await _gameService.ViewAllGamesPlayedByUser(userID);
+            return Ok (await _gameService.ViewAllGamesPlayedByUser(playerID));
         }
         catch (Exception e)
         {
             return NotFound(e.Message);
         }
     }
-    [HttpGet("GamesPlayed/{userID}")]
-    public async Task<ActionResult<List<GamePlayed>>> ViewPlaysOfSpecificGameByUser(Guid userID, Guid GameID)
+    [HttpGet("GamesPlayed/{playerID}")]
+    public async Task<ActionResult<List<GamePlayDTO>>> ViewPlaysOfSpecificGameByUser(Guid playerID, Guid GameID)
     {
         try
         {
-            return await _gameService.ViewPlaysOfSpecificGameByUser(userID, GameID);
+            return Ok (await _gameService.ViewPlaysOfSpecificGameByUser(playerID, GameID));
         }
         catch (Exception e)
         {
             return NotFound(e.Message);
         }
     }
-
+    ///
+    [HttpGet("AllGamesStats/{playerID}")]
+    public async Task<ActionResult<string>> AllGamesPlayedByUserStats(Guid playerID)
+    {
+        try
+        {
+            return Ok (await _gameService.AllGamesPlayedByUserStats(playerID));
+        }
+        catch (Exception e)
+        {
+            return e.Message;
+        }
+    }
+    [HttpGet("SingleGameStats/{playerID}")]
+    public async Task<ActionResult<string>> SpecificGameplayedByUserStats(Guid playerID, Guid gameID)
+    {
+        try
+        {
+            return Ok (await _gameService.SpecificGameplayedByUserStats(playerID, gameID));
+        }
+        catch (Exception e)
+        {
+            return e.Message;
+        }
+    }
+    ///
     [HttpPost]
     public async Task<IActionResult> AddNewGameToDB(Game newGame)
     {
         //newGame.GameID = new Guid();
         await _gameService.AddNewGameToDBAsync(newGame);
-        return Ok("Game added"); 
+        return Ok("Game added");
     }
 
     [HttpDelete("Remove")]
     public async Task<IActionResult> DeleteGameFromDB(Guid GameId)
     {
         await _gameService.DeleteGameFromDBAsync(GameId);
-        return Ok("Game Deleted"); 
+        return Ok("Game Deleted");
     }
 
     [HttpPatch]
     public async Task<IActionResult> UpdateGameInDB(UpdateGameDTO gameDTO)
     {
         await _gameService.UpdateGameInDBAsync(gameDTO);
-        return Ok("Game Updated"); 
+        return Ok("Game Updated");
     }
 }
 

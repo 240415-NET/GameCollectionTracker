@@ -122,6 +122,13 @@ body {
   justify-content: left;
 }
 
+.gamesHeader {
+  width: 100%;
+  text-align: center;
+  border-bottom: solid 3px;
+  margin-bottom: 20px;
+  }
+  
 .game {
   padding: 10px;
   width: 20%;
@@ -135,7 +142,14 @@ body {
   cursor: pointer;
   font-weight: bold;
 }
-
+.game ul {
+  background-color: inherit;
+  font-size: 15px;
+  }
+  .game li {
+  background-color: inherit;
+  font-size: 13px;;
+  }
 .game:hover {
   background-color: rgba(93, 102, 126, 0.322);
 }
