@@ -973,17 +973,17 @@
     }
   }
   function DisplayAllGameplayHeader(winLoss) {
-    playHistoryContainer.innerHTML = `<div class = "gamesHeader">
+    playHistoryContainer.innerHTML = `<div class = "gamesHeader"><h1>All Games Played</h1>
       <p>${winLoss}</p></div>`;
     GetAllGameplayDataForUser();
   }
 
   function DisplaySelectedGameplayHeader(winLoss) {
-    playHistoryContainer.innerHTML = `<div class = "gameHeader"><h1>${
+    playHistoryContainer.innerHTML = `<div class = "gamesHeader"><h1>${
       JSON.parse(localStorage.getItem("selectedGame")).gameName
     }</h1>
       <p>${winLoss}</p></div>`;
-    DisplayGameplays();
+      GetSelectedGameplayDataForUser();
   }
   function DisplayGameplays(responseData) {
     let gameplaysHTML = "";
