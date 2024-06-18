@@ -149,7 +149,7 @@ public class GameService : IGameService
         }
     }
 
-        public async Task<string> RecordGamePlayedAsync(GamePlayed gamePlayed)
+        public async Task<string> RecordGamePlayedAsync(AddGamePlayDTO gamePlayed)
         {
             try
             {

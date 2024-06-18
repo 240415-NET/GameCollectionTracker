@@ -31,7 +31,7 @@
   const manageAdminButton = document.querySelector("#AdminStatusBtn");
 
   //future implementation stuffs
-  //const gamePlayContainer = document.querySelector("#GamePlayContainer");
+  const gamePlayContainer = document.querySelector("#GamePlayContainer");
 
 //GAMEPLAY
 
@@ -1067,13 +1067,30 @@
 
 let loggedInPlayerId = ""; 
 
-recordGamePlayButton.addEventListener("click", async function () {
+recordGamePlayButton.addEventListener("click", function () {
     // Show the game play form
+    gamePlayContainer.style.display = "flex";
+    gamesContainer.style.display = "none";
     gamePlayForm.style.display = "block";
+    hideSideBarButtons();
+    const recordGameHeader = document.querySelector("#RecordGameHeader");
+    const playerLabel = document.querySelector("#PlayerLabel")
+    recordGameHeader.textContent = `Record Game Play for ${JSON.parse(localStorage.getItem("selectedGame")).gameName}`;
+    playerLabel.textContent = `Select ${JSON.parse(localStorage.getItem("selectedGame")).minPlayers-1} to ${JSON.parse(localStorage.getItem("selectedGame")).maxPlayers-1} Players`
+    btnAddPlayer.addEventListener("click", function () {
+      console.log("I see you want to add a player");
+      addPlayerForm.style.display = "block";
+    });
 
-    //await fetchGames();
-
-    await fetchOtherPlayers();
+    btnSaveGamePlay.addEventListener("click", function () {
+      console.log("I see you clicked to save a game");
+      SaveGamePlay();
+    });
+    btnSubmitPlayer.addEventListener("click", function () {
+      console.log("I see you clicked to save a player");
+      SubmitNewPlayer();
+    });    
+    fetchOtherPlayers();
 });
 
 
@@ -1092,8 +1109,6 @@ async function fetchOtherPlayers() {
       console.error("Error fetching players:", error);
   }
 }
-
-
 
 function populatePlayersCheckboxList(players) {
   
@@ -1116,13 +1131,7 @@ function populatePlayersCheckboxList(players) {
   });
 }
 
-
-btnAddPlayer.addEventListener("click", function () {
-  addPlayerForm.style.display = "block";
-});
-
-
-btnSubmitPlayer.addEventListener("click", async function () {
+async function SubmitNewPlayer() {
   try {
       const playerName = newPlayerName.value;
       
@@ -1174,12 +1183,13 @@ btnSubmitPlayer.addEventListener("click", async function () {
   } catch (error) {
       console.error("Error adding player:", error);
   }
-});
+}
 
-btnSaveGamePlay.addEventListener("click", async function () {
+async function SaveGamePlay() {
   try {
-      const selectedGameId = gameSelect.value;
+      const selectedGameId = JSON.parse(localStorage.getItem("selectedGame")).gameID;
       let selectedPlayers = Array.from(playersCheckboxList.querySelectorAll("input[type=checkbox]:checked")).map(checkbox => checkbox.value);
+      selectedPlayers.push(JSON.parse(localStorage.getItem("user")).PlayerID);
       const winner = winnerName.value;
 
       const gamePlayedData = {
@@ -1207,13 +1217,15 @@ btnSaveGamePlay.addEventListener("click", async function () {
 
       // Clear form and reset UI
       gamePlayForm.style.display = "none";
-      gameSelect.value = "";
       playersCheckboxList.innerHTML = "";
       winnerName.value = "";
+      gamePlayContainer.style.display = "none";
+      gamesContainer.style.display = "flex";
+      showSideBarButtons();
   } catch (error) {
       console.error("Error recording game play:", error);
   }
-});
+}
 
 //END OF RECORD GAME PLAY
 });

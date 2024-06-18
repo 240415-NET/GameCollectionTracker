@@ -154,14 +154,17 @@ body {
   cursor: pointer;
   font-weight: bold;
 }
+
 .game ul {
   background-color: inherit;
   font-size: 15px;
-  }
-  .game li {
+}
+
+.game li {
   background-color: inherit;
   font-size: 13px;;
-  }
+}
+
 .game:hover {
   background-color: rgba(93, 102, 126, 0.322);
 }
@@ -388,6 +391,33 @@ body {
 }
 
 .selectedPlayerAdmin p {
+  max-height: 200px;
+  overflow: auto;
+  margin-bottom: 10px;
+  font-size: 15px;
+  background-color: inherit;
+}
+
+.recordGamePlay {
+  padding: 10px;
+  width: 20%;
+  overflow: hidden;
+  margin-right: 30px;
+  margin-bottom: 30px;
+  background-color: light-dark(aliceblue, #1f1e27);
+  min-width: 150px;
+  max-width: 250px;
+  border: 2px solid light-dark(#353535,#2b7ac4);
+  font-weight: bold;
+}
+
+.recordGamePlay h2 {
+  margin-bottom: 10px;
+  background-color: inherit;
+  text-align: center;
+}
+
+.recordGamePlay p {
   max-height: 200px;
   overflow: auto;
   margin-bottom: 10px;

@@ -47,7 +47,7 @@ public class GameController : Controller
     {
         try
         {
-            return Ok (await _gameService.ViewAllGamesPlayedByUser(playerID));
+            return Ok(await _gameService.ViewAllGamesPlayedByUser(playerID));
         }
         catch (Exception e)
         {
@@ -59,7 +59,7 @@ public class GameController : Controller
     {
         try
         {
-            return Ok (await _gameService.ViewPlaysOfSpecificGameByUser(playerID, GameID));
+            return Ok(await _gameService.ViewPlaysOfSpecificGameByUser(playerID, GameID));
         }
         catch (Exception e)
         {
@@ -72,7 +72,7 @@ public class GameController : Controller
     {
         try
         {
-            return Ok (await _gameService.AllGamesPlayedByUserStats(playerID));
+            return Ok(await _gameService.AllGamesPlayedByUserStats(playerID));
         }
         catch (Exception e)
         {
@@ -84,7 +84,7 @@ public class GameController : Controller
     {
         try
         {
-            return Ok (await _gameService.SpecificGameplayedByUserStats(playerID, gameID));
+            return Ok(await _gameService.SpecificGameplayedByUserStats(playerID, gameID));
         }
         catch (Exception e)
         {
@@ -115,21 +115,21 @@ public class GameController : Controller
     }
 
 
-    
-        // POST: api/game/recordplay
-        [HttpPost("recordplay")]
-        public async Task<IActionResult> RecordGamePlay(GamePlayed gamePlayed)
+
+    // POST: api/game/recordplay
+    [HttpPost("recordplay")]
+    public async Task<IActionResult> RecordGamePlay(AddGamePlayDTO gamePlayed)
+    {
+        try
         {
-            try
-            {
-                var result = await _gameService.RecordGamePlayedAsync(gamePlayed);
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"Error recording game play: {ex.Message}");
-            }
+            var result = await _gameService.RecordGamePlayedAsync(gamePlayed);
+            return Ok(result);
         }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, $"Error recording game play: {ex.Message}");
+        }
+    }
 
 }
 

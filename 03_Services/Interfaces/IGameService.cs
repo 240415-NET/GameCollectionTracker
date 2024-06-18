@@ -22,6 +22,6 @@ public interface IGameService
 
     public Task<string> UpdateGameInDBAsync(UpdateGameDTO updatedGame);
 
-    public Task<string> RecordGamePlayedAsync(GamePlayed gamePlayed);
+    public Task<string> RecordGamePlayedAsync(AddGamePlayDTO gamePlayed);
 
 }

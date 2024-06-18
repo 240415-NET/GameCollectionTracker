@@ -21,5 +21,5 @@ public interface IGameStorageEFRepo
 
   public Task<string> UpdateGameInDBAsync(UpdateGameDTO gameDTO);
 
-  public Task AddGamePlayedAsync(GamePlayed gamePlayed);
+  public Task AddGamePlayedAsync(AddGamePlayDTO gamePlayed);
 }
