@@ -31,12 +31,10 @@
   //future implementation stuffs
   //const gamePlayContainer = document.querySelector("#GamePlayContainer");
 
-//BEGINNING OF GAMEPLAY
+//GAMEPLAY
 
   const gamePlayerForm = document.querySelector("#gamePlayerForm");
- // const recordGamePlayButton = document.getElementById("btnRecordNewGamePlay");
   const gamePlayForm = document.getElementById("gamePlayForm");
-  //const gameSelect = document.getElementById("gameSelect");
   const playersCheckboxList = document.getElementById("playersCheckboxList");
   const btnAddPlayer = document.getElementById("btnAddPlayer");
   const addPlayerForm = document.getElementById("addPlayerForm");
@@ -45,7 +43,7 @@
   const winnerName = document.getElementById("winnerName");
   const btnSaveGamePlay = document.getElementById("btnSaveGamePlay");
 
-//ENDING of GAMEPLAY
+//GAMEPLAY
 
 
 
