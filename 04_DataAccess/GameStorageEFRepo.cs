@@ -65,7 +65,8 @@ public class GameStorageEFRepo : IGameStorageEFRepo
             foreach(GamePlayed gameplay in gamesPlayed)
             {
                 Game tempGame = await _gameContext.Games.FirstAsync(g => g.GameID == gameplay.GameID);
-                GamePlayDTO tempGamePlayDTO = new GamePlayDTO(gameplay, tempGame.GameName);
+                User tempOwner = await _gameContext.Users.FirstAsync(u => u.UserID == tempGame.UserID);
+                GamePlayDTO tempGamePlayDTO = new GamePlayDTO(gameplay, tempGame.GameName, tempOwner.GamerTag);
                 returnList.Add(tempGamePlayDTO);
             }
         }
@@ -86,6 +87,7 @@ public class GameStorageEFRepo : IGameStorageEFRepo
         List<GamePlayDTO> returnList = new();
         Player currentPlayer = await _gameContext.Players.FirstAsync(p => p.PlayerID == playerID);
         Game selectedGame = await _gameContext.Games.FirstAsync(g => g.GameID == gameID);
+        User gameOwner = await _gameContext.Users.FirstAsync(u => u.UserID == selectedGame.UserID);
         List<GamePlayed> allgamesPlayed = await _gameContext.GamesPlayed.Include(p => p.Players).Where(gp => gp.Players.Contains(currentPlayer)).ToListAsync();
         List<GamePlayed> singleGameList = allgamesPlayed.Where(g => g.GameID == gameID).ToList();
         if (singleGameList.Count < 1)
@@ -96,7 +98,7 @@ public class GameStorageEFRepo : IGameStorageEFRepo
         {
             foreach(GamePlayed gameplay in singleGameList)
             {
-                GamePlayDTO tempGamePlayDTO = new GamePlayDTO(gameplay, selectedGame.GameName);
+                GamePlayDTO tempGamePlayDTO = new GamePlayDTO(gameplay, selectedGame.GameName, gameOwner.GamerTag);
                 returnList.Add(tempGamePlayDTO);
             }
         return returnList;

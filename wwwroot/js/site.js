@@ -995,6 +995,7 @@
       let gameplayElement = `
           <div class = "game">
           <h2>${responseData.gameName}</h2>
+          <p style="text-align: center;">Owned By: ${responseData.gameOwner}<p>
           <p>Winner: ${responseData.winnerName}</p>
           <ul>Players:`;
       responseData.players.forEach((player) => {
