@@ -21,7 +21,6 @@ namespace GameCollectionTracker.Data;
            if (userExists)
            {
                return $"Player '{playerToAdd.PlayerName}' already exists";
-               // return null;
            }
 
             playerToAdd.PlayerID = Guid.NewGuid();
@@ -31,7 +30,6 @@ namespace GameCollectionTracker.Data;
             await _context.SaveChangesAsync();
 
             return $"Player '{playerToAdd.PlayerName}' added successfully!";
-           // return playerToAdd;
         }
 
          

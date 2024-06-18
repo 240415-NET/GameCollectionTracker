@@ -31,7 +31,23 @@
   const manageAdminButton = document.querySelector("#AdminStatusBtn");
 
   //future implementation stuffs
-  const gamePlayContainer = document.querySelector("#GamePlayContainer");
+  //const gamePlayContainer = document.querySelector("#GamePlayContainer");
+
+//GAMEPLAY
+
+  const gamePlayerForm = document.querySelector("#gamePlayerForm");
+  const gamePlayForm = document.getElementById("gamePlayForm");
+  const playersCheckboxList = document.getElementById("playersCheckboxList");
+  const btnAddPlayer = document.getElementById("btnAddPlayer");
+  const addPlayerForm = document.getElementById("addPlayerForm");
+  const newPlayerName = document.getElementById("newPlayerName");
+  const btnSubmitPlayer = document.getElementById("btnSubmitPlayer");
+  const winnerName = document.getElementById("winnerName");
+  const btnSaveGamePlay = document.getElementById("btnSaveGamePlay");
+
+//GAMEPLAY
+
+
 
   //this is play history stuff
   const playHistoryContainer = document.querySelector("#PlayHistoryContainer");
@@ -1044,5 +1060,160 @@
       GetAllGameplayStatsForUser();
     }
   });
-  //End of gameplay history
+//End of gameplay history
+
+
+//BEGINNING OF RECORD GAME PLAY 
+
+let loggedInPlayerId = ""; 
+
+recordGamePlayButton.addEventListener("click", async function () {
+    // Show the game play form
+    gamePlayForm.style.display = "block";
+
+    //await fetchGames();
+
+    await fetchOtherPlayers();
+});
+
+
+
+async function fetchOtherPlayers() {
+  try {
+      const response = await fetch(`http://localhost:5071/api/Player/otherplayers/${
+        JSON.parse(localStorage.getItem("user")).PlayerID
+      }`);
+      if (!response.ok) {
+          throw new Error(`Error! Status: ${response.status}`);
+      }
+      const players = await response.json();
+      populatePlayersCheckboxList(players);
+  } catch (error) {
+      console.error("Error fetching players:", error);
+  }
+}
+
+
+
+function populatePlayersCheckboxList(players) {
+  
+  playersCheckboxList.innerHTML = "";
+
+  players.forEach(player => {
+      const checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.id = `player-${player.playerID}`;
+      checkbox.value = player.playerID;
+
+      const label = document.createElement("label");
+      label.textContent = player.playerName;
+      label.setAttribute("for", `player-${player.playerID}`);
+
+      playersCheckboxList.appendChild(checkbox);
+      playersCheckboxList.appendChild(label);
+
+      playersCheckboxList.appendChild(document.createElement("br"));
+  });
+}
+
+
+btnAddPlayer.addEventListener("click", function () {
+  addPlayerForm.style.display = "block";
+});
+
+
+btnSubmitPlayer.addEventListener("click", async function () {
+  try {
+      const playerName = newPlayerName.value;
+      
+      // Generate a temporary unique ID for new players in UI
+      const playerId = `temp-${Date.now()}`;
+
+      // Add player to UI
+      const checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.id = `player-${playerId}`;
+      checkbox.value = playerId;
+      checkbox.checked = true; // Auto-check newly added player
+
+      //create label element for player
+      const label = document.createElement("label");
+      label.textContent = playerName; //set text content of label to player's name
+      label.setAttribute("for", `player-${playerId}`); //set "for" attribute of label to match the checkboxID
+
+      playersCheckboxList.appendChild(checkbox);
+      playersCheckboxList.appendChild(label);
+      playersCheckboxList.appendChild(document.createElement("br"));
+
+              
+                   // For playerId starting with 'temp-' for temporary UI added players
+                   if (playerId.startsWith('temp-')) {
+                       // Add this player to the database
+                       const playerName = document.querySelector(`label[for=player-${playerId}]`).textContent;
+                       const response = await fetch(`http://localhost:5071/api/Player/AddPlayer`, {
+                           method: "POST",
+                           headers: {
+                               "Content-Type": "application/json"
+                           },
+                           body: JSON.stringify({ playerName })
+                       });
+     
+                       if (!response.ok) {
+                           throw new Error(`Failed to add player: ${response.status}`);
+                       }
+     
+                       // Retrieve the newly added player's ID from the response
+                       const addedPlayer = await response.json();
+                       selectedPlayers.push(addedPlayer.playerID);
+                   }
+          
+
+      // Reset form and hide it
+      newPlayerName.value = "";
+      addPlayerForm.style.display = "none";
+  } catch (error) {
+      console.error("Error adding player:", error);
+  }
+});
+
+btnSaveGamePlay.addEventListener("click", async function () {
+  try {
+      const selectedGameId = gameSelect.value;
+      let selectedPlayers = Array.from(playersCheckboxList.querySelectorAll("input[type=checkbox]:checked")).map(checkbox => checkbox.value);
+      const winner = winnerName.value;
+
+      const gamePlayedData = {
+          gameID: selectedGameId,
+          players: selectedPlayers,
+          winnerName: winner
+      };
+
+
+      // Record the game play with all selected players
+      const recordResponse = await fetch(`http://localhost:5071/api/Game/RecordPlay`, {
+          method: "POST",
+          headers: {
+              "Content-Type": "application/json"
+          },
+          body: JSON.stringify(gamePlayedData)
+      });
+
+      if (!recordResponse.ok) {
+          throw new Error(`Failed to record game play: ${recordResponse.status}`);
+      }
+
+      // Game play recorded successfully
+      alert("Game play recorded successfully!");
+
+      // Clear form and reset UI
+      gamePlayForm.style.display = "none";
+      gameSelect.value = "";
+      playersCheckboxList.innerHTML = "";
+      winnerName.value = "";
+  } catch (error) {
+      console.error("Error recording game play:", error);
+  }
+});
+
+//END OF RECORD GAME PLAY
 });

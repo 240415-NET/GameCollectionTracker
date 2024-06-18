@@ -148,4 +148,23 @@ public class GameService : IGameService
             throw new Exception($"Game add failed: {e.Message}");
         }
     }
-}
+
+        public async Task<string> RecordGamePlayedAsync(GamePlayed gamePlayed)
+        {
+            try
+            {
+                await _gameStorage.AddGamePlayedAsync(gamePlayed);
+
+                return "Game play recorded successfully";
+            }
+            catch (Exception ex)
+            {
+                
+                throw new Exception("Failed to record game play", ex);
+            }
+        }
+    }
+
+
+
+

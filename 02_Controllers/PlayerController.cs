@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GameCollectionTracker.Controllers;
 
-    [ApiController]
+    [ApiController] 
     [Route("api/[controller]")]
     public class PlayerController : ControllerBase
     {

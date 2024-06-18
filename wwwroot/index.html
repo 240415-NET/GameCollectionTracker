@@ -149,7 +149,7 @@
         <button id="btnCancelNewGame">Cancel</button>
         <button id="btnCancelUpdateGame" class="hidden">Cancel</button>
       </div>
-      <!-- This section holds the game in the right side of the screen. HTML is added programmatically through JS -->
+<!-- This will hold the HTML used to display gameplay history for the user and HTML will be added programmatically through JS -->
       <!-- This section holds the game in the right side of the screen. HTML is added programmatically through JS -->
       <div id="myGamesContainer" class="games_container"></div>
       <!-- This will hold the HTML used to display games played and HTML will be added programmatically through JS -->
@@ -157,7 +157,29 @@
         id="GamePlayContainer"
         class="games_container"
         style="display: none"
-      ></div>
+      >
+        <div id="gamePlayForm" >
+          <h2>Record Game Play</h2>
+          <div>
+              <label>Select Players:</label>
+              <div id="playersCheckboxList">
+                  <!-- Players will be populated dynamically using JavaScript -->
+              </div>
+              <button id="btnAddPlayer">Add New Player</button>
+              <div id="addPlayerForm" style="display: none;">
+                  <input type="text" id="newPlayerName" placeholder="Enter player name">
+                  <button id="btnSubmitPlayer">Submit Player</button>
+              </div>
+          </div>
+      
+          <div>
+              <label for="winnerName">Winner Name:</label>
+              <input type="text" id="winnerName">
+          </div>
+      
+          <button id="btnSaveGamePlay">Save Game Play</button>
+      </div>        
+      </div>
       <!-- This will hold the HTML used to display gameplay history for the user and HTML will be added programmatically through JS -->
       <div
         id="PlayHistoryContainer"
