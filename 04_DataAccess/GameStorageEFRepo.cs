@@ -168,5 +168,20 @@ public class GameStorageEFRepo : IGameStorageEFRepo
             throw new Exception($"Something went wrong... {e.Message}");
         }
     }
+
+       
+        public async Task AddGamePlayedAsync(GamePlayed gamePlayed)
+        {  
+            await _gameContext.GamesPlayed.AddAsync(gamePlayed);
+            await _gameContext.SaveChangesAsync();
+        }
+    
 }
+
+
+
+
+
+
+
 

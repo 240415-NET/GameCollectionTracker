@@ -113,6 +113,24 @@ public class GameController : Controller
         await _gameService.UpdateGameInDBAsync(gameDTO);
         return Ok("Game Updated");
     }
+
+
+    
+        // POST: api/game/recordplay
+        [HttpPost("recordplay")]
+        public async Task<IActionResult> RecordGamePlay(GamePlayed gamePlayed)
+        {
+            try
+            {
+                var result = await _gameService.RecordGamePlayedAsync(gamePlayed);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error recording game play: {ex.Message}");
+            }
+        }
+
 }
 
 
