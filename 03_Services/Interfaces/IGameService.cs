@@ -4,10 +4,13 @@ namespace GameCollectionTracker.Services;
 
 public interface IGameService
 {
-    public Task<List<GamePlayed>> ViewAllGamesPlayedByUser(Guid playerIDFromController);
+    public Task<List<GamePlayDTO>> ViewAllGamesPlayedByUser(Guid playerIDFromController);
 
-    public Task<List<GamePlayed>> ViewPlaysOfSpecificGameByUser(Guid playerIDFromController, Guid gameIDFromController);
+    public Task<List<GamePlayDTO>> ViewPlaysOfSpecificGameByUser(Guid playerIDFromController, Guid gameIDFromController);
 
+    public Task<string> SpecificGameplayedByUserStats(Guid playerID, Guid gameID);
+
+    public Task<string> AllGamesPlayedByUserStats(Guid playerID);
 
     public Task<GameListDTO> GetAllGamesForUserAsync(Guid userIdFromController);
 

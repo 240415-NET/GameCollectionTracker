@@ -3,6 +3,7 @@ using GameCollectionTracker.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection.PortableExecutable;
 using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel;
+using System.Linq;
 
 namespace GameCollectionTracker.Data;
 
@@ -50,28 +51,69 @@ public class GameStorageEFRepo : IGameStorageEFRepo
         return newDTO;
 
     }
-    public async Task<List<GamePlayed>> ViewAllGamesPlayedByUser(Guid playerID)
+    public async Task<List<GamePlayDTO>> ViewAllGamesPlayedByUser(Guid playerID)
     {
-
+        List<GamePlayDTO> returnList = new();
         Player currentPlayer = await _gameContext.Players.FirstAsync(p => p.PlayerID == playerID);
         List<GamePlayed> gamesPlayed = await _gameContext.GamesPlayed.Include(p => p.Players).Where(gp => gp.Players.Contains(currentPlayer)).ToListAsync();
-        if(gamesPlayed.Count <1)
+        if (gamesPlayed.Count < 1)
         {
             throw new Exception("Not games played");
         }
-        return gamesPlayed;
-    }
-    public async Task<List<GamePlayed>> ViewPlaysOfSpecificGameByUser(Guid playerID, Guid gameID)
-    {
-        Player currentPlayer = await _gameContext.Players.FirstAsync(p => p.PlayerID == playerID);
-        List<GamePlayed> gamesPlayed = await _gameContext.GamesPlayed.Include(p => p.Players).Where(gp => gp.Players.Contains(currentPlayer)).ToListAsync();
-        List<GamePlayed> returnList = gamesPlayed.Where(g => g.GameID == gameID).ToList();
-        if(returnList.Count <1)
+        else
         {
-            throw new Exception("Not games played");
-        }        
+            foreach(GamePlayed gameplay in gamesPlayed)
+            {
+                Game tempGame = await _gameContext.Games.FirstAsync(g => g.GameID == gameplay.GameID);
+                GamePlayDTO tempGamePlayDTO = new GamePlayDTO(gameplay, tempGame.GameName);
+                returnList.Add(tempGamePlayDTO);
+            }
+        }
         return returnList;
     }
+        public async Task<string> AllGamesPlayedByUserStats(Guid playerID)
+    {
+        Player currentPlayer = await _gameContext.Players.FirstAsync(p => p.PlayerID == playerID);
+        List<GamePlayed> allGamesPlayed = await _gameContext.GamesPlayed.Include(p => p.Players).Where(gp => gp.Players.Contains(currentPlayer)).ToListAsync();
+        List<string> gameListWinners = allGamesPlayed.Where(winner => !string.IsNullOrEmpty(winner.WinnerName)).Select(winner => winner.WinnerName).ToList();
+        int playerWins = gameListWinners.Count(winner => winner == currentPlayer.PlayerName);
+        int plays = allGamesPlayed.Count;
+
+        return $"Plays: {plays} Wins: {playerWins} Win %: {(float)(playerWins/plays):P2}";
+    }
+    public async Task<List<GamePlayDTO>> ViewPlaysOfSpecificGameByUser(Guid playerID, Guid gameID)
+    {
+        List<GamePlayDTO> returnList = new();
+        Player currentPlayer = await _gameContext.Players.FirstAsync(p => p.PlayerID == playerID);
+        Game selectedGame = await _gameContext.Games.FirstAsync(g => g.GameID == gameID);
+        List<GamePlayed> allgamesPlayed = await _gameContext.GamesPlayed.Include(p => p.Players).Where(gp => gp.Players.Contains(currentPlayer)).ToListAsync();
+        List<GamePlayed> singleGameList = allgamesPlayed.Where(g => g.GameID == gameID).ToList();
+        if (singleGameList.Count < 1)
+        {
+            throw new Exception("Not games played");
+        }
+        else
+        {
+            foreach(GamePlayed gameplay in singleGameList)
+            {
+                GamePlayDTO tempGamePlayDTO = new GamePlayDTO(gameplay, selectedGame.GameName);
+                returnList.Add(tempGamePlayDTO);
+            }
+        return returnList;
+        }
+    }
+    public async Task<string> SpecificGameplayedByUserStats(Guid playerID, Guid gameID)
+    {
+        Player currentPlayer = await _gameContext.Players.FirstAsync(p => p.PlayerID == playerID);
+        List<GamePlayed> allgamesPlayed = await _gameContext.GamesPlayed.Include(p => p.Players).Where(gp => gp.Players.Contains(currentPlayer)).ToListAsync();
+        List<GamePlayed> singleGameList = allgamesPlayed.Where(g => g.GameID == gameID).ToList();
+        List<string> gameListWinners = singleGameList.Where(winner => !string.IsNullOrEmpty(winner.WinnerName)).Select(winner => winner.WinnerName).ToList();
+        int playerWins = gameListWinners.Count(winner => winner == currentPlayer.PlayerName);
+        int plays = singleGameList.Count;
+
+        return $"Plays - {plays} Wins - {playerWins} Win % - {(float)(playerWins/plays):P2}";
+    }
+    ///
     public async Task<string> AddGameToDBAsync(Game gameInfo)
     {
         try
@@ -86,7 +128,6 @@ public class GameStorageEFRepo : IGameStorageEFRepo
             throw new Exception($"Something went wrong... {e.Message}");
         }
     }
-
     public async Task<string> DeleteGameFromDBAsync(Guid gameId)
     {
         try
@@ -97,7 +138,7 @@ public class GameStorageEFRepo : IGameStorageEFRepo
                 throw new Exception($"Game was null... {gameId}");
             }
             _gameContext.Games.Remove(selectedGame);
-           
+
             await _gameContext.SaveChangesAsync();
             return "Game deleted succesfully";
         }
@@ -111,13 +152,13 @@ public class GameStorageEFRepo : IGameStorageEFRepo
     {
         try
         {
-            Game gameToUpdate= await _gameContext.Games.FirstOrDefaultAsync(game => game.GameID == gameDTO.GameID);
-            if(gameDTO.GameName != null) gameToUpdate.GameName = gameDTO.GameName;
-            if(gameDTO.PurchasePrice != null) gameToUpdate.PurchasePrice = (double) gameDTO.PurchasePrice;
-            if(gameDTO.PurchaseDate != null) gameToUpdate.PurchaseDate = (DateOnly) gameDTO.PurchaseDate;
-            if(gameDTO.MaxPlayers != null) gameToUpdate.MaxPlayers = (int) gameDTO.MaxPlayers;
-            if(gameDTO.MinPlayers != null) gameToUpdate.MinPlayers = (int)gameDTO.MinPlayers;
-            if(gameDTO.ExpectedGameDuration != null) gameToUpdate.ExpectedGameDuration = (int)gameDTO.ExpectedGameDuration;
+            Game gameToUpdate = await _gameContext.Games.FirstOrDefaultAsync(game => game.GameID == gameDTO.GameID);
+            if (gameDTO.GameName != null) gameToUpdate.GameName = gameDTO.GameName;
+            if (gameDTO.PurchasePrice != null) gameToUpdate.PurchasePrice = (double)gameDTO.PurchasePrice;
+            if (gameDTO.PurchaseDate != null) gameToUpdate.PurchaseDate = (DateOnly)gameDTO.PurchaseDate;
+            if (gameDTO.MaxPlayers != null) gameToUpdate.MaxPlayers = (int)gameDTO.MaxPlayers;
+            if (gameDTO.MinPlayers != null) gameToUpdate.MinPlayers = (int)gameDTO.MinPlayers;
+            if (gameDTO.ExpectedGameDuration != null) gameToUpdate.ExpectedGameDuration = (int)gameDTO.ExpectedGameDuration;
 
             await _gameContext.SaveChangesAsync();
             return "Game updated successfully";

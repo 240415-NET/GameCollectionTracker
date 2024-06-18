@@ -911,4 +911,130 @@
     UpdateSideBarForAdmin();
     getUsersForAdmin(true);
   });
+  // View Gameplay code
+
+  async function GetAllGameplayDataForUser() {
+    const playerID = JSON.parse(localStorage.getItem("user")).PlayerID;
+    const response = await fetch(
+      `http://localhost:5071/api/Game/AllGamesPlayed/${playerID}`
+    );
+    try {
+      const responseData = await response.json();
+      DisplayGameplays(responseData);
+    } catch (error) {
+      playHistoryContainer.innerHTML += `<div class = "game"><h2>No Games Played</h2></div>`;
+      UpdateSideBarForGameHistory();
+    }
+  }
+  async function GetAllGameplayStatsForUser() {
+    const playerID = JSON.parse(localStorage.getItem("user")).PlayerID;
+    const response = await fetch(
+      `http://localhost:5071/api/Game/AllGamesStats/${playerID}`
+    );
+    try {
+      const responseData = await response.text();
+      if (responseData == "Attempted to divide by zero.") {
+        responseData = "No games played";
+      }
+      DisplayAllGameplayHeader(responseData);
+    } catch (error) {
+      //need to add error display or handle the error in some way.  Maybe... maybe not. I mean, it already works?
+    }
+  }
+  async function GetSelectedGameplayDataForUser() {
+    const playerID = JSON.parse(localStorage.getItem("user")).PlayerID;
+    const gameID = JSON.parse(localStorage.getItem("selectedGame")).gameID;
+    const response = await fetch(
+      `http://localhost:5071/api/Game/GamesPlayed/${playerID}?GameID=${gameID}`
+    );
+    console.log(response);
+    try {
+      const responseData = await response.json();
+      DisplayGameplays(responseData);
+    } catch (error) {
+      playHistoryContainer.innerHTML += `<div class = "game"><h2>No Games Played</h2></div>`;
+      UpdateSideBarForGameHistory();
+    }
+  }
+  async function GetSelectedGameplayStatsForUser() {
+    const playerID = JSON.parse(localStorage.getItem("user")).PlayerID;
+    const gameID = JSON.parse(localStorage.getItem("selectedGame")).gameID;
+    const response = await fetch(
+      `http://localhost:5071/api/Game/SingleGameStats/${playerID}?gameID=${gameID}`
+    );
+    try {
+      let responseData = await response.text();
+      if (responseData == "Attempted to divide by zero.") {
+        responseData = "No games played";
+      }
+      DisplaySelectedGameplayHeader(responseData);
+    } catch (error) {
+      //need to add error display or handle the error in some way.  Maybe... maybe not. I mean, it already works?
+    }
+  }
+  function DisplayAllGameplayHeader(winLoss) {
+    playHistoryContainer.innerHTML = `<div class = "gamesHeader">
+      <p>${winLoss}</p></div>`;
+    GetAllGameplayDataForUser();
+  }
+
+  function DisplaySelectedGameplayHeader(winLoss) {
+    playHistoryContainer.innerHTML = `<div class = "gameHeader"><h1>${
+      JSON.parse(localStorage.getItem("selectedGame")).gameName
+    }</h1>
+      <p>${winLoss}</p></div>`;
+    DisplayGameplays();
+  }
+  function DisplayGameplays(responseData) {
+    let gameplaysHTML = "";
+    responseData.forEach((responseData) => {
+      console.log(responseData.gameName);
+      let gameplayElement = `
+          <div class = "game">
+          <h2>${responseData.gameName}</h2>
+          <p>Winner: ${responseData.winnerName}</p>
+          <ul>Players:`;
+      responseData.players.forEach((player) => {
+        gameplayElement += `<li>${player.playerName}</li>`;
+      });
+      gameplayElement += `</ul>
+          </div>`;
+      gameplaysHTML += gameplayElement;
+    });
+    playHistoryContainer.innerHTML += gameplaysHTML;
+    UpdateSideBarForGameHistory();
+  }
+    function UpdateSideBarForGameHistory() {
+      addGameButtonBox.classList.add("hidden");
+      updateGameButtonBox.classList.add("hidden");
+      removeGameButtonBox.classList.add("hidden");
+      clearSelectionButtonBox.classList.add("hidden");
+      viewPlayHistoryButtonBox.classList.add("hidden");
+      recordGamePlayButtonBox.classList.add("hidden");
+      returnToMainButtonBox.classList.remove("hidden");
+      returnToMainButton.addEventListener("click", function () {
+        UpdateSideBarForGameHistoryReturn();
+      });
+    }
+    function UpdateSideBarForGameHistoryReturn() {
+      addGameButtonBox.classList.remove("hidden");
+      viewPlayHistoryButtonBox.classList.remove("hidden");
+      returnToMainButtonBox.classList.add("hidden");
+      resetGameSelection();
+      location.reload();
+    }
+  viewPlayHistoryButton.addEventListener("click", function () {
+    gamesContainer.style.display = "none";
+    playHistoryContainer.style.display = "flex";
+    try{
+      let gameID = JSON.parse(localStorage.getItem("selectedGame")).gameID;
+      GetSelectedGameplayStatsForUser();
+    }
+    catch(error)
+    {
+      GetAllGameplayStatsForUser()
+    }
+  });
+//End of gameplay history
 });
+

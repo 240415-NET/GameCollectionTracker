@@ -2,6 +2,7 @@
 
 using GameCollectionTracker.Data;
 using GameCollectionTracker.Models;
+using Microsoft.IdentityModel.Tokens;
 
 namespace GameCollectionTracker.Services;
 
@@ -37,12 +38,11 @@ public class GameService : IGameService
             throw new Exception(e.Message);
         }
     }
-    public async Task<List<GamePlayed>> ViewAllGamesPlayedByUser(Guid playerIDFromController)
+    public async Task<List<GamePlayDTO>> ViewAllGamesPlayedByUser(Guid playerIDFromController)
     {
-
         try
         {
-            List<GamePlayed>? playlist = await _gameStorage.ViewAllGamesPlayedByUser(playerIDFromController);
+            List<GamePlayDTO>? playlist = await _gameStorage.ViewAllGamesPlayedByUser(playerIDFromController);
 
             if (playlist.Count < 1)
             {
@@ -56,12 +56,12 @@ public class GameService : IGameService
             throw new Exception(e.Message);
         }
     }
-    public async Task<List<GamePlayed>> ViewPlaysOfSpecificGameByUser(Guid playerIDFromController, Guid gameIDFromController)
+    public async Task<List<GamePlayDTO>> ViewPlaysOfSpecificGameByUser(Guid playerIDFromController, Guid gameIDFromController)
     {
 
         try
         {
-            List<GamePlayed>? playlist = await _gameStorage.ViewPlaysOfSpecificGameByUser(playerIDFromController, gameIDFromController);
+            List<GamePlayDTO>? playlist = await _gameStorage.ViewPlaysOfSpecificGameByUser(playerIDFromController, gameIDFromController);
 
             if (playlist.Count < 1)
             {
@@ -75,7 +75,44 @@ public class GameService : IGameService
             throw new Exception(e.Message);
         }
     }
+    ///
+    public async Task<string> AllGamesPlayedByUserStats(Guid playerIDFromController)
+    {
+        try
+        {
+            string? gameStats = await _gameStorage.AllGamesPlayedByUserStats(playerIDFromController);
 
+            if (gameStats.IsNullOrEmpty())
+            {
+                throw new Exception("It doesn't appear that you've recorded any played games...");
+            }
+
+            return gameStats;
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
+    }
+    public async Task<string> SpecificGameplayedByUserStats(Guid playerIDFromController, Guid gameIDFromController)
+    {
+        try
+        {
+            string? gameStats = await _gameStorage.SpecificGameplayedByUserStats(playerIDFromController, gameIDFromController);
+
+            if (gameStats.IsNullOrEmpty())
+            {
+                throw new Exception("It doesn't appear that you've recorded any played games...");
+            }
+
+            return gameStats;
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
+    }
+    ///
     public async Task<string> AddNewGameToDBAsync(Game newGame)
     {
         try
