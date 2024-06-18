@@ -181,7 +181,7 @@ public class GameStorageEFRepo : IGameStorageEFRepo
     }
 
        
-        public async Task AddGamePlayedAsync(AddGamePlayDTO gamePlayed)
+        public async Task<string> AddGamePlayedAsync(AddGamePlayDTO gamePlayed)
         {  
             GamePlayed newGamePlayed = new();
             newGamePlayed.GameID = gamePlayed.gameID;
@@ -193,6 +193,7 @@ public class GameStorageEFRepo : IGameStorageEFRepo
             }
             await _gameContext.GamesPlayed.AddAsync(newGamePlayed);
             await _gameContext.SaveChangesAsync();
+            return "Gameplay added";
         }
     
 }
