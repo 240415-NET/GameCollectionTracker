@@ -69,6 +69,24 @@
   if (storedUser) {
     UserIsLoggedIn();
   }
+  function hideSideBarButtons() {
+    addGameButtonBox.classList.add("hidden");
+    updateGameButtonBox.classList.add("hidden");
+    removeGameButtonBox.classList.add("hidden");
+    clearSelectionButtonBox.classList.add("hidden");
+    viewPlayHistoryButtonBox.classList.add("hidden");
+    adminMenu.classList.add("hidden");
+    recordGamePlayButtonBox.classList.add("hidden");
+  }
+
+  function showSideBarButtons() {
+    resetGameSelection();
+    addGameButtonBox.classList.remove("hidden");
+    viewPlayHistoryButtonBox.classList.remove("hidden");
+    if (JSON.parse(localStorage.getItem("user")).IsAdmin) {
+      adminMenu.classList.remove("hidden");
+    }
+  }
 
   function resetNewUserForm() {
     newUserGamerTag.value = "";
@@ -305,17 +323,24 @@
   }
 
   removeGameButton.addEventListener("click", function () {
-    const response = fetch(
-      `http://localhost:5071/api/Game/Remove?GameId=${
-        JSON.parse(localStorage.getItem("selectedGame")).gameID
-      }`,
-      { method: "DELETE" }
-    );
-    localStorage.removeItem("selectedGame");
+    if (
+      confirm(
+        "All recorded game plays for this game will also be deleted. Are you sure you want to remove it?"
+      )
+    ) {
+      const response = fetch(
+        `http://localhost:5071/api/Game/Remove?GameId=${
+          JSON.parse(localStorage.getItem("selectedGame")).gameID
+        }`,
+        { method: "DELETE" }
+      );
+      localStorage.removeItem("selectedGame");
+    }
     location.reload();
   });
 
   updateGameButton.addEventListener("click", function () {
+    
     gamesContainer.style.display = "none";
     addGameContainer.classList.remove("hidden");
     addUpdateGameHeader.textContent = "Update Game";
@@ -332,6 +357,7 @@
     btnCancelUpdateGame.addEventListener("click", function () {
       resetGameForm();
       resetGameUpdate();
+      showSideBarButtons();
     });
     PopulateUpdateGameForm();
     btnSubmitUpdateGame.addEventListener("click", function () {
@@ -354,6 +380,7 @@
         location.reload();
       }
     });
+    hideSideBarButtons();
   });
 
   async function UpdateSelectedGame() {
@@ -495,6 +522,7 @@
   });
 
   addGameButton.addEventListener("click", () => {
+    hideSideBarButtons();
     gamesContainer.style.display = "none";
     addUpdateGameHeader.textContent = "Add a New Game";
     addGameContainer.classList.remove("hidden");
@@ -595,6 +623,7 @@
   });
 
   btnCancelNewGame.addEventListener("click", function () {
+    showSideBarButtons();
     gamesContainer.style.display = "flex";
     addGameContainer.classList.add("hidden");
     getGamesOwnedByUser();
@@ -607,6 +636,8 @@
   const adminPlayerContainer = document.querySelector(
     "#AdminFunctionPlayerContainer"
   );
+  const mergePlayerButtonBox = document.querySelector("#MergePlayerButtonBox");
+  const mergeSelectedPlayerButton = document.querySelector("#mergePlayerBtn");
 
   async function getUsersForAdmin(forAdmin) {
     const response = await fetch(
@@ -620,7 +651,14 @@
         displayUsersForMerge(responseData);
       }
     } catch (error) {
-      //This would mean the JSON is empty or contained an error message instead of users.  Empty shouldn't be possible.
+      let userHTML = `<div class = "userAdminHeader">
+    <h1>Current Users</h1>
+    </div>
+    <div class = "userAdmin">
+      <h2>No users?</h2>
+      <p>You have no friends</p>
+    `;
+    adminUserContainer.innerHTML = userHTML;
     }
   }
 
@@ -632,7 +670,13 @@
       const responseData = await response.json();
       displayPlayersForMerge(responseData);
     } catch (error) {
-      //This would mean the JSON is empty or contained an error message instead of users.  Could be possible.
+      let userHTML = `<div class = "playerAdminHeader">
+    <h1>Current Unmatched Players</h1>
+    </div>
+      <div class = "playerAdmin">
+      <h2>No Unmatched Players</h2>
+      </div>`;
+      adminPlayerContainer.innerHTML = userHTML;
     }
   }
 
@@ -677,7 +721,30 @@
       });
     });
   }
-  async function mergePlayers(keepPlayerID, removePlayerID) {}
+
+  async function mergePlayers(playerIDToKeep, playerIDToRemove) {
+    const body = {
+      keepPlayerID: playerIDToKeep,
+      discardPlayerID: playerIDToRemove
+    }
+    const response = await fetch(`http://localhost:5071/api/User/MergePlayers`, {
+      method: "Patch",
+      body: JSON.stringify(body),
+      headers: {
+        "content-type": "application/json",
+      },
+    })
+    if(response.status == 200)
+      {
+        alert("Player merged to existing user.");
+        location.reload();
+      }
+      else
+      {
+        alert("Merge failed, please contact... no one. It just didn't work and you're out of luck...");
+      }
+
+  }
 
   function displayUsersForAdmin(allUsers) {
     let userHTML = `<div class = "userAdminHeader">
@@ -710,45 +777,55 @@
     });
   }
 
-  function clearSelectedUserForAdmin()
-  {
+  function clearSelectedUserForAdmin() {
     document.querySelectorAll(".userAdmin").forEach((user) => {
       user.classList.replace("userAdmin", "userNonAdmin");
     });
   }
 
-  function clearSelectedPlayerForAdmin()
-  {
+  function clearSelectedPlayerForAdmin() {
     document.querySelectorAll(".selectedPlayerAdmin").forEach((player) => {
-      player.classList.replace("selectedPlayerAdmin","playerAdmin");
+      player.classList.replace("selectedPlayerAdmin", "playerAdmin");
     });
   }
 
-  function addClickEventToUsersForMerge()
-  {
+  function addClickEventToUsersForMerge() {
     document.querySelectorAll(".userNonAdmin").forEach((user) => {
       user.addEventListener("click", function () {
         clearSelectedUserForAdmin();
-        user.classList.replace("userNonAdmin","userAdmin");
+        user.classList.replace("userNonAdmin", "userAdmin");
         addClickEventToUsersForMerge();
+        checkIfDisplayMergeButton();
       });
     });
   }
 
-  function addClickEventToPlayersForMerge() 
-  {
+  function addClickEventToPlayersForMerge() {
     document.querySelectorAll(".playerAdmin").forEach((player) => {
       player.addEventListener("click", function () {
         clearSelectedPlayerForAdmin();
-        player.classList.replace("playerAdmin","selectedPlayerAdmin");
+        player.classList.replace("playerAdmin", "selectedPlayerAdmin");
         addClickEventToPlayersForMerge();
+        checkIfDisplayMergeButton();
       });
     });
   }
 
-  function checkIfDisplayMergeButton()
-  {
-
+  function checkIfDisplayMergeButton() {
+    if (
+      document.querySelectorAll(".userAdmin").length > 0 &&
+      document.querySelectorAll(".selectedPlayerAdmin").length > 0
+    ) {
+      mergePlayerButtonBox.classList.remove("hidden");
+      mergeSelectedPlayerButton.addEventListener("click", function () {
+        const usersPlayerID = document.querySelector(".userAdmin").dataset.id;
+        const playersPlayerID = document.querySelector(".selectedPlayerAdmin")
+          .dataset.id;
+        mergePlayers(usersPlayerID, playersPlayerID);
+      });
+    } else {
+      mergePlayerButtonBox.classList.add("hidden");
+    }
   }
 
   function displayPlayersForMerge(unmatchedPlayers) {
@@ -815,6 +892,7 @@
     returnToMainButtonBox.classList.add("hidden");
     manageAdminButton.classList.remove("hidden");
     mergePlayerButton.classList.remove("hidden");
+    mergePlayerButtonBox.classList.add("hidden");
     resetGameSelection();
     location.reload();
   }
