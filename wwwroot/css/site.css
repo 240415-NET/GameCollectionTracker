@@ -1,11 +1,11 @@
 :root {
   color-scheme: light dark;
 
-  --light-bg: ghostwhite;
+  /* --light-bg: ghostwhite; */
   --light-color: rgb(0, 0, 0);
   --light-code: tomato;
 
-  --dark-bg: #222335c9;
+  /* --dark-bg: #222335c9; */
   --dark-color: #69a2ee;
   --dark-code: gold;
 }
@@ -14,6 +14,7 @@
   background-color: light-dark(var(--light-bg), var(--dark-bg));
   color: light-dark(var(--light-color), var(--dark-color));
 }
+
 code {
   color: light-dark(var(--light-code), var(--dark-code));
 }
@@ -28,19 +29,30 @@ code {
   color-scheme: dark;
 }
 
-@media (min-width: 768px) {
+/* @media (min-width: 768px) {
   html {
     font-size: 16px;
   }
+} */
+
+@media (prefers-color-scheme: dark) {
+  html{
+    background-image: url("/wwwroot/dark.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: 100% 100%;
+  }
 }
 
-/* .btn:focus,
-.btn:active:focus,
-.btn-link.nav-link:focus,
-.form-control:focus,
-.form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-} */
+@media(prefers-color-scheme: light) {
+  html{
+    background-image: url("/wwwroot/light.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: 100% 100%;
+  }
+}
+
 
 html {
   position: relative;
@@ -104,7 +116,7 @@ body {
   margin-bottom: 10px;
   outline: none;
   border: none;
-  background-color: light-dark(#353535,#041525);
+  background-color: light-dark(#353535,#0f355c);
   color: light-dark(#fff,#69a2ee);
   padding: 10px 20px;
   border-radius: 10px;
@@ -226,7 +238,7 @@ body {
   margin-bottom: 10px;
   outline: none;
   border: none;
-  background-color: light-dark(#353535,#041525);
+  background-color: light-dark(#353535,#0f355c);
   color: light-dark(#fff,#69a2ee);
   padding: 10px 20px;
   border-radius: 10px;
@@ -262,7 +274,7 @@ body {
   margin-right: 30px;
   margin-bottom: 30px;
   background-color: light-dark(rgb(93, 226, 171), #0b0633);
-  min-width: 100px;
+  min-width: 150px;
   max-width: 250px;
   border: 2px solid light-dark(#353535,#9cc5fc);
   cursor: pointer;
@@ -334,7 +346,7 @@ body {
   margin-right: 30px;
   margin-bottom: 30px;
   background-color: light-dark(aliceblue, #1f1e27);
-  min-width: 110px;
+  min-width: 150px;
   max-width: 250px;
   border: 2px solid light-dark(#353535,#2b7ac4);
   cursor: pointer;
@@ -362,7 +374,7 @@ body {
   margin-right: 30px;
   margin-bottom: 30px;
   background-color: light-dark(rgb(93, 226, 171), #0b0633);
-  min-width: 110px;
+  min-width: 150px;
   max-width: 250px;
   border: 2px solid light-dark(#353535,#9cc5fc);
   cursor: pointer;
