@@ -340,7 +340,6 @@
   });
 
   updateGameButton.addEventListener("click", function () {
-    
     gamesContainer.style.display = "none";
     addGameContainer.classList.remove("hidden");
     addUpdateGameHeader.textContent = "Update Game";
@@ -658,7 +657,7 @@
       <h2>No users?</h2>
       <p>You have no friends</p>
     `;
-    adminUserContainer.innerHTML = userHTML;
+      adminUserContainer.innerHTML = userHTML;
     }
   }
 
@@ -725,25 +724,26 @@
   async function mergePlayers(playerIDToKeep, playerIDToRemove) {
     const body = {
       keepPlayerID: playerIDToKeep,
-      discardPlayerID: playerIDToRemove
+      discardPlayerID: playerIDToRemove,
+    };
+    const response = await fetch(
+      `http://localhost:5071/api/User/MergePlayers`,
+      {
+        method: "Patch",
+        body: JSON.stringify(body),
+        headers: {
+          "content-type": "application/json",
+        },
+      }
+    );
+    if (response.status == 200) {
+      alert("Player merged to existing user.");
+      location.reload();
+    } else {
+      alert(
+        "Merge failed, please contact... no one. It just didn't work and you're out of luck..."
+      );
     }
-    const response = await fetch(`http://localhost:5071/api/User/MergePlayers`, {
-      method: "Patch",
-      body: JSON.stringify(body),
-      headers: {
-        "content-type": "application/json",
-      },
-    })
-    if(response.status == 200)
-      {
-        alert("Player merged to existing user.");
-        location.reload();
-      }
-      else
-      {
-        alert("Merge failed, please contact... no one. It just didn't work and you're out of luck...");
-      }
-
   }
 
   function displayUsersForAdmin(allUsers) {
@@ -886,6 +886,7 @@
       UpdateSideBarForAdminReturn();
     });
   }
+
   function UpdateSideBarForAdminReturn() {
     addGameButtonBox.classList.remove("hidden");
     viewPlayHistoryButtonBox.classList.remove("hidden");
@@ -896,6 +897,7 @@
     resetGameSelection();
     location.reload();
   }
+
   mergePlayerButton.addEventListener("click", function () {
     gamesContainer.style.display = "none";
     adminUserContainer.style.display = "flex";
@@ -973,7 +975,7 @@
     }
   }
   function DisplayAllGameplayHeader(winLoss) {
-    playHistoryContainer.innerHTML = `<div class = "gamesHeader"><h1>All Games Played</h1>
+    playHistoryContainer.innerHTML = `<div class = "gamesHeader"><h1>All Game Plays</h1>
       <p>${winLoss}</p></div>`;
     GetAllGameplayDataForUser();
   }
@@ -983,8 +985,9 @@
       JSON.parse(localStorage.getItem("selectedGame")).gameName
     }</h1>
       <p>${winLoss}</p></div>`;
-      GetSelectedGameplayDataForUser();
+    GetSelectedGameplayDataForUser();
   }
+
   function DisplayGameplays(responseData) {
     let gameplaysHTML = "";
     responseData.forEach((responseData) => {
@@ -1004,37 +1007,41 @@
     playHistoryContainer.innerHTML += gameplaysHTML;
     UpdateSideBarForGameHistory();
   }
-    function UpdateSideBarForGameHistory() {
-      addGameButtonBox.classList.add("hidden");
-      updateGameButtonBox.classList.add("hidden");
-      removeGameButtonBox.classList.add("hidden");
-      clearSelectionButtonBox.classList.add("hidden");
-      viewPlayHistoryButtonBox.classList.add("hidden");
-      recordGamePlayButtonBox.classList.add("hidden");
-      returnToMainButtonBox.classList.remove("hidden");
-      returnToMainButton.addEventListener("click", function () {
-        UpdateSideBarForGameHistoryReturn();
-      });
-    }
-    function UpdateSideBarForGameHistoryReturn() {
-      addGameButtonBox.classList.remove("hidden");
-      viewPlayHistoryButtonBox.classList.remove("hidden");
-      returnToMainButtonBox.classList.add("hidden");
-      resetGameSelection();
-      location.reload();
-    }
+
+  function UpdateSideBarForGameHistory() {
+    addGameButtonBox.classList.add("hidden");
+    updateGameButtonBox.classList.add("hidden");
+    removeGameButtonBox.classList.add("hidden");
+    clearSelectionButtonBox.classList.add("hidden");
+    viewPlayHistoryButtonBox.classList.add("hidden");
+    recordGamePlayButtonBox.classList.add("hidden");
+    adminMenu.classList.add("hidden");
+    returnToMainButtonBox.classList.remove("hidden");
+    returnToMainButton.addEventListener("click", function () {
+      UpdateSideBarForGameHistoryReturn();
+    });
+  }
+
+  function UpdateSideBarForGameHistoryReturn() {
+    addGameButtonBox.classList.remove("hidden");
+    viewPlayHistoryButtonBox.classList.remove("hidden");
+    returnToMainButtonBox.classList.add("hidden");
+    if (JSON.parse(localStorage.getItem("user")).IsAdmin) {
+      adminMenu.classList.remove("hidden");
+    }    
+    resetGameSelection();
+    location.reload();
+  }
+
   viewPlayHistoryButton.addEventListener("click", function () {
     gamesContainer.style.display = "none";
     playHistoryContainer.style.display = "flex";
-    try{
+    try {
       let gameID = JSON.parse(localStorage.getItem("selectedGame")).gameID;
       GetSelectedGameplayStatsForUser();
-    }
-    catch(error)
-    {
-      GetAllGameplayStatsForUser()
+    } catch (error) {
+      GetAllGameplayStatsForUser();
     }
   });
-//End of gameplay history
+  //End of gameplay history
 });
-
