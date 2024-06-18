@@ -52,4 +52,52 @@ public class UserService : IUserService
             throw new Exception(e.Message);
         }
     }
+
+    public async Task<List<UserAdminDTO>> GetAllUsersFromDB()
+    {
+        try
+        {
+            return await _userStorage.GetUsersFromDBForService();
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
+    }
+
+    public async Task<List<PlayerHasGamesDTO>> GetAllUnMatchedPlayersFromDB()
+    {
+        try
+        {
+            return await _userStorage.GetUnMatchedPlayersFromDBForService();
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
+    }
+
+    public async Task<string> MergePlayerRecords(MergePlayerRecordsDTO playersToMerge)
+    {
+        try
+        {
+            return await _userStorage.MergePlayersInDB(playersToMerge);
+        }
+        catch(Exception e)
+        {
+            throw new Exception(e.Message);
+        }
+    }
+
+    public async Task<string> UpdateAdminStatus(Guid userID, bool newAdminStatus)
+    {
+        try
+        {
+            return await _userStorage.UpdateAdminStatusInDB(userID, newAdminStatus);
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
+    }
 }

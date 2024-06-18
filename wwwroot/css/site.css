@@ -1,11 +1,11 @@
 :root {
   color-scheme: light dark;
 
-  --light-bg: ghostwhite;
+  /* --light-bg: ghostwhite; */
   --light-color: rgb(0, 0, 0);
   --light-code: tomato;
 
-  --dark-bg: #222335c9;
+  /* --dark-bg: #222335c9; */
   --dark-color: #69a2ee;
   --dark-code: gold;
 }
@@ -14,6 +14,7 @@
   background-color: light-dark(var(--light-bg), var(--dark-bg));
   color: light-dark(var(--light-color), var(--dark-color));
 }
+
 code {
   color: light-dark(var(--light-code), var(--dark-code));
 }
@@ -28,19 +29,30 @@ code {
   color-scheme: dark;
 }
 
-@media (min-width: 768px) {
+/* @media (min-width: 768px) {
   html {
     font-size: 16px;
   }
+} */
+
+@media (prefers-color-scheme: dark) {
+  html{
+    background-image: url("/wwwroot/dark.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: 100% 100%;
+  }
 }
 
-/* .btn:focus,
-.btn:active:focus,
-.btn-link.nav-link:focus,
-.form-control:focus,
-.form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-} */
+@media(prefers-color-scheme: light) {
+  html{
+    background-image: url("/wwwroot/light.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: 100% 100%;
+  }
+}
+
 
 html {
   position: relative;
@@ -104,7 +116,7 @@ body {
   margin-bottom: 10px;
   outline: none;
   border: none;
-  background-color: light-dark(#353535,#041525);
+  background-color: light-dark(#353535,#0f355c);
   color: light-dark(#fff,#69a2ee);
   padding: 10px 20px;
   border-radius: 10px;
@@ -226,7 +238,7 @@ body {
   margin-bottom: 10px;
   outline: none;
   border: none;
-  background-color: light-dark(#353535,#041525);
+  background-color: light-dark(#353535,#0f355c);
   color: light-dark(#fff,#69a2ee);
   padding: 10px 20px;
   border-radius: 10px;
@@ -236,4 +248,149 @@ body {
 
 .backImage {
   border: 5px solid black;
+}
+
+/* Admin Container Items */
+.admin_container {
+  width: 100%;
+  padding: 20px;
+  flex: 1;
+  display: flex;
+  flex-direction:row;
+  flex-wrap: wrap;
+  justify-content: left;
+}
+
+.userAdminHeader {
+  width: 100%;
+  border-bottom: solid 3px;
+  margin-bottom: 20px;
+}
+
+.userAdmin {
+  padding: 10px;
+  width: 20%;
+  overflow: hidden;
+  margin-right: 30px;
+  margin-bottom: 30px;
+  background-color: light-dark(rgb(93, 226, 171), #0b0633);
+  min-width: 150px;
+  max-width: 250px;
+  border: 2px solid light-dark(#353535,#9cc5fc);
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.userAdmin h2 {
+  margin-bottom: 10px;
+  background-color: inherit;
+  text-align: center;
+}
+
+.userAdmin p {
+  max-height: 200px;
+  overflow: auto;
+  margin-bottom: 10px;
+  font-size: 15px;
+  background-color: inherit;
+}
+
+.userNonAdmin {
+  padding: 10px;
+  width: 20%;
+  overflow: hidden;
+  margin-right: 30px;
+  margin-bottom: 30px;
+  background-color: light-dark(aliceblue, #1f1e27);
+  min-width: 150px;
+  max-width: 250px;
+  border: 2px solid light-dark(#353535,#2b7ac4);
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.userNonAdmin h2 {
+  margin-bottom: 10px;
+  background-color: inherit;
+  text-align: center;
+}
+
+.userNonAdmin p {
+  max-height: 200px;
+  overflow: auto;
+  margin-bottom: 10px;
+  font-size: 15px;
+  background-color: inherit;
+}
+
+.adminPlayer_container {
+  width: 100%;
+  padding: 20px;
+  flex: 1;
+  display: flex;
+  flex-direction:row;
+  flex-wrap: wrap;
+  justify-content: left;
+}
+
+.playerAdminHeader {
+  width: 100%;
+  border-bottom: solid 3px;
+  margin-bottom: 20px;
+}
+
+.playerAdmin {
+  padding: 10px;
+  width: 20%;
+  overflow: hidden;
+  margin-right: 30px;
+  margin-bottom: 30px;
+  background-color: light-dark(aliceblue, #1f1e27);
+  min-width: 150px;
+  max-width: 250px;
+  border: 2px solid light-dark(#353535,#2b7ac4);
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.playerAdmin h2 {
+  margin-bottom: 10px;
+  background-color: inherit;
+  text-align: center;
+}
+
+.playerAdmin p {
+  max-height: 200px;
+  overflow: auto;
+  margin-bottom: 10px;
+  font-size: 15px;
+  background-color: inherit;
+}
+
+.selectedPlayerAdmin {
+  padding: 10px;
+  width: 20%;
+  overflow: hidden;
+  margin-right: 30px;
+  margin-bottom: 30px;
+  background-color: light-dark(rgb(93, 226, 171), #0b0633);
+  min-width: 150px;
+  max-width: 250px;
+  border: 2px solid light-dark(#353535,#9cc5fc);
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.selectedPlayerAdmin h2 {
+  margin-bottom: 10px;
+  background-color: inherit;
+  text-align: center;
+}
+
+.selectedPlayerAdmin p {
+  max-height: 200px;
+  overflow: auto;
+  margin-bottom: 10px;
+  font-size: 15px;
+  background-color: inherit;
 }
