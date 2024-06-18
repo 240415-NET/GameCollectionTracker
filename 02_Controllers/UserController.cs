@@ -77,4 +77,54 @@ public class UserController : Controller
         }
 
     }
+    [HttpPatch("UpdateAdminStatus")]
+    public async Task<IActionResult> UpdateUserAdminStatus(Guid userID, [FromBody]bool newAdminStatus)
+    {
+        try
+        {
+            await _userService.UpdateAdminStatus(userID,newAdminStatus);
+            return Ok("Update Complete");
+        }
+        catch(Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
+    [HttpPatch("MergePlayers")]
+    public async Task<IActionResult> MergePlayers (MergePlayerRecordsDTO mergePlayerRecords)
+    {
+        try
+        {
+            await _userService.MergePlayerRecords(mergePlayerRecords);
+            return Ok("Merge Completed");
+        }
+        catch(Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
+    [HttpGet("GetMergePlayers")]
+    public async Task<IActionResult> GetPlayersForAdmin()
+    {
+        try
+        {
+            return Ok(await _userService.GetAllUnMatchedPlayersFromDB());
+        }
+        catch(Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
+    [HttpGet("GetUsersForAdminStatus")]
+    public async Task<ActionResult> GetUsersForAdminStatus()
+    {
+        try
+        {
+            return Ok(await _userService.GetAllUsersFromDB());
+        }
+        catch(Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
 }
