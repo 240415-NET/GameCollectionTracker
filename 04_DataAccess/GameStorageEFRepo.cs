@@ -139,6 +139,15 @@ public class GameStorageEFRepo : IGameStorageEFRepo
             }
             _gameContext.Games.Remove(selectedGame);
 
+            if(await _gameContext.GamesPlayed.AnyAsync(game => game.GameID == gameId))
+            {
+            List<GamePlayed?> selectedPlays = await _gameContext.GamesPlayed.Where(game => game.GameID == gameId).ToListAsync();
+            _gameContext.GamesPlayed.RemoveRange(selectedPlays);
+            GamePlayed? selectedGamePlayed = await _gameContext.GamesPlayed.FirstOrDefaultAsync(game => game.GameID == gameId);
+            List<GamePlayer?> selectedPlayers = await _gameContext.GamePlayers.Where(game => game.PlayedGameID == selectedGamePlayed.PlayedGameID).ToListAsync();
+            _gameContext.GamePlayers.RemoveRange(selectedPlayers);
+            }
+
             await _gameContext.SaveChangesAsync();
             return "Game deleted succesfully";
         }
