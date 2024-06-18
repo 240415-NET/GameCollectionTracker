@@ -183,17 +183,13 @@ public class EFUserStorageRepo : IEFUserStorageRepo
         {
             Player playerToRemove = await _gameContext.Players.FirstAsync(p => p.PlayerID == playersToMerge.discardPlayerID);
             List<GamePlayed> removePlayersGames = await _gameContext.GamesPlayed.Include(p => p.Players).Where(pl => pl.Players.Contains(playerToRemove)).ToListAsync();
+            Player remainingPlayer = await _gameContext.Players.FirstAsync(p => p.PlayerID == playersToMerge.keepPlayerID);
             if (removePlayersGames.Count > 1)
             {
-                for (int i = 0; i < removePlayersGames.Count; i++)
+                for(int i = 0; i < removePlayersGames.Count; i++)
                 {
-                    for (int j = 0; j < removePlayersGames[i].Players.Count; j++)
-                    {
-                        if (removePlayersGames[i].Players[j].PlayerID == playersToMerge.discardPlayerID)
-                        {
-                            removePlayersGames[i].Players[j].PlayerID = playersToMerge.keepPlayerID;
-                        }
-                    }
+                    removePlayersGames[i].Players.Remove(playerToRemove);
+                    removePlayersGames[i].Players.Add(remainingPlayer);
                 }
             }
             await _gameContext.SaveChangesAsync();
