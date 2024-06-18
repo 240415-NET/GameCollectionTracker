@@ -95,8 +95,8 @@ public class UserController : Controller
     {
         try
         {
-            await _userService.MergePlayerRecords(mergePlayerRecords);
-            return Ok("Merge Completed");
+            //await _userService.MergePlayerRecords(mergePlayerRecords);
+            return Ok(await _userService.MergePlayerRecords(mergePlayerRecords));
         }
         catch(Exception e)
         {

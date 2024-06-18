@@ -182,20 +182,22 @@ public class EFUserStorageRepo : IEFUserStorageRepo
         try
         {
             Player playerToRemove = await _gameContext.Players.FirstAsync(p => p.PlayerID == playersToMerge.discardPlayerID);
-            List<GamePlayed> removePlayersGames = await _gameContext.GamesPlayed.Include(p => p.Players).Where(pl => pl.Players.Contains(playerToRemove)).ToListAsync();
+            string RemovedPlayerName = playerToRemove.PlayerName;
+            List<GamePlayed> removePlayersGames = await _gameContext.GamesPlayed.Include(p => p.Players).Include(gp => gp.GamePlayers).Where(pl => pl.Players.Contains(playerToRemove)).ToListAsync();
             Player remainingPlayer = await _gameContext.Players.FirstAsync(p => p.PlayerID == playersToMerge.keepPlayerID);
-            if (removePlayersGames.Count > 1)
-            {
-                for(int i = 0; i < removePlayersGames.Count; i++)
-                {
-                    removePlayersGames[i].Players.Remove(playerToRemove);
-                    removePlayersGames[i].Players.Add(remainingPlayer);
-                }
-            }
-            await _gameContext.SaveChangesAsync();
             _gameContext.Players.Remove(playerToRemove);
             await _gameContext.SaveChangesAsync();
-            return "Player Record Updated";
+            for(int i=0; i<removePlayersGames.Count(); i++)
+            {
+                if(removePlayersGames[i].WinnerName == RemovedPlayerName)
+                {
+                    removePlayersGames[i].WinnerName = remainingPlayer.PlayerName;
+                }
+                removePlayersGames[i].Players.Add(remainingPlayer);
+            }
+            await _gameContext.SaveChangesAsync();
+
+            return $"Player {playerToRemove.PlayerName} Removed. {removePlayersGames.Count()} games updated.";
         }
         catch (Exception e)
         {

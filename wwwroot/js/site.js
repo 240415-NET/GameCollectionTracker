@@ -47,7 +47,43 @@
 
 //GAMEPLAY
 
+  //New GameContainer
+  const addGameContainer = document.querySelector("#AddGameContainer");
+  const addUpdateGameHeader = document.querySelector("#AddUpdateHeader");
+  const addGameName = document.querySelector("#addGameName");
+  const addGamePurchasePrice = document.querySelector("#addGamePurchasePrice");
+  const addGamePurchaseDate = document.querySelector("#addGamePurchaseDate");
+  const addGameMinPlayers = document.querySelector("#addGameMinPlayers");
+  const addGameMaxPlayers = document.querySelector("#addGameMaxPlayers");
+  const addGameExpectedDuration = document.querySelector(
+    "#addGameExpectedDuration"
+  );
+  const newGameBtn = document.querySelector("#btnCreateNewGame");
+  const btnResetGameForm = document.querySelector("#btnResetGameForm");
+  const btnResetUpdateForm = document.querySelector("#btnResetUpdateGame");
+  const btnSubmitUpdateGame = document.querySelector("#btnUpdateGameForm");
+  const btnCancelUpdateGame = document.querySelector("#btnCancelUpdateGame");
+  const GameNameMessage = document.querySelector("#GameNameMessage");
+  const GamePriceMessage = document.querySelector("#GamePriceMessage");
+  const GamePurchaseDateMessage = document.querySelector(
+    "#GamePurchaseDateMessage"
+  );
+  const MinPlayersMessage = document.querySelector("#MinPlayersMessage");
+  const MaxPlayersMessage = document.querySelector("#MaxPlayersMessage");
+  const ExpectedDurationMessage = document.querySelector(
+    "#ExpectedDurationMessage"
+  );
+  const btnCancelNewGame = document.querySelector("#btnCancelNewGame");
 
+  //Admin Functions
+  const adminUserContainer = document.querySelector(
+    "#AdminFunctionUserContainer"
+  );
+  const adminPlayerContainer = document.querySelector(
+    "#AdminFunctionPlayerContainer"
+  );
+  const mergePlayerButtonBox = document.querySelector("#MergePlayerButtonBox");
+  const mergeSelectedPlayerButton = document.querySelector("#mergePlayerBtn");
 
   //this is play history stuff
   const playHistoryContainer = document.querySelector("#PlayHistoryContainer");
@@ -277,6 +313,13 @@
     } else {
       adminMenu.classList.add("hidden");
     }
+    
+    addGameContainer.classList.add("hidden");
+    gamePlayContainer.style.display = "none";
+    playHistoryContainer.style.display = "none";
+    adminPlayerContainer.style.display = "none";
+    adminUserContainer.style.display = "none";
+    showSideBarButtons();
     getGamesOwnedByUser();
     resetGameSelection();
   }
@@ -534,6 +577,10 @@
     gamesContainer.innerHTML = "";
     gamesContainer.style.display = "flex";
     addGameContainer.classList.add("hidden");
+    gamePlayContainer.style.display = "none";
+    playHistoryContainer.style.display = "none";
+    adminPlayerContainer.style.display = "none";
+    adminUserContainer.style.display = "none";
   });
 
   addGameButton.addEventListener("click", () => {
@@ -542,34 +589,6 @@
     addUpdateGameHeader.textContent = "Add a New Game";
     addGameContainer.classList.remove("hidden");
   });
-
-  //New GameContainer
-  const addGameContainer = document.querySelector("#AddGameContainer");
-  const addUpdateGameHeader = document.querySelector("#AddUpdateHeader");
-  const addGameName = document.querySelector("#addGameName");
-  const addGamePurchasePrice = document.querySelector("#addGamePurchasePrice");
-  const addGamePurchaseDate = document.querySelector("#addGamePurchaseDate");
-  const addGameMinPlayers = document.querySelector("#addGameMinPlayers");
-  const addGameMaxPlayers = document.querySelector("#addGameMaxPlayers");
-  const addGameExpectedDuration = document.querySelector(
-    "#addGameExpectedDuration"
-  );
-  const newGameBtn = document.querySelector("#btnCreateNewGame");
-  const btnResetGameForm = document.querySelector("#btnResetGameForm");
-  const btnResetUpdateForm = document.querySelector("#btnResetUpdateGame");
-  const btnSubmitUpdateGame = document.querySelector("#btnUpdateGameForm");
-  const btnCancelUpdateGame = document.querySelector("#btnCancelUpdateGame");
-  const GameNameMessage = document.querySelector("#GameNameMessage");
-  const GamePriceMessage = document.querySelector("#GamePriceMessage");
-  const GamePurchaseDateMessage = document.querySelector(
-    "#GamePurchaseDateMessage"
-  );
-  const MinPlayersMessage = document.querySelector("#MinPlayersMessage");
-  const MaxPlayersMessage = document.querySelector("#MaxPlayersMessage");
-  const ExpectedDurationMessage = document.querySelector(
-    "#ExpectedDurationMessage"
-  );
-  const btnCancelNewGame = document.querySelector("#btnCancelNewGame");
 
   function resetGameForm() {
     addGameName.value = "";
@@ -644,15 +663,7 @@
     getGamesOwnedByUser();
   });
 
-  //Admin Functions
-  const adminUserContainer = document.querySelector(
-    "#AdminFunctionUserContainer"
-  );
-  const adminPlayerContainer = document.querySelector(
-    "#AdminFunctionPlayerContainer"
-  );
-  const mergePlayerButtonBox = document.querySelector("#MergePlayerButtonBox");
-  const mergeSelectedPlayerButton = document.querySelector("#mergePlayerBtn");
+//Admin code start
 
   async function getUsersForAdmin(forAdmin) {
     const response = await fetch(
@@ -724,7 +735,6 @@
       });
     });
   }
-
   function addClickEventToNonAdmins() {
     document.querySelectorAll(".userNonAdmin").forEach((user) => {
       user.addEventListener("click", function () {
@@ -753,7 +763,7 @@
       }
     );
     if (response.status == 200) {
-      alert("Player merged to existing user.");
+      alert(await response.text());
       location.reload();
     } else {
       alert(
@@ -805,25 +815,29 @@
     });
   }
 
+  function makeUserSelected() {
+    clearSelectedUserForAdmin();
+    this.classList.replace("userNonAdmin", "userAdmin");
+    addClickEventToUsersForMerge();
+    checkIfDisplayMergeButton();
+  }
+
+  function makePlayerSelected() {
+    clearSelectedPlayerForAdmin();
+    this.classList.replace("playerAdmin", "selectedPlayerAdmin");
+    addClickEventToPlayersForMerge();
+    checkIfDisplayMergeButton();
+  }
+
   function addClickEventToUsersForMerge() {
     document.querySelectorAll(".userNonAdmin").forEach((user) => {
-      user.addEventListener("click", function () {
-        clearSelectedUserForAdmin();
-        user.classList.replace("userNonAdmin", "userAdmin");
-        addClickEventToUsersForMerge();
-        checkIfDisplayMergeButton();
-      });
+      user.addEventListener("click", makeUserSelected);
     });
   }
 
   function addClickEventToPlayersForMerge() {
     document.querySelectorAll(".playerAdmin").forEach((player) => {
-      player.addEventListener("click", function () {
-        clearSelectedPlayerForAdmin();
-        player.classList.replace("playerAdmin", "selectedPlayerAdmin");
-        addClickEventToPlayersForMerge();
-        checkIfDisplayMergeButton();
-      });
+      player.addEventListener("click", makePlayerSelected);
     });
   }
 
@@ -929,6 +943,8 @@
     UpdateSideBarForAdmin();
     getUsersForAdmin(true);
   });
+  //end of admin functions
+
   // View Gameplay code
 
   async function GetAllGameplayDataForUser() {
@@ -1007,7 +1023,6 @@
   function DisplayGameplays(responseData) {
     let gameplaysHTML = "";
     responseData.forEach((responseData) => {
-      console.log(responseData.gameName);
       let gameplayElement = `
           <div class = "game">
           <h2>${responseData.gameName}</h2>
