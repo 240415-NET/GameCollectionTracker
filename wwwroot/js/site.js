@@ -44,6 +44,7 @@
   const btnSubmitPlayer = document.getElementById("btnSubmitPlayer");
   const winnerName = document.getElementById("winnerName");
   const btnSaveGamePlay = document.getElementById("btnSaveGamePlay");
+  const btnCancelPlayer = document.querySelector("#btnCancelPlayer");
 
 //GAMEPLAY
 
@@ -115,6 +116,29 @@
   const rePasswordMessage = document.querySelector("#RePasswordMessage");
   const firstNameMessage = document.querySelector("#FirstNameMessage");
   const lastNameMessage = document.querySelector("#LastNameMessage");
+
+  //diceroller stuff
+  function rollDice() {
+    const dice = [...document.querySelectorAll(".die-list")];
+    dice.forEach(die => {
+      toggleClasses(die);
+      die.dataset.roll = getRandomNumber(1, 6);
+      // die.dataset.roll = 1;
+    });
+  }
+  
+  function toggleClasses(die) {
+    die.classList.toggle("odd-roll");
+    die.classList.toggle("even-roll");
+  }
+  
+  function getRandomNumber(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }  
+  setInterval(rollDice, 10000);
+  //end diceroller stuff
 
   //For a reload with a user logged in
   const storedUser = JSON.parse(localStorage.getItem("user"));
@@ -219,6 +243,7 @@
         document.querySelectorAll(".foundPlayer").forEach((player) => {
           player.addEventListener("click", function () {
             addNewUserWithPlayer(player.dataset.id);
+            rollDice();
           });
         });
       }
@@ -347,6 +372,7 @@
 
     document.querySelectorAll(".game").forEach((game) => {
       game.addEventListener("click", function () {
+        rollDice();
         UsersGameClick(game.dataset.id);
       });
     });
@@ -387,6 +413,7 @@
   }
 
   removeGameButton.addEventListener("click", function () {
+    rollDice();
     if (
       confirm(
         "All recorded game plays for this game will also be deleted. Are you sure you want to remove it?"
@@ -413,14 +440,17 @@
     btnSubmitUpdateGame.classList.remove("hidden");
     btnCancelNewGame.classList.add("hidden");
     btnCancelUpdateGame.classList.remove("hidden");
+    rollDice();
     btnResetUpdateForm.addEventListener("click", function () {
       PopulateUpdateGameForm();
+      rollDice();
     });
 
     btnCancelUpdateGame.addEventListener("click", function () {
       resetGameForm();
       resetGameUpdate();
       showSideBarButtons();
+      rollDice();
     });
     PopulateUpdateGameForm();
     btnSubmitUpdateGame.addEventListener("click", function () {
@@ -441,6 +471,7 @@
         UpdateSelectedGame();
         resetGameSelection();
         location.reload();
+        rollDice();
       }
     });
     hideSideBarButtons();
@@ -518,6 +549,7 @@
     clearSelectionButtonBox.classList.add("hidden");
     recordGamePlayButtonBox.classList.add("hidden");
     addGameButtonBox.classList.remove("hidden");
+    rollDice();
   });
 
   newUserBtn.addEventListener("click", async function () {
@@ -547,10 +579,12 @@
         displayPlayers(players);
       }
     }
+    rollDice();
   });
 
   resetNewUserFormBtn.addEventListener("click", function () {
     resetNewUserForm();
+    rollDice();
   });
 
   loginButton.addEventListener("click", async () => {
@@ -560,20 +594,22 @@
     } else if (!loginPassWord.value) {
       loginPasswordError.textContent = "Password cannot be blank!";
     }
+    rollDice();
     LogInUser(loginGamerTag.value, loginPassWord.value);
   });
 
   createUserButton.addEventListener("click", () => {
     loginContainer.classList.add("hidden");
     newUserContainer.classList.remove("hidden");
+    rollDice();
   });
 
   newUserBackToLoginBtn.addEventListener("click", () => {
     resetNewUserForm();
     loginContainer.classList.remove("hidden");
     newUserContainer.classList.add("hidden");
+    rollDice();
   });
-
   logoutButton.addEventListener("click", () => {
     localStorage.removeItem("user");
     loginContainer.classList.remove("hidden");
@@ -586,6 +622,7 @@
     playHistoryContainer.style.display = "none";
     adminPlayerContainer.style.display = "none";
     adminUserContainer.style.display = "none";
+    rollDice();
   });
 
   addGameButton.addEventListener("click", () => {
@@ -593,6 +630,7 @@
     gamesContainer.style.display = "none";
     addUpdateGameHeader.textContent = "Add a New Game";
     addGameContainer.classList.remove("hidden");
+    rollDice();
   });
 
   function resetGameForm() {
@@ -638,6 +676,7 @@
   }
 
   newGameBtn.addEventListener("click", async function () {
+    rollDice();
     resetGameFormWarnings();
     if (!addGameName.value) {
       GameNameMessage.textContent = "Game Name cannot be blank!";
@@ -658,6 +697,7 @@
   });
 
   btnResetGameForm.addEventListener("click", function () {
+    rollDice();
     resetGameForm();
   });
 
@@ -665,6 +705,7 @@
     showSideBarButtons();
     gamesContainer.style.display = "flex";
     addGameContainer.classList.add("hidden");
+    rollDice();
     getGamesOwnedByUser();
   });
 
@@ -736,6 +777,7 @@
         let newHTML = user.innerHTML;
         newHTML = newHTML.replace("<p>Admin</p>", "<p>Not an Admin</p>");
         user.innerHTML = newHTML;
+        rollDice();
         updateAdminStatus(user.dataset.id, false);
       });
     });
@@ -747,6 +789,7 @@
         let newHTML = user.innerHTML;
         newHTML = newHTML.replace("<p>Not an Admin</p>", "<p>Admin</p>");
         user.innerHTML = newHTML;
+        rollDice();
         updateAdminStatus(user.dataset.id, true);
       });
     });
@@ -825,6 +868,7 @@
     this.classList.replace("userNonAdmin", "userAdmin");
     addClickEventToUsersForMerge();
     checkIfDisplayMergeButton();
+    rollDice();
   }
 
   function makePlayerSelected() {
@@ -832,6 +876,7 @@
     this.classList.replace("playerAdmin", "selectedPlayerAdmin");
     addClickEventToPlayersForMerge();
     checkIfDisplayMergeButton();
+    rollDice();
   }
 
   function addClickEventToUsersForMerge() {
@@ -856,6 +901,7 @@
         const usersPlayerID = document.querySelector(".userAdmin").dataset.id;
         const playersPlayerID = document.querySelector(".selectedPlayerAdmin")
           .dataset.id;
+          rollDice();
         mergePlayers(usersPlayerID, playersPlayerID);
       });
     } else {
@@ -919,6 +965,7 @@
     mergePlayerButton.classList.add("hidden");
     returnToMainButton.addEventListener("click", function () {
       UpdateSideBarForAdminReturn();
+      rollDice();
     });
   }
 
@@ -940,6 +987,7 @@
     UpdateSideBarForAdmin();
     getUsersForAdmin(false);
     getPlayersForAdmin();
+    rollDice();
   });
 
   manageAdminButton.addEventListener("click", function () {
@@ -947,6 +995,7 @@
     adminUserContainer.style.display = "flex";
     UpdateSideBarForAdmin();
     getUsersForAdmin(true);
+    rollDice();
   });
   //end of admin functions
 
@@ -1056,6 +1105,7 @@
     returnToMainButtonBox.classList.remove("hidden");
     returnToMainButton.addEventListener("click", function () {
       UpdateSideBarForGameHistoryReturn();
+      rollDice();
     });
   }
 
@@ -1074,6 +1124,7 @@
     gamesContainer.style.display = "none";
     playHistoryContainer.style.display = "flex";
     if(JSON.parse(localStorage.getItem("selectedGame") || "null"))
+    rollDice();
       GetSelectedGameplayStatsForUser();
     else{
       GetAllGameplayStatsForUser();
@@ -1081,10 +1132,15 @@
   });
 //End of gameplay history
 
-
 //BEGINNING OF RECORD GAME PLAY 
 
 let loggedInPlayerId = ""; 
+
+btnCancelPlayer.addEventListener("click", function () {
+gamePlayContainer.style.display = "none";
+gamesContainer.style.display = "flex";
+showSideBarButtons(); 
+});
 
 recordGamePlayButton.addEventListener("click", function () {
     // Show the game play form
@@ -1092,27 +1148,27 @@ recordGamePlayButton.addEventListener("click", function () {
     gamesContainer.style.display = "none";
     gamePlayForm.style.display = "block";
     hideSideBarButtons();
+
     const recordGameHeader = document.querySelector("#RecordGameHeader");
     const playerLabel = document.querySelector("#PlayerLabel")
     recordGameHeader.textContent = `Record Game Play for ${JSON.parse(localStorage.getItem("selectedGame")).gameName}`;
     playerLabel.textContent = `Select ${JSON.parse(localStorage.getItem("selectedGame")).minPlayers-1} to ${JSON.parse(localStorage.getItem("selectedGame")).maxPlayers-1} Players`
     btnAddPlayer.addEventListener("click", function () {
-      console.log("I see you want to add a player");
       addPlayerForm.style.display = "block";
+      rollDice();
     });
 
     btnSaveGamePlay.addEventListener("click", function () {
-      console.log("I see you clicked to save a game");
       SaveGamePlay();
+      rollDice();
     });
     btnSubmitPlayer.addEventListener("click", function () {
-      console.log("I see you clicked to save a player");
       SubmitNewPlayer();
+      rollDice();
     });    
     fetchOtherPlayers();
+    rollDice();
 });
-
-
 
 async function fetchOtherPlayers() {
   try {
@@ -1153,49 +1209,37 @@ function populatePlayersCheckboxList(players) {
 async function SubmitNewPlayer() {
   try {
       const playerName = newPlayerName.value;
-      
-      // Generate a temporary unique ID for new players in UI
-      const playerId = `temp-${Date.now()}`;
 
+      const response = await fetch(`http://localhost:5071/api/Player/AddPlayer`, {
+          method: "POST",
+          headers: {
+              "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ playerName })
+      });
+
+      if (!response.ok) {
+          throw new Error(`Failed to add player: ${response.status}`);
+      }
+
+      const addedPlayer = await response.json();
+      
       // Add player to UI
       const checkbox = document.createElement("input");
       checkbox.type = "checkbox";
-      checkbox.id = `player-${playerId}`;
-      checkbox.value = playerId;
+      checkbox.id = `player-${addedPlayer.playerID}`;
+      checkbox.value = addedPlayer.playerID;
       checkbox.checked = true; // Auto-check newly added player
 
       //create label element for player
       const label = document.createElement("label");
-      label.textContent = playerName; //set text content of label to player's name
-      label.setAttribute("for", `player-${playerId}`); //set "for" attribute of label to match the checkboxID
-
+      label.textContent = addedPlayer.playerName; //set text content of label to player's name
+      label.setAttribute("for", `player-${addedPlayer.playerID}`); //set "for" attribute of label to match the checkboxID
+      
       playersCheckboxList.appendChild(checkbox);
       playersCheckboxList.appendChild(label);
       playersCheckboxList.appendChild(document.createElement("br"));
-
-              
-                   // For playerId starting with 'temp-' for temporary UI added players
-                   if (playerId.startsWith('temp-')) {
-                       // Add this player to the database
-                       const playerName = document.querySelector(`label[for=player-${playerId}]`).textContent;
-                       const response = await fetch(`http://localhost:5071/api/Player/AddPlayer`, {
-                           method: "POST",
-                           headers: {
-                               "Content-Type": "application/json"
-                           },
-                           body: JSON.stringify({ playerName })
-                       });
-     
-                       if (!response.ok) {
-                           throw new Error(`Failed to add player: ${response.status}`);
-                       }
-     
-                       // Retrieve the newly added player's ID from the response
-                       const addedPlayer = await response.json();
-                       selectedPlayers.push(addedPlayer.playerID);
-                   }
-          
-
+      
       // Reset form and hide it
       newPlayerName.value = "";
       addPlayerForm.style.display = "none";
@@ -1209,14 +1253,42 @@ async function SaveGamePlay() {
       const selectedGameId = JSON.parse(localStorage.getItem("selectedGame")).gameID;
       let selectedPlayers = Array.from(playersCheckboxList.querySelectorAll("input[type=checkbox]:checked")).map(checkbox => checkbox.value);
       selectedPlayers.push(JSON.parse(localStorage.getItem("user")).PlayerID);
-      const winner = winnerName.value;
-
+      const winner = winnerName.value.trim();
+      
+      const selectedGame = JSON.parse(localStorage.getItem("selectedGame"));
+      const minPlayers = selectedGame.minPlayers - 1;
+      const maxPlayers = selectedGame.maxPlayers - 1;
+      const loggedInPlayerGamerTag = JSON.parse(localStorage.getItem("user")).GamerTag;
+    
+      let selectedPlayerNames = Array.from(playersCheckboxList.querySelectorAll("input[type=checkbox]:checked")).map(checkbox =>{
+        const label = playersCheckboxList.querySelector(`label[for=${checkbox.id}]`);
+        return label ? label.textContent.trim():"";
+      });
+    
+      selectedPlayerNames.push(loggedInPlayerGamerTag);
+    
+      //Validation
+      if (!selectedPlayerNames.includes(winner) && winner !== loggedInPlayerGamerTag){
+        alert(`Please select a valid winner from the players list or yourself. 
+        winner: ${winner} // loggedInPlayerGamerTag: ${loggedInPlayerGamerTag}`);
+        return ;
+      }
+    
+      if (selectedPlayerNames.length <= minPlayers){
+        alert (`Please select at least ${minPlayers} player(s)`);
+        return ;
+      }
+    
+      if (selectedPlayerNames.length > maxPlayers){
+        alert (`Please select at most ${maxPlayers} players`);
+        return ;
+      }
+    
       const gamePlayedData = {
           gameID: selectedGameId,
           players: selectedPlayers,
           winnerName: winner
       };
-
 
       // Record the game play with all selected players
       const recordResponse = await fetch(`http://localhost:5071/api/Game/RecordPlay`, {
@@ -1245,6 +1317,5 @@ async function SaveGamePlay() {
       console.error("Error recording game play:", error);
   }
 }
-
 //END OF RECORD GAME PLAY
 });

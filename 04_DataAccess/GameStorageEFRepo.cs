@@ -111,8 +111,9 @@ public class GameStorageEFRepo : IGameStorageEFRepo
         List<string> gameListWinners = singleGameList.Where(winner => !string.IsNullOrEmpty(winner.WinnerName)).Select(winner => winner.WinnerName).ToList();
         int playerWins = gameListWinners.Count(winner => winner == currentPlayer.PlayerName);
         int plays = singleGameList.Count;
+        double winPercentage = (double)playerWins / plays;
 
-        return $"Plays - {plays} Wins - {playerWins} Win % - {(float)(playerWins/plays):P2}";
+        return $"Plays - {plays} Wins - {playerWins} Win % - {winPercentage:P2}%";
     }
     ///
     public async Task<string> AddGameToDBAsync(Game gameInfo)

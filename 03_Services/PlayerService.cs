@@ -14,9 +14,9 @@ namespace GameCollectionTracker.Services;
         }
 
 
-        public async Task<string> AddPlayerAsync(Player player)
+        public async Task<Player> AddPlayerAsync(Player player)
         {
-             string result = await _playerStorageEFRepo.AddPlayerAsync(player);
+             Player result = await _playerStorageEFRepo.AddPlayerAsync(player);
              return result;
 
         }
