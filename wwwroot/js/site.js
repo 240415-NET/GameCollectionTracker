@@ -204,7 +204,7 @@
         const responsedata = await response.json();
         DisplayUsersGames(responsedata.selectedGames);
       } catch (error) {
-        //maybe do nothing
+        console.error(error);
       }
     }
   }
@@ -1025,7 +1025,7 @@
       }
       DisplayAllGameplayHeader(responseData);
     } catch (error) {
-      //need to add error display or handle the error in some way.  Maybe... maybe not. I mean, it already works?
+      console.error(error);
     }
   }
   async function GetSelectedGameplayDataForUser() {
@@ -1056,7 +1056,7 @@
       }
       DisplaySelectedGameplayHeader(responseData);
     } catch (error) {
-      //need to add error display or handle the error in some way.  Maybe... maybe not. I mean, it already works?
+      console.error(error);
     }
   }
   function DisplayAllGameplayHeader(winLoss) {

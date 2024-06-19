@@ -500,6 +500,7 @@ body {
   height: 140px;
   overflow: hidden;
   width: 12%;
+  min-width: 150px;
   border-bottom: solid 2px light-dark( #ccc, #2353ad);
 }
 
@@ -509,6 +510,8 @@ body {
   height: 140px;
   overflow: hidden;
   width: 76%;
+  max-width: 76%;
+  min-width: 10%;
   border-bottom: solid 2px light-dark( #ccc, #2353ad);
   justify-content: center;
   text-align: center;
