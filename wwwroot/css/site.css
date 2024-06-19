@@ -99,9 +99,9 @@ body {
 }
 
 .games_sidebar {
-  width: 300px;
+  width: 270px;
   height: 100vh;
-  border-right: 2px solid #ccc;
+  border-right: solid 2px light-dark( #ccc, #2353ad);
   padding: 50px;
 }
 
@@ -426,24 +426,62 @@ body {
 }
 /* dice stuff */
 
+.headerContainer {
+  width: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction:row;
+  flex-wrap: wrap;
+  justify-content: left;
+}
+
 .diceroll-container{
   display: grid;
   grid-template-columns: 1fr;
   height: 140px;
   overflow: hidden;
-  width: 100%;
-  border-bottom: solid 2px #ccc;
+  width: 12%;
+  border-bottom: solid 2px light-dark( #ccc, #2353ad);
+
 }
+
+.diceroll-container2{
+  display: grid;
+  grid-template-columns: 1fr;
+  height: 140px;
+  overflow: hidden;
+  width: 76%;
+  border-bottom: solid 2px light-dark( #ccc, #2353ad);
+  justify-content: center;
+  text-align: center;
+}
+
+.diceroll-container2 h1 {
+  font-size: 55px;
+}
+
 .dice {
   align-items: center;
   display: grid;
-  grid-gap: 2rem;
+  grid-gap: 1rem;
   grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
   grid-template-rows: auto;
   justify-items: left;
   padding: 2rem;
+  perspective: 1300px;  
+}
+
+.dice2 {
+  align-items: center;
+  display: grid;
+  grid-gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+  grid-template-rows: auto;
+  justify-items: right;
+  padding: 2rem;
   perspective: 1500px;  
 }
+
 .die-list {
   display: grid;
   grid-template-columns: 1fr;
@@ -602,5 +640,11 @@ body {
 }
 [data-side="6"] .dot:nth-of-type(6) {
   grid-area: nine;
+}
+
+@media (min-width: 900px) {
+  .dice {
+    perspective: 1300px;
+  }
 }
 /* end dice stuff */
