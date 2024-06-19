@@ -15,12 +15,12 @@ namespace GameCollectionTracker.Data;
         }
 
 
-        public async Task<string> AddPlayerAsync(Player playerToAdd)
+        public async Task<Player> AddPlayerAsync(Player playerToAdd)
         {
            bool userExists = await _context.Users.AnyAsync(u => u.GamerTag == playerToAdd.PlayerName);
            if (userExists)
            {
-               return $"Player '{playerToAdd.PlayerName}' already exists";
+               throw new InvalidOperationException($"Player '{playerToAdd.PlayerName}' already exists");
            }
 
             playerToAdd.PlayerID = Guid.NewGuid();
@@ -29,7 +29,7 @@ namespace GameCollectionTracker.Data;
             _context.Players.Add(playerToAdd);
             await _context.SaveChangesAsync();
 
-            return $"Player '{playerToAdd.PlayerName}' added successfully!";
+            return playerToAdd;
         }
 
          

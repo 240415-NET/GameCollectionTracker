@@ -20,22 +20,12 @@ namespace GameCollectionTracker.Controllers;
         [HttpPost("AddPlayer")]
         public async Task<IActionResult> AddPlayer(Player player)
         {
-                //Call to AddPlayerAsync method of Player Service to add the player
-                string result = await _playerService.AddPlayerAsync(player);
+                
+            Player addedPlayer= await _playerService.AddPlayerAsync(player); 
 
-                 if (result.Contains("added successfully"))
-                 {
-                     return Ok(result); 
-                 }
-                  else
-                {
-                    return BadRequest(result);
-                }
-
-   
-        }   
-
-      
+            return Ok(addedPlayer);
+              
+        }
 
         //Get
         [HttpGet("otherplayers/{loggedInPlayerId}")]
