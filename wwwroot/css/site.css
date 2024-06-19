@@ -425,6 +425,44 @@ body {
   background-color: inherit;
 }
 
+.gameHistory {
+  padding: 10px;
+  width: 20%;
+  overflow: hidden;
+  margin-right: 30px;
+  margin-bottom: 30px;
+  background-color: light-dark(aliceblue, #1f1e27);
+  min-width: 150px;
+  max-width: 250px;
+  border: 2px solid light-dark(#353535,#2b7ac4);
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.gameHistory ul {
+  background-color: inherit;
+  font-size: 15px;
+}
+
+.gameHistory li {
+  background-color: inherit;
+  font-size: 13px;;
+}
+
+.gameHistory h2 {
+  margin-bottom: 10px;
+  background-color: inherit;
+  text-align: center;
+}
+
+.gameHistory p {
+  max-height: 200px;
+  overflow: auto;
+  margin-bottom: 10px;
+  font-size: 15px;
+  background-color: inherit;
+}
+
 .recordGamePlay button{
   margin-bottom: 5px;
   outline: none;
@@ -463,7 +501,6 @@ body {
   overflow: hidden;
   width: 12%;
   border-bottom: solid 2px light-dark( #ccc, #2353ad);
-
 }
 
 .titleContainer{

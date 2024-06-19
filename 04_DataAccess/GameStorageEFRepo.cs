@@ -21,7 +21,6 @@ public class GameStorageEFRepo : IGameStorageEFRepo
     {
         GameListDTO resultDTO = new();
         resultDTO.selectedGames = await _gameContext.Games
-            //.Include(game => game.Owner)
             .Where(game => game.UserID == userIdFromService)
             .ToListAsync();
 

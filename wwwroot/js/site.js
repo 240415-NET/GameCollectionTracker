@@ -48,7 +48,43 @@
 
 //GAMEPLAY
 
+  //New GameContainer
+  const addGameContainer = document.querySelector("#AddGameContainer");
+  const addUpdateGameHeader = document.querySelector("#AddUpdateHeader");
+  const addGameName = document.querySelector("#addGameName");
+  const addGamePurchasePrice = document.querySelector("#addGamePurchasePrice");
+  const addGamePurchaseDate = document.querySelector("#addGamePurchaseDate");
+  const addGameMinPlayers = document.querySelector("#addGameMinPlayers");
+  const addGameMaxPlayers = document.querySelector("#addGameMaxPlayers");
+  const addGameExpectedDuration = document.querySelector(
+    "#addGameExpectedDuration"
+  );
+  const newGameBtn = document.querySelector("#btnCreateNewGame");
+  const btnResetGameForm = document.querySelector("#btnResetGameForm");
+  const btnResetUpdateForm = document.querySelector("#btnResetUpdateGame");
+  const btnSubmitUpdateGame = document.querySelector("#btnUpdateGameForm");
+  const btnCancelUpdateGame = document.querySelector("#btnCancelUpdateGame");
+  const GameNameMessage = document.querySelector("#GameNameMessage");
+  const GamePriceMessage = document.querySelector("#GamePriceMessage");
+  const GamePurchaseDateMessage = document.querySelector(
+    "#GamePurchaseDateMessage"
+  );
+  const MinPlayersMessage = document.querySelector("#MinPlayersMessage");
+  const MaxPlayersMessage = document.querySelector("#MaxPlayersMessage");
+  const ExpectedDurationMessage = document.querySelector(
+    "#ExpectedDurationMessage"
+  );
+  const btnCancelNewGame = document.querySelector("#btnCancelNewGame");
 
+  //Admin Functions
+  const adminUserContainer = document.querySelector(
+    "#AdminFunctionUserContainer"
+  );
+  const adminPlayerContainer = document.querySelector(
+    "#AdminFunctionPlayerContainer"
+  );
+  const mergePlayerButtonBox = document.querySelector("#MergePlayerButtonBox");
+  const mergeSelectedPlayerButton = document.querySelector("#mergePlayerBtn");
 
   //this is play history stuff
   const playHistoryContainer = document.querySelector("#PlayHistoryContainer");
@@ -164,8 +200,13 @@
       }`
     );
     if (response.status == 200) {
+      try{
       const responsedata = await response.json();
       DisplayUsersGames(responsedata.selectedGames);
+      }
+      catch(error){
+        //maybe do nothing
+      }
     }
   }
 
@@ -302,6 +343,13 @@
     } else {
       adminMenu.classList.add("hidden");
     }
+    
+    addGameContainer.classList.add("hidden");
+    gamePlayContainer.style.display = "none";
+    playHistoryContainer.style.display = "none";
+    adminPlayerContainer.style.display = "none";
+    adminUserContainer.style.display = "none";
+    showSideBarButtons();
     getGamesOwnedByUser();
     resetGameSelection();
   }
@@ -570,6 +618,10 @@
     gamesContainer.innerHTML = "";
     gamesContainer.style.display = "flex";
     addGameContainer.classList.add("hidden");
+    gamePlayContainer.style.display = "none";
+    playHistoryContainer.style.display = "none";
+    adminPlayerContainer.style.display = "none";
+    adminUserContainer.style.display = "none";
     rollDice();
   });
 
@@ -580,34 +632,6 @@
     addGameContainer.classList.remove("hidden");
     rollDice();
   });
-
-  //New GameContainer
-  const addGameContainer = document.querySelector("#AddGameContainer");
-  const addUpdateGameHeader = document.querySelector("#AddUpdateHeader");
-  const addGameName = document.querySelector("#addGameName");
-  const addGamePurchasePrice = document.querySelector("#addGamePurchasePrice");
-  const addGamePurchaseDate = document.querySelector("#addGamePurchaseDate");
-  const addGameMinPlayers = document.querySelector("#addGameMinPlayers");
-  const addGameMaxPlayers = document.querySelector("#addGameMaxPlayers");
-  const addGameExpectedDuration = document.querySelector(
-    "#addGameExpectedDuration"
-  );
-  const newGameBtn = document.querySelector("#btnCreateNewGame");
-  const btnResetGameForm = document.querySelector("#btnResetGameForm");
-  const btnResetUpdateForm = document.querySelector("#btnResetUpdateGame");
-  const btnSubmitUpdateGame = document.querySelector("#btnUpdateGameForm");
-  const btnCancelUpdateGame = document.querySelector("#btnCancelUpdateGame");
-  const GameNameMessage = document.querySelector("#GameNameMessage");
-  const GamePriceMessage = document.querySelector("#GamePriceMessage");
-  const GamePurchaseDateMessage = document.querySelector(
-    "#GamePurchaseDateMessage"
-  );
-  const MinPlayersMessage = document.querySelector("#MinPlayersMessage");
-  const MaxPlayersMessage = document.querySelector("#MaxPlayersMessage");
-  const ExpectedDurationMessage = document.querySelector(
-    "#ExpectedDurationMessage"
-  );
-  const btnCancelNewGame = document.querySelector("#btnCancelNewGame");
 
   function resetGameForm() {
     addGameName.value = "";
@@ -685,15 +709,7 @@
     getGamesOwnedByUser();
   });
 
-  //Admin Functions
-  const adminUserContainer = document.querySelector(
-    "#AdminFunctionUserContainer"
-  );
-  const adminPlayerContainer = document.querySelector(
-    "#AdminFunctionPlayerContainer"
-  );
-  const mergePlayerButtonBox = document.querySelector("#MergePlayerButtonBox");
-  const mergeSelectedPlayerButton = document.querySelector("#mergePlayerBtn");
+//Admin code start
 
   async function getUsersForAdmin(forAdmin) {
     const response = await fetch(
@@ -766,7 +782,6 @@
       });
     });
   }
-
   function addClickEventToNonAdmins() {
     document.querySelectorAll(".userNonAdmin").forEach((user) => {
       user.addEventListener("click", function () {
@@ -796,7 +811,7 @@
       }
     );
     if (response.status == 200) {
-      alert("Player merged to existing user.");
+      alert(await response.text());
       location.reload();
     } else {
       alert(
@@ -848,27 +863,31 @@
     });
   }
 
+  function makeUserSelected() {
+    clearSelectedUserForAdmin();
+    this.classList.replace("userNonAdmin", "userAdmin");
+    addClickEventToUsersForMerge();
+    checkIfDisplayMergeButton();
+    rollDice();
+  }
+
+  function makePlayerSelected() {
+    clearSelectedPlayerForAdmin();
+    this.classList.replace("playerAdmin", "selectedPlayerAdmin");
+    addClickEventToPlayersForMerge();
+    checkIfDisplayMergeButton();
+    rollDice();
+  }
+
   function addClickEventToUsersForMerge() {
     document.querySelectorAll(".userNonAdmin").forEach((user) => {
-      user.addEventListener("click", function () {
-        clearSelectedUserForAdmin();
-        user.classList.replace("userNonAdmin", "userAdmin");
-        addClickEventToUsersForMerge();
-        checkIfDisplayMergeButton();
-        rollDice();
-      });
+      user.addEventListener("click", makeUserSelected);
     });
   }
 
   function addClickEventToPlayersForMerge() {
     document.querySelectorAll(".playerAdmin").forEach((player) => {
-      player.addEventListener("click", function () {
-        clearSelectedPlayerForAdmin();
-        player.classList.replace("playerAdmin", "selectedPlayerAdmin");
-        addClickEventToPlayersForMerge();
-        checkIfDisplayMergeButton();
-        rollDice();
-      });
+      player.addEventListener("click", makePlayerSelected);
     });
   }
 
@@ -978,6 +997,8 @@
     getUsersForAdmin(true);
     rollDice();
   });
+  //end of admin functions
+
   // View Gameplay code
 
   async function GetAllGameplayDataForUser() {
@@ -989,7 +1010,7 @@
       const responseData = await response.json();
       DisplayGameplays(responseData);
     } catch (error) {
-      playHistoryContainer.innerHTML += `<div class = "game"><h2>No Games Played</h2></div>`;
+      playHistoryContainer.innerHTML += `<div class = "gameHistory"><h2>No Games Played</h2></div>`;
       UpdateSideBarForGameHistory();
     }
   }
@@ -1056,9 +1077,8 @@
   function DisplayGameplays(responseData) {
     let gameplaysHTML = "";
     responseData.forEach((responseData) => {
-      console.log(responseData.gameName);
       let gameplayElement = `
-          <div class = "game">
+          <div class = "gameHistory">
           <h2>${responseData.gameName}</h2>
           <p style="text-align: center;">Owned By: ${responseData.gameOwner}<p>
           <p>Winner: ${responseData.winnerName}</p>
@@ -1103,11 +1123,10 @@
   viewPlayHistoryButton.addEventListener("click", function () {
     gamesContainer.style.display = "none";
     playHistoryContainer.style.display = "flex";
+    if(JSON.parse(localStorage.getItem("selectedGame") || "null"))
     rollDice();
-    try {
-      let gameID = JSON.parse(localStorage.getItem("selectedGame")).gameID;
       GetSelectedGameplayStatsForUser();
-    } catch (error) {
+    else{
       GetAllGameplayStatsForUser();
     }
   });
