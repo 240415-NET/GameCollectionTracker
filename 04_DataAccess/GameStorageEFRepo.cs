@@ -80,7 +80,7 @@ public class GameStorageEFRepo : IGameStorageEFRepo
         int plays = allGamesPlayed.Count;
         double winPercentage = (double)playerWins / plays;
 
-        return $"Plays - {plays} Wins - {playerWins} Win % - {winPercentage:P2}%";
+        return $"Plays - {plays} Wins - {playerWins} Win % - {winPercentage:P2}";
     }
     public async Task<List<GamePlayDTO>> ViewPlaysOfSpecificGameByUser(Guid playerID, Guid gameID)
     {
@@ -114,7 +114,7 @@ public class GameStorageEFRepo : IGameStorageEFRepo
         int plays = singleGameList.Count;
         double winPercentage = (double)playerWins / plays;
 
-        return $"Plays - {plays} Wins - {playerWins} Win % - {winPercentage:P2}%";
+        return $"Plays - {plays} Wins - {playerWins} Win % - {winPercentage:P2}";
     }
     ///
     public async Task<string> AddGameToDBAsync(Game gameInfo)

@@ -1291,8 +1291,7 @@
         !selectedPlayerNames.includes(winner) &&
         winner !== loggedInPlayerGamerTag
       ) {
-        alert(`Please select a valid winner from the players list or yourself. 
-        winner: ${winner} // loggedInPlayerGamerTag: ${loggedInPlayerGamerTag}`);
+        alert(`Please select a valid winner from the players list or yourself.`);
         return;
       }
 
