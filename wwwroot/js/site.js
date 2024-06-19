@@ -33,7 +33,7 @@
   //future implementation stuffs
   const gamePlayContainer = document.querySelector("#GamePlayContainer");
 
-//GAMEPLAY
+  //GAMEPLAY
 
   const gamePlayerForm = document.querySelector("#gamePlayerForm");
   const gamePlayForm = document.getElementById("gamePlayForm");
@@ -46,7 +46,7 @@
   const btnSaveGamePlay = document.getElementById("btnSaveGamePlay");
   const btnCancelPlayer = document.querySelector("#btnCancelPlayer");
 
-//GAMEPLAY
+  //GAMEPLAY
 
   //New GameContainer
   const addGameContainer = document.querySelector("#AddGameContainer");
@@ -120,23 +120,23 @@
   //diceroller stuff
   function rollDice() {
     const dice = [...document.querySelectorAll(".die-list")];
-    dice.forEach(die => {
+    dice.forEach((die) => {
       toggleClasses(die);
       die.dataset.roll = getRandomNumber(1, 6);
       // die.dataset.roll = 1;
     });
   }
-  
+
   function toggleClasses(die) {
     die.classList.toggle("odd-roll");
     die.classList.toggle("even-roll");
   }
-  
+
   function getRandomNumber(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
-  }  
+  }
   setInterval(rollDice, 10000);
   //end diceroller stuff
 
@@ -200,11 +200,10 @@
       }`
     );
     if (response.status == 200) {
-      try{
-      const responsedata = await response.json();
-      DisplayUsersGames(responsedata.selectedGames);
-      }
-      catch(error){
+      try {
+        const responsedata = await response.json();
+        DisplayUsersGames(responsedata.selectedGames);
+      } catch (error) {
         //maybe do nothing
       }
     }
@@ -343,7 +342,7 @@
     } else {
       adminMenu.classList.add("hidden");
     }
-    
+
     addGameContainer.classList.add("hidden");
     gamePlayContainer.style.display = "none";
     playHistoryContainer.style.display = "none";
@@ -709,7 +708,7 @@
     getGamesOwnedByUser();
   });
 
-//Admin code start
+  //Admin code start
 
   async function getUsersForAdmin(forAdmin) {
     const response = await fetch(
@@ -901,7 +900,7 @@
         const usersPlayerID = document.querySelector(".userAdmin").dataset.id;
         const playersPlayerID = document.querySelector(".selectedPlayerAdmin")
           .dataset.id;
-          rollDice();
+        rollDice();
         mergePlayers(usersPlayerID, playersPlayerID);
       });
     } else {
@@ -1115,7 +1114,7 @@
     returnToMainButtonBox.classList.add("hidden");
     if (JSON.parse(localStorage.getItem("user")).IsAdmin) {
       adminMenu.classList.remove("hidden");
-    }    
+    }
     resetGameSelection();
     location.reload();
   }
@@ -1123,26 +1122,26 @@
   viewPlayHistoryButton.addEventListener("click", function () {
     gamesContainer.style.display = "none";
     playHistoryContainer.style.display = "flex";
-    if(JSON.parse(localStorage.getItem("selectedGame") || "null"))
-    rollDice();
+    if (JSON.parse(localStorage.getItem("selectedGame") || "null")) {
+      rollDice();
       GetSelectedGameplayStatsForUser();
-    else{
+    } else {
       GetAllGameplayStatsForUser();
     }
   });
-//End of gameplay history
+  //End of gameplay history
 
-//BEGINNING OF RECORD GAME PLAY 
+  //BEGINNING OF RECORD GAME PLAY
 
-let loggedInPlayerId = ""; 
+  let loggedInPlayerId = "";
 
-btnCancelPlayer.addEventListener("click", function () {
-gamePlayContainer.style.display = "none";
-gamesContainer.style.display = "flex";
-showSideBarButtons(); 
-});
+  btnCancelPlayer.addEventListener("click", function () {
+    gamePlayContainer.style.display = "none";
+    gamesContainer.style.display = "flex";
+    showSideBarButtons();
+  });
 
-recordGamePlayButton.addEventListener("click", function () {
+  recordGamePlayButton.addEventListener("click", function () {
     // Show the game play form
     gamePlayContainer.style.display = "flex";
     gamesContainer.style.display = "none";
@@ -1150,9 +1149,15 @@ recordGamePlayButton.addEventListener("click", function () {
     hideSideBarButtons();
 
     const recordGameHeader = document.querySelector("#RecordGameHeader");
-    const playerLabel = document.querySelector("#PlayerLabel")
-    recordGameHeader.textContent = `Record Game Play for ${JSON.parse(localStorage.getItem("selectedGame")).gameName}`;
-    playerLabel.textContent = `Select ${JSON.parse(localStorage.getItem("selectedGame")).minPlayers-1} to ${JSON.parse(localStorage.getItem("selectedGame")).maxPlayers-1} Players`
+    const playerLabel = document.querySelector("#PlayerLabel");
+    recordGameHeader.textContent = `Record Game Play for ${
+      JSON.parse(localStorage.getItem("selectedGame")).gameName
+    }`;
+    playerLabel.textContent = `Select ${
+      JSON.parse(localStorage.getItem("selectedGame")).minPlayers - 1
+    } to ${
+      JSON.parse(localStorage.getItem("selectedGame")).maxPlayers - 1
+    } Players`;
     btnAddPlayer.addEventListener("click", function () {
       addPlayerForm.style.display = "block";
       rollDice();
@@ -1165,31 +1170,32 @@ recordGamePlayButton.addEventListener("click", function () {
     btnSubmitPlayer.addEventListener("click", function () {
       SubmitNewPlayer();
       rollDice();
-    });    
+    });
     fetchOtherPlayers();
     rollDice();
-});
+  });
 
-async function fetchOtherPlayers() {
-  try {
-      const response = await fetch(`http://localhost:5071/api/Player/otherplayers/${
-        JSON.parse(localStorage.getItem("user")).PlayerID
-      }`);
+  async function fetchOtherPlayers() {
+    try {
+      const response = await fetch(
+        `http://localhost:5071/api/Player/otherplayers/${
+          JSON.parse(localStorage.getItem("user")).PlayerID
+        }`
+      );
       if (!response.ok) {
-          throw new Error(`Error! Status: ${response.status}`);
+        throw new Error(`Error! Status: ${response.status}`);
       }
       const players = await response.json();
       populatePlayersCheckboxList(players);
-  } catch (error) {
+    } catch (error) {
       console.error("Error fetching players:", error);
+    }
   }
-}
 
-function populatePlayersCheckboxList(players) {
-  
-  playersCheckboxList.innerHTML = "";
+  function populatePlayersCheckboxList(players) {
+    playersCheckboxList.innerHTML = "";
 
-  players.forEach(player => {
+    players.forEach((player) => {
       const checkbox = document.createElement("input");
       checkbox.type = "checkbox";
       checkbox.id = `player-${player.playerID}`;
@@ -1203,27 +1209,30 @@ function populatePlayersCheckboxList(players) {
       playersCheckboxList.appendChild(label);
 
       playersCheckboxList.appendChild(document.createElement("br"));
-  });
-}
+    });
+  }
 
-async function SubmitNewPlayer() {
-  try {
+  async function SubmitNewPlayer() {
+    try {
       const playerName = newPlayerName.value;
 
-      const response = await fetch(`http://localhost:5071/api/Player/AddPlayer`, {
+      const response = await fetch(
+        `http://localhost:5071/api/Player/AddPlayer`,
+        {
           method: "POST",
           headers: {
-              "Content-Type": "application/json"
+            "Content-Type": "application/json",
           },
-          body: JSON.stringify({ playerName })
-      });
+          body: JSON.stringify({ playerName }),
+        }
+      );
 
       if (!response.ok) {
-          throw new Error(`Failed to add player: ${response.status}`);
+        throw new Error(`Failed to add player: ${response.status}`);
       }
 
       const addedPlayer = await response.json();
-      
+
       // Add player to UI
       const checkbox = document.createElement("input");
       checkbox.type = "checkbox";
@@ -1235,72 +1244,88 @@ async function SubmitNewPlayer() {
       const label = document.createElement("label");
       label.textContent = addedPlayer.playerName; //set text content of label to player's name
       label.setAttribute("for", `player-${addedPlayer.playerID}`); //set "for" attribute of label to match the checkboxID
-      
+
       playersCheckboxList.appendChild(checkbox);
       playersCheckboxList.appendChild(label);
       playersCheckboxList.appendChild(document.createElement("br"));
-      
+
       // Reset form and hide it
       newPlayerName.value = "";
       addPlayerForm.style.display = "none";
-  } catch (error) {
+    } catch (error) {
       console.error("Error adding player:", error);
+    }
   }
-}
 
-async function SaveGamePlay() {
-  try {
-      const selectedGameId = JSON.parse(localStorage.getItem("selectedGame")).gameID;
-      let selectedPlayers = Array.from(playersCheckboxList.querySelectorAll("input[type=checkbox]:checked")).map(checkbox => checkbox.value);
+  async function SaveGamePlay() {
+    try {
+      const selectedGameId = JSON.parse(
+        localStorage.getItem("selectedGame")
+      ).gameID;
+      let selectedPlayers = Array.from(
+        playersCheckboxList.querySelectorAll("input[type=checkbox]:checked")
+      ).map((checkbox) => checkbox.value);
       selectedPlayers.push(JSON.parse(localStorage.getItem("user")).PlayerID);
       const winner = winnerName.value.trim();
-      
+
       const selectedGame = JSON.parse(localStorage.getItem("selectedGame"));
-      const minPlayers = selectedGame.minPlayers - 1;
-      const maxPlayers = selectedGame.maxPlayers - 1;
-      const loggedInPlayerGamerTag = JSON.parse(localStorage.getItem("user")).GamerTag;
-    
-      let selectedPlayerNames = Array.from(playersCheckboxList.querySelectorAll("input[type=checkbox]:checked")).map(checkbox =>{
-        const label = playersCheckboxList.querySelector(`label[for=${checkbox.id}]`);
-        return label ? label.textContent.trim():"";
+      const minPlayers = selectedGame.minPlayers;
+      const maxPlayers = selectedGame.maxPlayers;
+      const loggedInPlayerGamerTag = JSON.parse(
+        localStorage.getItem("user")
+      ).GamerTag;
+
+      let selectedPlayerNames = Array.from(
+        playersCheckboxList.querySelectorAll("input[type=checkbox]:checked")
+      ).map((checkbox) => {
+        const label = playersCheckboxList.querySelector(
+          `label[for=${checkbox.id}]`
+        );
+        return label ? label.textContent.trim() : "";
       });
-    
+
       selectedPlayerNames.push(loggedInPlayerGamerTag);
-    
+
       //Validation
-      if (!selectedPlayerNames.includes(winner) && winner !== loggedInPlayerGamerTag){
+      if (
+        !selectedPlayerNames.includes(winner) &&
+        winner !== loggedInPlayerGamerTag
+      ) {
         alert(`Please select a valid winner from the players list or yourself. 
         winner: ${winner} // loggedInPlayerGamerTag: ${loggedInPlayerGamerTag}`);
-        return ;
+        return;
       }
-    
-      if (selectedPlayerNames.length <= minPlayers){
-        alert (`Please select at least ${minPlayers} player(s)`);
-        return ;
+
+      if (selectedPlayerNames.length < minPlayers) {
+        alert(`Please select at least ${minPlayers-1} player(s)`);
+        return;
       }
-    
-      if (selectedPlayerNames.length > maxPlayers){
-        alert (`Please select at most ${maxPlayers} players`);
-        return ;
+
+      if (selectedPlayerNames.length > maxPlayers) {
+        alert(`Please select at most ${maxPlayers-1} players`);
+        return;
       }
-    
+
       const gamePlayedData = {
-          gameID: selectedGameId,
-          players: selectedPlayers,
-          winnerName: winner
+        gameID: selectedGameId,
+        players: selectedPlayers,
+        winnerName: winner,
       };
 
       // Record the game play with all selected players
-      const recordResponse = await fetch(`http://localhost:5071/api/Game/RecordPlay`, {
+      const recordResponse = await fetch(
+        `http://localhost:5071/api/Game/RecordPlay`,
+        {
           method: "POST",
           headers: {
-              "Content-Type": "application/json"
+            "Content-Type": "application/json",
           },
-          body: JSON.stringify(gamePlayedData)
-      });
+          body: JSON.stringify(gamePlayedData),
+        }
+      );
 
       if (!recordResponse.ok) {
-          throw new Error(`Failed to record game play: ${recordResponse.status}`);
+        throw new Error(`Failed to record game play: ${recordResponse.status}`);
       }
 
       // Game play recorded successfully
@@ -1313,9 +1338,9 @@ async function SaveGamePlay() {
       gamePlayContainer.style.display = "none";
       gamesContainer.style.display = "flex";
       showSideBarButtons();
-  } catch (error) {
+    } catch (error) {
       console.error("Error recording game play:", error);
+    }
   }
-}
-//END OF RECORD GAME PLAY
+  //END OF RECORD GAME PLAY
 });

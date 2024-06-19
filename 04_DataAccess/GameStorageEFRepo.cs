@@ -61,7 +61,7 @@ public class GameStorageEFRepo : IGameStorageEFRepo
         }
         else
         {
-            foreach(GamePlayed gameplay in gamesPlayed)
+            foreach (GamePlayed gameplay in gamesPlayed)
             {
                 Game tempGame = await _gameContext.Games.FirstAsync(g => g.GameID == gameplay.GameID);
                 User tempOwner = await _gameContext.Users.FirstAsync(u => u.UserID == tempGame.UserID);
@@ -71,15 +71,16 @@ public class GameStorageEFRepo : IGameStorageEFRepo
         }
         return returnList;
     }
-        public async Task<string> AllGamesPlayedByUserStats(Guid playerID)
+    public async Task<string> AllGamesPlayedByUserStats(Guid playerID)
     {
         Player currentPlayer = await _gameContext.Players.FirstAsync(p => p.PlayerID == playerID);
         List<GamePlayed> allGamesPlayed = await _gameContext.GamesPlayed.Include(p => p.Players).Where(gp => gp.Players.Contains(currentPlayer)).ToListAsync();
         List<string> gameListWinners = allGamesPlayed.Where(winner => !string.IsNullOrEmpty(winner.WinnerName)).Select(winner => winner.WinnerName).ToList();
         int playerWins = gameListWinners.Count(winner => winner == currentPlayer.PlayerName);
         int plays = allGamesPlayed.Count;
+        double winPercentage = (double)playerWins / plays;
 
-        return $"Plays: {plays} Wins: {playerWins} Win %: {(float)(playerWins/plays):P2}";
+        return $"Plays - {plays} Wins - {playerWins} Win % - {winPercentage:P2}%";
     }
     public async Task<List<GamePlayDTO>> ViewPlaysOfSpecificGameByUser(Guid playerID, Guid gameID)
     {
@@ -95,12 +96,12 @@ public class GameStorageEFRepo : IGameStorageEFRepo
         }
         else
         {
-            foreach(GamePlayed gameplay in singleGameList)
+            foreach (GamePlayed gameplay in singleGameList)
             {
                 GamePlayDTO tempGamePlayDTO = new GamePlayDTO(gameplay, selectedGame.GameName, gameOwner.GamerTag);
                 returnList.Add(tempGamePlayDTO);
             }
-        return returnList;
+            return returnList;
         }
     }
     public async Task<string> SpecificGameplayedByUserStats(Guid playerID, Guid gameID)
@@ -121,7 +122,7 @@ public class GameStorageEFRepo : IGameStorageEFRepo
         try
         {
             await _gameContext.Games.AddAsync(gameInfo);
-           
+
             await _gameContext.SaveChangesAsync();
             return "Game added succesfully";
         }
@@ -135,19 +136,19 @@ public class GameStorageEFRepo : IGameStorageEFRepo
         try
         {
             Game? selectedGame = await _gameContext.Games.FirstOrDefaultAsync(game => game.GameID == gameId);
-            if(selectedGame == null)
+            if (selectedGame == null)
             {
                 throw new Exception($"Game was null... {gameId}");
             }
             _gameContext.Games.Remove(selectedGame);
 
-            if(await _gameContext.GamesPlayed.AnyAsync(game => game.GameID == gameId))
+            if (await _gameContext.GamesPlayed.AnyAsync(game => game.GameID == gameId))
             {
-            List<GamePlayed?> selectedPlays = await _gameContext.GamesPlayed.Where(game => game.GameID == gameId).ToListAsync();
-            _gameContext.GamesPlayed.RemoveRange(selectedPlays);
-            GamePlayed? selectedGamePlayed = await _gameContext.GamesPlayed.FirstOrDefaultAsync(game => game.GameID == gameId);
-            List<GamePlayer?> selectedPlayers = await _gameContext.GamePlayers.Where(game => game.PlayedGameID == selectedGamePlayed.PlayedGameID).ToListAsync();
-            _gameContext.GamePlayers.RemoveRange(selectedPlayers);
+                List<GamePlayed?> selectedPlays = await _gameContext.GamesPlayed.Where(game => game.GameID == gameId).ToListAsync();
+                _gameContext.GamesPlayed.RemoveRange(selectedPlays);
+                GamePlayed? selectedGamePlayed = await _gameContext.GamesPlayed.FirstOrDefaultAsync(game => game.GameID == gameId);
+                List<GamePlayer?> selectedPlayers = await _gameContext.GamePlayers.Where(game => game.PlayedGameID == selectedGamePlayed.PlayedGameID).ToListAsync();
+                _gameContext.GamePlayers.RemoveRange(selectedPlayers);
             }
 
             await _gameContext.SaveChangesAsync();
@@ -180,22 +181,22 @@ public class GameStorageEFRepo : IGameStorageEFRepo
         }
     }
 
-       
-        public async Task<string> AddGamePlayedAsync(AddGamePlayDTO gamePlayed)
-        {  
-            GamePlayed newGamePlayed = new();
-            newGamePlayed.GameID = gamePlayed.gameID;
-            newGamePlayed.WinnerName = gamePlayed.winnerName;
-            foreach(Guid playerID in gamePlayed.players)
-            {
-                Player tempPlayer = await _gameContext.Players.FirstAsync(p => p.PlayerID == playerID);
-                newGamePlayed.Players.Add(tempPlayer);
-            }
-            await _gameContext.GamesPlayed.AddAsync(newGamePlayed);
-            await _gameContext.SaveChangesAsync();
-            return "Gameplay added";
+
+    public async Task<string> AddGamePlayedAsync(AddGamePlayDTO gamePlayed)
+    {
+        GamePlayed newGamePlayed = new();
+        newGamePlayed.GameID = gamePlayed.gameID;
+        newGamePlayed.WinnerName = gamePlayed.winnerName;
+        foreach (Guid playerID in gamePlayed.players)
+        {
+            Player tempPlayer = await _gameContext.Players.FirstAsync(p => p.PlayerID == playerID);
+            newGamePlayed.Players.Add(tempPlayer);
         }
-    
+        await _gameContext.GamesPlayed.AddAsync(newGamePlayed);
+        await _gameContext.SaveChangesAsync();
+        return "Gameplay added";
+    }
+
 }
 
 

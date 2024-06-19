@@ -425,6 +425,27 @@ body {
   background-color: inherit;
 }
 
+.recordGamePlay button{
+  margin-bottom: 5px;
+  outline: none;
+  border: none;
+  background-color: light-dark(#353535,#0f355c);
+  color: light-dark(#fff,#69a2ee);
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size:13px;
+  
+}
+.recordGamePlay input {
+  margin-bottom: 10px;
+  font-size: 13px;
+  padding: 5px;
+  font-weight: bold;
+  border: 3px solid #464a50;
+}
+
 .gameHistory {
   padding: 10px;
   width: 20%;
@@ -461,27 +482,6 @@ body {
   margin-bottom: 10px;
   font-size: 15px;
   background-color: inherit;
-}
-
-.recordGamePlay button{
-  margin-bottom: 5px;
-  outline: none;
-  border: none;
-  background-color: light-dark(#353535,#0f355c);
-  color: light-dark(#fff,#69a2ee);
-  padding: 5px 10px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-weight: bold;
-  font-size:9px;
-  
-}
-.recordGamePlay input {
-  margin-bottom: 10px;
-  font-size: 10px;
-  padding: 5px;
-  font-weight: bold;
-  border: 3px solid #464a50;
 }
 
 /* dice stuff */
