@@ -80,6 +80,29 @@
   const firstNameMessage = document.querySelector("#FirstNameMessage");
   const lastNameMessage = document.querySelector("#LastNameMessage");
 
+  //diceroller stuff
+  function rollDice() {
+    const dice = [...document.querySelectorAll(".die-list")];
+    dice.forEach(die => {
+      toggleClasses(die);
+      die.dataset.roll = getRandomNumber(1, 6);
+      // die.dataset.roll = 1;
+    });
+  }
+  
+  function toggleClasses(die) {
+    die.classList.toggle("odd-roll");
+    die.classList.toggle("even-roll");
+  }
+  
+  function getRandomNumber(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }  
+  setInterval(rollDice, 10000);
+  //end diceroller stuff
+
   //For a reload with a user logged in
   const storedUser = JSON.parse(localStorage.getItem("user"));
   if (storedUser) {
@@ -178,6 +201,7 @@
         document.querySelectorAll(".foundPlayer").forEach((player) => {
           player.addEventListener("click", function () {
             addNewUserWithPlayer(player.dataset.id);
+            rollDice();
           });
         });
       }
@@ -299,6 +323,7 @@
 
     document.querySelectorAll(".game").forEach((game) => {
       game.addEventListener("click", function () {
+        rollDice();
         UsersGameClick(game.dataset.id);
       });
     });
@@ -339,6 +364,7 @@
   }
 
   removeGameButton.addEventListener("click", function () {
+    rollDice();
     if (
       confirm(
         "All recorded game plays for this game will also be deleted. Are you sure you want to remove it?"
@@ -365,14 +391,17 @@
     btnSubmitUpdateGame.classList.remove("hidden");
     btnCancelNewGame.classList.add("hidden");
     btnCancelUpdateGame.classList.remove("hidden");
+    rollDice();
     btnResetUpdateForm.addEventListener("click", function () {
       PopulateUpdateGameForm();
+      rollDice();
     });
 
     btnCancelUpdateGame.addEventListener("click", function () {
       resetGameForm();
       resetGameUpdate();
       showSideBarButtons();
+      rollDice();
     });
     PopulateUpdateGameForm();
     btnSubmitUpdateGame.addEventListener("click", function () {
@@ -393,6 +422,7 @@
         UpdateSelectedGame();
         resetGameSelection();
         location.reload();
+        rollDice();
       }
     });
     hideSideBarButtons();
@@ -470,6 +500,7 @@
     clearSelectionButtonBox.classList.add("hidden");
     recordGamePlayButtonBox.classList.add("hidden");
     addGameButtonBox.classList.remove("hidden");
+    rollDice();
   });
 
   newUserBtn.addEventListener("click", async function () {
@@ -499,10 +530,12 @@
         displayPlayers(players);
       }
     }
+    rollDice();
   });
 
   resetNewUserFormBtn.addEventListener("click", function () {
     resetNewUserForm();
+    rollDice();
   });
 
   loginButton.addEventListener("click", async () => {
@@ -512,20 +545,22 @@
     } else if (!loginPassWord.value) {
       loginPasswordError.textContent = "Password cannot be blank!";
     }
+    rollDice();
     LogInUser(loginGamerTag.value, loginPassWord.value);
   });
 
   createUserButton.addEventListener("click", () => {
     loginContainer.classList.add("hidden");
     newUserContainer.classList.remove("hidden");
+    rollDice();
   });
 
   newUserBackToLoginBtn.addEventListener("click", () => {
     resetNewUserForm();
     loginContainer.classList.remove("hidden");
     newUserContainer.classList.add("hidden");
+    rollDice();
   });
-
   logoutButton.addEventListener("click", () => {
     localStorage.removeItem("user");
     loginContainer.classList.remove("hidden");
@@ -534,6 +569,7 @@
     gamesContainer.innerHTML = "";
     gamesContainer.style.display = "flex";
     addGameContainer.classList.add("hidden");
+    rollDice();
   });
 
   addGameButton.addEventListener("click", () => {
@@ -541,6 +577,7 @@
     gamesContainer.style.display = "none";
     addUpdateGameHeader.textContent = "Add a New Game";
     addGameContainer.classList.remove("hidden");
+    rollDice();
   });
 
   //New GameContainer
@@ -614,6 +651,7 @@
   }
 
   newGameBtn.addEventListener("click", async function () {
+    rollDice();
     resetGameFormWarnings();
     if (!addGameName.value) {
       GameNameMessage.textContent = "Game Name cannot be blank!";
@@ -634,6 +672,7 @@
   });
 
   btnResetGameForm.addEventListener("click", function () {
+    rollDice();
     resetGameForm();
   });
 
@@ -641,6 +680,7 @@
     showSideBarButtons();
     gamesContainer.style.display = "flex";
     addGameContainer.classList.add("hidden");
+    rollDice();
     getGamesOwnedByUser();
   });
 
@@ -720,6 +760,7 @@
         let newHTML = user.innerHTML;
         newHTML = newHTML.replace("<p>Admin</p>", "<p>Not an Admin</p>");
         user.innerHTML = newHTML;
+        rollDice();
         updateAdminStatus(user.dataset.id, false);
       });
     });
@@ -732,6 +773,7 @@
         let newHTML = user.innerHTML;
         newHTML = newHTML.replace("<p>Not an Admin</p>", "<p>Admin</p>");
         user.innerHTML = newHTML;
+        rollDice();
         updateAdminStatus(user.dataset.id, true);
       });
     });
@@ -812,6 +854,7 @@
         user.classList.replace("userNonAdmin", "userAdmin");
         addClickEventToUsersForMerge();
         checkIfDisplayMergeButton();
+        rollDice();
       });
     });
   }
@@ -823,6 +866,7 @@
         player.classList.replace("playerAdmin", "selectedPlayerAdmin");
         addClickEventToPlayersForMerge();
         checkIfDisplayMergeButton();
+        rollDice();
       });
     });
   }
@@ -837,6 +881,7 @@
         const usersPlayerID = document.querySelector(".userAdmin").dataset.id;
         const playersPlayerID = document.querySelector(".selectedPlayerAdmin")
           .dataset.id;
+          rollDice();
         mergePlayers(usersPlayerID, playersPlayerID);
       });
     } else {
@@ -900,6 +945,7 @@
     mergePlayerButton.classList.add("hidden");
     returnToMainButton.addEventListener("click", function () {
       UpdateSideBarForAdminReturn();
+      rollDice();
     });
   }
 
@@ -921,6 +967,7 @@
     UpdateSideBarForAdmin();
     getUsersForAdmin(false);
     getPlayersForAdmin();
+    rollDice();
   });
 
   manageAdminButton.addEventListener("click", function () {
@@ -928,6 +975,7 @@
     adminUserContainer.style.display = "flex";
     UpdateSideBarForAdmin();
     getUsersForAdmin(true);
+    rollDice();
   });
   // View Gameplay code
 
@@ -1036,6 +1084,7 @@
     returnToMainButtonBox.classList.remove("hidden");
     returnToMainButton.addEventListener("click", function () {
       UpdateSideBarForGameHistoryReturn();
+      rollDice();
     });
   }
 
@@ -1053,6 +1102,7 @@
   viewPlayHistoryButton.addEventListener("click", function () {
     gamesContainer.style.display = "none";
     playHistoryContainer.style.display = "flex";
+    rollDice();
     try {
       let gameID = JSON.parse(localStorage.getItem("selectedGame")).gameID;
       GetSelectedGameplayStatsForUser();
@@ -1080,17 +1130,21 @@ recordGamePlayButton.addEventListener("click", function () {
     btnAddPlayer.addEventListener("click", function () {
       console.log("I see you want to add a player");
       addPlayerForm.style.display = "block";
+      rollDice();
     });
 
     btnSaveGamePlay.addEventListener("click", function () {
       console.log("I see you clicked to save a game");
       SaveGamePlay();
+      rollDice();
     });
     btnSubmitPlayer.addEventListener("click", function () {
       console.log("I see you clicked to save a player");
       SubmitNewPlayer();
+      rollDice();
     });    
     fetchOtherPlayers();
+    rollDice();
 });
 
 
