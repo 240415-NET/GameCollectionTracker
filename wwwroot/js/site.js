@@ -1068,10 +1068,9 @@
   viewPlayHistoryButton.addEventListener("click", function () {
     gamesContainer.style.display = "none";
     playHistoryContainer.style.display = "flex";
-    try {
-      let gameID = JSON.parse(localStorage.getItem("selectedGame")).gameID;
+    if(JSON.parse(localStorage.getItem("selectedGame") || "null"))
       GetSelectedGameplayStatsForUser();
-    } catch (error) {
+    else{
       GetAllGameplayStatsForUser();
     }
   });
