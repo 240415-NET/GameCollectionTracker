@@ -176,8 +176,13 @@
       }`
     );
     if (response.status == 200) {
+      try{
       const responsedata = await response.json();
       DisplayUsersGames(responsedata.selectedGames);
+      }
+      catch(error){
+        //maybe do nothing
+      }
     }
   }
 
