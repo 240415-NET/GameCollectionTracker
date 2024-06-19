@@ -445,7 +445,7 @@ body {
 
 }
 
-.diceroll-container2{
+.titleContainer{
   display: grid;
   grid-template-columns: 1fr;
   height: 140px;
@@ -456,8 +456,10 @@ body {
   text-align: center;
 }
 
-.diceroll-container2 h1 {
+
+.titleContainer h1 {
   font-size: 55px;
+  font-family:Comic Sans MS, Comic Sans, cursive
 }
 
 .dice {
