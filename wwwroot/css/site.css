@@ -523,6 +523,11 @@ body {
   font-family:Comic Sans MS, Comic Sans, cursive
 }
 
+#blink_effect {
+  font-size: 20 px;
+  transition: 1.5s;
+}
+
 .dice {
   align-items: center;
   display: grid;

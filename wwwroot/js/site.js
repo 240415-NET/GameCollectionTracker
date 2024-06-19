@@ -127,6 +127,11 @@
     });
   }
 
+  let blinking_text = document.getElementById('blink_effect');
+        setInterval(function() {
+            blinking_text.style.display = (blinking_text.style.display == 'none' ? '' : 'none');
+        }, 200);
+
   function toggleClasses(die) {
     die.classList.toggle("odd-roll");
     die.classList.toggle("even-roll");
