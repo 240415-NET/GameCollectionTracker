@@ -961,7 +961,7 @@
       const responseData = await response.json();
       DisplayGameplays(responseData);
     } catch (error) {
-      playHistoryContainer.innerHTML += `<div class = "game"><h2>No Games Played</h2></div>`;
+      playHistoryContainer.innerHTML += `<div class = "gameHistory"><h2>No Games Played</h2></div>`;
       UpdateSideBarForGameHistory();
     }
   }
@@ -1029,7 +1029,7 @@
     let gameplaysHTML = "";
     responseData.forEach((responseData) => {
       let gameplayElement = `
-          <div class = "game">
+          <div class = "gameHistory">
           <h2>${responseData.gameName}</h2>
           <p style="text-align: center;">Owned By: ${responseData.gameOwner}<p>
           <p>Winner: ${responseData.winnerName}</p>
