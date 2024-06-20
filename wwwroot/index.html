@@ -9,88 +9,88 @@
   </head>
   <body>
     <!-- diceroll stuff -->
-    <div class = "headerContainer">
-    <div class = "diceroll-container">
-    <div class="dice">
-      <ol class="die-list even-roll" data-roll="1" id="die-1">
-        <li class="die-item" data-side="1">
-          <span class="dot"></span>
-        </li>
-        <li class="die-item" data-side="2">
-          <span class="dot"></span>
-          <span class="dot"></span>
-        </li>
-        <li class="die-item" data-side="3">
-          <span class="dot"></span>
-          <span class="dot"></span>
-          <span class="dot"></span>
-        </li>
-        <li class="die-item" data-side="4">
-          <span class="dot"></span>
-          <span class="dot"></span>
-          <span class="dot"></span>
-          <span class="dot"></span>
-        </li>
-        <li class="die-item" data-side="5">
-          <span class="dot"></span>
-          <span class="dot"></span>
-          <span class="dot"></span>
-          <span class="dot"></span>
-          <span class="dot"></span>
-        </li>
-        <li class="die-item" data-side="6">
-          <span class="dot"></span>
-          <span class="dot"></span>
-          <span class="dot"></span>
-          <span class="dot"></span>
-          <span class="dot"></span>
-          <span class="dot"></span>
-        </li>
-      </ol>
+    <div class="headerContainer">
+      <div class="diceroll-container">
+        <div class="dice">
+          <ol class="die-list even-roll" data-roll="1" id="die-1">
+            <li class="die-item" data-side="1">
+              <span class="dot"></span>
+            </li>
+            <li class="die-item" data-side="2">
+              <span class="dot"></span>
+              <span class="dot"></span>
+            </li>
+            <li class="die-item" data-side="3">
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+            </li>
+            <li class="die-item" data-side="4">
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+            </li>
+            <li class="die-item" data-side="5">
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+            </li>
+            <li class="die-item" data-side="6">
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+            </li>
+          </ol>
+        </div>
+      </div>
+      <div class="titleContainer"><h1>Game Collection Tracker</h1></div>
+      <div class="diceroll-container">
+        <div class="dice">
+          <ol class="die-list even-roll" data-roll="1" id="die-2">
+            <li class="die-item" data-side="1">
+              <span class="dot"></span>
+            </li>
+            <li class="die-item" data-side="2">
+              <span class="dot"></span>
+              <span class="dot"></span>
+            </li>
+            <li class="die-item" data-side="3">
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+            </li>
+            <li class="die-item" data-side="4">
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+            </li>
+            <li class="die-item" data-side="5">
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+            </li>
+            <li class="die-item" data-side="6">
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+            </li>
+          </ol>
+        </div>
+      </div>
     </div>
-  </div>
-  <div class ="titleContainer"><h1>Game Collection Tracker</h1></div>
-  <div class = "diceroll-container">
-    <div class="dice">
-      <ol class="die-list even-roll" data-roll="1" id="die-2">
-        <li class="die-item" data-side="1">
-          <span class="dot"></span>
-        </li>
-        <li class="die-item" data-side="2">
-          <span class="dot"></span>
-          <span class="dot"></span>
-        </li>
-        <li class="die-item" data-side="3">
-          <span class="dot"></span>
-          <span class="dot"></span>
-          <span class="dot"></span>
-        </li>
-        <li class="die-item" data-side="4">
-          <span class="dot"></span>
-          <span class="dot"></span>
-          <span class="dot"></span>
-          <span class="dot"></span>
-        </li>
-        <li class="die-item" data-side="5">
-          <span class="dot"></span>
-          <span class="dot"></span>
-          <span class="dot"></span>
-          <span class="dot"></span>
-          <span class="dot"></span>
-        </li>
-        <li class="die-item" data-side="6">
-          <span class="dot"></span>
-          <span class="dot"></span>
-          <span class="dot"></span>
-          <span class="dot"></span>
-          <span class="dot"></span>
-          <span class="dot"></span>
-        </li>
-      </ol>
-    </div>
-  </div>
-</div>
-  <!-- end diceroll stuff -->
+    <!-- end diceroll stuff -->
     <div class="container">
       <!-- This is the start of the left side-bar section -->
       <div class="games_sidebar">
@@ -177,6 +177,7 @@
             <button id="btnReturnFromPlayHistory">Return to Main</button><br />
           </div>
           <div><button id="btnLogout">Logout</button></div>
+          <div id="adFreeButtonBox"><br><br><button id="addFreeBtn">Buy Ad Free Version!</button></div>
         </div>
         <!-- This section holds the Admin buttons which will be displayed in the side-bar if the logged in user is an Admin -->
         <div id="AdminMenu" class="hidden">
@@ -194,38 +195,38 @@
       <div id="AddGameContainer" class="addGameContainer hidden">
         <h1 id="AddUpdateHeader">Add a new game</h1>
         <span class="warningText" id="GameNameMessage"></span
-        ><input type="text" id="addGameName" placeholder="Game Name" />
+        ><br /><input type="text" id="addGameName" placeholder="Game Name" />
         <span class="warningText" id="GamePriceMessage"></span
-        ><input
+        ><br /><input
           type="number"
           id="addGamePurchasePrice"
           placeholder="Purchase Price"
         />
         <span class="warningText" id="GamePurchaseDateMessage"></span
-        ><input
+        ><br><input
           type="date"
           id="addGamePurchaseDate"
           placeholder="Purchase Date"
         />
         <span class="warningText" id="MinPlayersMessage"></span
-        ><input
+        ><br><input
           type="number"
           id="addGameMinPlayers"
           placeholder="Minimum Number of Players"
         />
         <span class="warningText" id="MaxPlayersMessage"></span
-        ><input
+        ><br><input
           type="number"
           id="addGameMaxPlayers"
           placeholder="Maximum Number of Players"
         />
         <span class="warningText" id="ExpectedDurationMessage"></span
-        ><input
+        ><br><input
           type="number"
           id="addGameExpectedDuration"
           placeholder="Expected Game Duration"
         />
-        <button id="btnCreateNewGame">Create New Game</button><br />
+        <br><button id="btnCreateNewGame">Create New Game</button><br />
         <button id="btnUpdateGameForm" class="hidden">Update Game</button><br />
         <button id="btnResetGameForm">Reset</button>
         <button id="btnResetUpdateGame" class="hidden">Reset</button>
@@ -237,7 +238,7 @@
       <div id="myGamesContainer" class="games_container"></div>
       <!-- This will hold the HTML used to display games played and HTML will be added programmatically through JS -->
       <div id="GamePlayContainer" class="games_container" style="display: none">
-        <div id="gamePlayForm" class = "recordGamePlay">
+        <div id="gamePlayForm" class="recordGamePlay">
           <h2 id="RecordGameHeader">Record Game Play</h2>
           <div>
             <label id="PlayerLabel">Select Players:</label>
@@ -281,6 +282,13 @@
         class="adminPlayer_container"
         style="display: none"
       ></div>
+      <div id="AdvertContainer" class="AdvertContainer" style="display: none">
+        <h1 id="BuyNowButton">Buy Now!</h1>
+        <div>
+          <p id="blink_effect" style="color: white">white text</p>
+          <img id = "advertImage" src="/wwwroot/Ads/24.jpg" alt="" />
+        </div>
+      </div>
     </div>
     <script src="/wwwroot/js/site.js"></script>
   </body>

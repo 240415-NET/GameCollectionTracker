@@ -36,7 +36,7 @@ code {
 } */
 
 @media (prefers-color-scheme: dark) {
-  html{
+  html {
     background-image: url("/wwwroot/dark.jpg");
     background-repeat: no-repeat;
     background-attachment: fixed;
@@ -44,15 +44,14 @@ code {
   }
 }
 
-@media(prefers-color-scheme: light) {
-  html{
+@media (prefers-color-scheme: light) {
+  html {
     background-image: url("/wwwroot/light.jpg");
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: 100% 100%;
   }
 }
-
 
 html {
   position: relative;
@@ -65,14 +64,14 @@ body {
 }
 
 ::placeholder {
-  color: light-dark(rgb(102, 98, 98),#3e6597);
+  color: light-dark(rgb(102, 98, 98), #3e6597);
   opacity: 1; /* Firefox */
 }
 
 .foundPlayer {
   cursor: pointer;
   border: 3px;
-  border-color: light-dark(black,#2b7ac4);
+  border-color: light-dark(black, #2b7ac4);
   border-style: solid;
   max-width: 100%;
   min-width: 200px;
@@ -101,7 +100,7 @@ body {
 .games_sidebar {
   width: 270px;
   height: 100vh;
-  border-right: solid 2px light-dark( #ccc, #2353ad);
+  border-right: solid 2px light-dark(#ccc, #2353ad);
   padding: 50px;
 }
 
@@ -116,20 +115,49 @@ body {
   margin-bottom: 10px;
   outline: none;
   border: none;
-  background-color: light-dark(#353535,#0f355c);
-  color: light-dark(#fff,#69a2ee);
+  background-color: light-dark(#353535, #0f355c);
+  color: light-dark(#fff, #69a2ee);
   padding: 10px 20px;
   border-radius: 10px;
   cursor: pointer;
   font-weight: bold;
 }
 
+.AdvertContainer {
+  width: 250px;
+  height: 100vh;
+  padding: 20px;
+  flex: 0.4;
+  justify-content: center;
+  border: solid 8px #03fd80;
+  background-color: white;
+  align-items: center;
+}
+
+.AdvertContainer h1 {
+  color: light-dark(rgb(231, 13, 13), rgb(230, 24, 9));
+  font-size: 40px;
+  font-style: italic;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 10px;
+    border: solid 3px #110202;
+    background-color: #464a50;
+}
+
+.AdvertContainer img {
+  width: 90%;
+}
+
+
 .games_container {
   width: 100%;
   padding: 20px;
   flex: 1;
   display: flex;
-  flex-direction:row;
+  flex-direction: row;
   flex-wrap: wrap;
   justify-content: left;
 }
@@ -139,18 +167,18 @@ body {
   text-align: center;
   border-bottom: solid 3px;
   margin-bottom: 20px;
-  }
-  
+}
+
 .game {
   padding: 10px;
-  width: 20%;
+  width: 30%;
   overflow: hidden;
   margin-right: 30px;
   margin-bottom: 30px;
   background-color: light-dark(aliceblue, #1f1e27);
   min-width: 150px;
   max-width: 250px;
-  border: 2px solid light-dark(#353535,#2b7ac4);
+  border: 2px solid light-dark(#353535, #2b7ac4);
   cursor: pointer;
   font-weight: bold;
 }
@@ -162,7 +190,7 @@ body {
 
 .game li {
   background-color: inherit;
-  font-size: 13px;;
+  font-size: 13px;
 }
 
 .game:hover {
@@ -185,14 +213,14 @@ body {
 
 .Selectedgame {
   padding: 10px;
-  width: 20%;
+  width: 30%;
   overflow: hidden;
   margin-right: 30px;
   margin-bottom: 30px;
   background-color: light-dark(rgb(93, 226, 171), #0b0633);
   min-width: 150px;
   max-width: 250px;
-  border: 2px solid light-dark(#353535,#9cc5fc);
+  border: 2px solid light-dark(#353535, #9cc5fc);
   cursor: pointer;
   font-weight: bold;
 }
@@ -212,20 +240,19 @@ body {
 }
 
 .addGameContainer {
-  padding: 10px;
-  width: 20%;
-  overflow: hidden;
-  margin-left: 30px;
-  margin-bottom: 30px;
-  min-width: 150px;
-  max-width: 450px;
-  font-size: 14;
+  width: 100%;
+  padding: 20px;
+  flex: 1;
+  /* display: flex;
+  flex-direction: row;
+  flex-wrap: wrap; */
+  justify-content: left;
 }
 
 .addGameContainer h1 {
-  color: light-dark(black,#69a2ee);
+  color: light-dark(black, #69a2ee);
   text-align: center;
-
+  width: 40%;
 }
 
 .addGameContainer input {
@@ -235,14 +262,15 @@ body {
   padding: 10px;
   font-weight: bold;
   border: 3px solid #464a50;
+  width: 40%;
 }
 
 .addGameContainer button {
   margin-bottom: 10px;
   outline: none;
   border: none;
-  background-color: light-dark(#353535,#0f355c);
-  color: light-dark(#fff,#69a2ee);
+  background-color: light-dark(#353535, #0f355c);
+  color: light-dark(#fff, #69a2ee);
   padding: 10px 20px;
   border-radius: 10px;
   cursor: pointer;
@@ -259,7 +287,7 @@ body {
   padding: 20px;
   flex: 1;
   display: flex;
-  flex-direction:row;
+  flex-direction: row;
   flex-wrap: wrap;
   justify-content: left;
 }
@@ -279,7 +307,7 @@ body {
   background-color: light-dark(rgb(93, 226, 171), #0b0633);
   min-width: 150px;
   max-width: 250px;
-  border: 2px solid light-dark(#353535,#9cc5fc);
+  border: 2px solid light-dark(#353535, #9cc5fc);
   cursor: pointer;
   font-weight: bold;
 }
@@ -307,7 +335,7 @@ body {
   background-color: light-dark(aliceblue, #1f1e27);
   min-width: 150px;
   max-width: 250px;
-  border: 2px solid light-dark(#353535,#2b7ac4);
+  border: 2px solid light-dark(#353535, #2b7ac4);
   cursor: pointer;
   font-weight: bold;
 }
@@ -331,7 +359,7 @@ body {
   padding: 20px;
   flex: 1;
   display: flex;
-  flex-direction:row;
+  flex-direction: row;
   flex-wrap: wrap;
   justify-content: left;
 }
@@ -351,7 +379,7 @@ body {
   background-color: light-dark(aliceblue, #1f1e27);
   min-width: 150px;
   max-width: 250px;
-  border: 2px solid light-dark(#353535,#2b7ac4);
+  border: 2px solid light-dark(#353535, #2b7ac4);
   cursor: pointer;
   font-weight: bold;
 }
@@ -379,7 +407,7 @@ body {
   background-color: light-dark(rgb(93, 226, 171), #0b0633);
   min-width: 150px;
   max-width: 250px;
-  border: 2px solid light-dark(#353535,#9cc5fc);
+  border: 2px solid light-dark(#353535, #9cc5fc);
   cursor: pointer;
   font-weight: bold;
 }
@@ -400,14 +428,14 @@ body {
 
 .recordGamePlay {
   padding: 10px;
-  width: 20%;
+  width: 30%;
   overflow: hidden;
   margin-right: 30px;
   margin-bottom: 30px;
   background-color: light-dark(aliceblue, #1f1e27);
   min-width: 150px;
   max-width: 250px;
-  border: 2px solid light-dark(#353535,#2b7ac4);
+  border: 2px solid light-dark(#353535, #2b7ac4);
   font-weight: bold;
 }
 
@@ -425,18 +453,17 @@ body {
   background-color: inherit;
 }
 
-.recordGamePlay button{
+.recordGamePlay button {
   margin-bottom: 5px;
   outline: none;
   border: none;
-  background-color: light-dark(#353535,#0f355c);
-  color: light-dark(#fff,#69a2ee);
+  background-color: light-dark(#353535, #0f355c);
+  color: light-dark(#fff, #69a2ee);
   padding: 5px 10px;
   border-radius: 5px;
   cursor: pointer;
   font-weight: bold;
-  font-size:13px;
-  
+  font-size: 13px;
 }
 .recordGamePlay input {
   margin-bottom: 10px;
@@ -455,7 +482,7 @@ body {
   background-color: light-dark(aliceblue, #1f1e27);
   min-width: 150px;
   max-width: 250px;
-  border: 2px solid light-dark(#353535,#2b7ac4);
+  border: 2px solid light-dark(#353535, #2b7ac4);
   cursor: pointer;
   font-weight: bold;
 }
@@ -467,7 +494,7 @@ body {
 
 .gameHistory li {
   background-color: inherit;
-  font-size: 13px;;
+  font-size: 13px;
 }
 
 .gameHistory h2 {
@@ -489,22 +516,22 @@ body {
   width: 100%;
   flex: 1;
   display: flex;
-  flex-direction:row;
+  flex-direction: row;
   flex-wrap: wrap;
   justify-content: left;
 }
 
-.diceroll-container{
+.diceroll-container {
   display: grid;
   grid-template-columns: 1fr;
   height: 140px;
   overflow: hidden;
   width: 12%;
   min-width: 150px;
-  border-bottom: solid 2px light-dark( #ccc, #2353ad);
+  border-bottom: solid 2px light-dark(#ccc, #2353ad);
 }
 
-.titleContainer{
+.titleContainer {
   display: grid;
   grid-template-columns: 1fr;
   height: 140px;
@@ -512,14 +539,14 @@ body {
   width: 76%;
   max-width: 76%;
   min-width: 10%;
-  border-bottom: solid 2px light-dark( #ccc, #2353ad);
+  border-bottom: solid 2px light-dark(#ccc, #2353ad);
   justify-content: center;
   text-align: center;
 }
 
 .titleContainer h1 {
   font-size: 55px;
-  font-family:Comic Sans MS, Comic Sans, cursive
+  font-family: Comic Sans MS, Comic Sans, cursive;
 }
 
 #blink_effect {
@@ -535,7 +562,7 @@ body {
   grid-template-rows: auto;
   justify-items: left;
   padding: 2rem;
-  perspective: 1300px;  
+  perspective: 1300px;
 }
 
 .dice2 {
@@ -546,7 +573,7 @@ body {
   grid-template-rows: auto;
   justify-items: right;
   padding: 2rem;
-  perspective: 1500px;  
+  perspective: 1500px;
 }
 
 .die-list {
@@ -583,7 +610,7 @@ body {
 }
 .dot {
   align-self: center;
-  background-color: light-dark(#ffffff,rgb(255, 255, 255));
+  background-color: light-dark(#ffffff, rgb(255, 255, 255));
   border-radius: 50%;
   box-shadow: inset -0.15rem 0.15rem 0.25rem rgba(0, 0, 0, 0.5);
   display: block;
@@ -715,4 +742,3 @@ body {
   }
 }
 /* end dice stuff */
-

@@ -116,7 +116,11 @@
   const rePasswordMessage = document.querySelector("#RePasswordMessage");
   const firstNameMessage = document.querySelector("#FirstNameMessage");
   const lastNameMessage = document.querySelector("#LastNameMessage");
-
+  const advertContainer = document.querySelector("#AdvertContainer");
+  const advertImage = document.querySelector("#advertImage");
+  const buynow = document.querySelector("#BuyNowButton");
+  const adFreeButtonBox = document.querySelector("#adFreeButtonBox");
+  const adFreeButton = document.querySelector("#addFreeBtn");
   //diceroller stuff
   function rollDice() {
     const dice = [...document.querySelectorAll(".die-list")];
@@ -130,11 +134,17 @@
   let blinking_text = document.getElementById('blink_effect');
         setInterval(function() {
             blinking_text.style.display = (blinking_text.style.display == 'none' ? '' : 'none');
-        }, 200);
+        }, 225);
 
   function toggleClasses(die) {
     die.classList.toggle("odd-roll");
     die.classList.toggle("even-roll");
+  }
+
+  function updateAdvertisement() {
+    let rand = getRandomNumber(1,30);
+    const imageName = "/wwwroot/Ads/" + rand + ".jpg";
+    advertImage.src = imageName;
   }
 
   function getRandomNumber(min, max) {
@@ -143,8 +153,16 @@
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
   setInterval(rollDice, 10000);
-  //end diceroller stuff
 
+  setInterval(updateAdvertisement, 15000);
+  //end diceroller stuff
+  buynow.addEventListener("click", function () {
+    alert("Just kidding!");
+  });
+
+  adFreeButton.addEventListener("click", function () {
+    alert("Contact one of the developers for their Zelle, CashApp, or Venmo! Only $29.99 per month!");
+  })
   //For a reload with a user logged in
   const storedUser = JSON.parse(localStorage.getItem("user"));
   if (storedUser) {
@@ -166,6 +184,7 @@
     viewPlayHistoryButtonBox.classList.remove("hidden");
     if (JSON.parse(localStorage.getItem("user")).IsAdmin) {
       adminMenu.classList.remove("hidden");
+      advertContainer.style.display = "none";
     }
   }
 
@@ -344,8 +363,12 @@
     loggedInMenu.classList.remove("hidden");
     if (JSON.parse(localStorage.getItem("user")).IsAdmin) {
       adminMenu.classList.remove("hidden");
+      advertContainer.style.display = "none";
+      adFreeButtonBox.classList.add("hidden");
     } else {
       adminMenu.classList.add("hidden");
+      advertContainer.style.display = "block";
+      adFreeButton.classList.remove("hidden");
     }
 
     addGameContainer.classList.add("hidden");
@@ -626,6 +649,8 @@
     playHistoryContainer.style.display = "none";
     adminPlayerContainer.style.display = "none";
     adminUserContainer.style.display = "none";
+    advertContainer.style.display = "none";
+    adFreeButton.classList.add("hidden");
     rollDice();
   });
 
