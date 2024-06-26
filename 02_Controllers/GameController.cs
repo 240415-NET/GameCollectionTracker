@@ -29,8 +29,8 @@ public class GameController : Controller
         }
     }
 
-    [HttpGet("/Games/{userIdToFindFromFrontEnd}")]
-    public async Task<ActionResult<GameListDTO>> GetGamesByUserId(Guid userIdToFindFromFrontEnd)
+    [HttpGet("/Games/userId")]
+    public async Task<ActionResult<GameListDTO>> GetGamesByUserId(Guid? userIdToFindFromFrontEnd)
     {
         try
         {

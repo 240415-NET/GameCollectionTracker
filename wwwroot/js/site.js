@@ -160,9 +160,9 @@
     alert("Just kidding!");
   });
 
-  adFreeButton.addEventListener("click", function () {
-    alert("Contact one of the developers for their Zelle, CashApp, or Venmo! Only $29.99 per month!");
-  })
+  // adFreeButton.addEventListener("click", function () {
+  //   alert("Contact one of the developers for their Zelle, CashApp, or Venmo! Only $29.99 per month!");
+  // })
   //For a reload with a user logged in
   const storedUser = JSON.parse(localStorage.getItem("user"));
   if (storedUser) {

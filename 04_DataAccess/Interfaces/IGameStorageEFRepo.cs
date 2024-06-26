@@ -11,7 +11,7 @@ public interface IGameStorageEFRepo
 
   public Task<string> AllGamesPlayedByUserStats(Guid playerID);
 
-  public Task<GameListDTO> GetGamesFromDBForUserAsync(Guid userIdFromService);
+  public Task<GameListDTO> GetGamesFromDBForUserAsync(Guid? userIdFromService);
 
   public Task<GameUserDTO> GetGameFromDBByGameId(Guid gameId);
 

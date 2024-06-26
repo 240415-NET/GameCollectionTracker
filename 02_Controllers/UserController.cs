@@ -127,4 +127,10 @@ public class UserController : Controller
             return BadRequest(e.Message);
         }
     }
+
+    [HttpGet("Lyrics")]
+    public string CheckLyrics(string submission, int lineNumber)
+    {
+        return _userService.CheckNextLyrics(submission,lineNumber);
+    }
 }

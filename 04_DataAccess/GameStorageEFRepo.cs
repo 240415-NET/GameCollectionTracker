@@ -17,9 +17,11 @@ public class GameStorageEFRepo : IGameStorageEFRepo
     }
 
 
-    public async Task<GameListDTO> GetGamesFromDBForUserAsync(Guid userIdFromService)
+    public async Task<GameListDTO> GetGamesFromDBForUserAsync(Guid? userIdFromService)
     {
         GameListDTO resultDTO = new();
+        if(userIdFromService != null)
+        {
         resultDTO.selectedGames = await _gameContext.Games
             .Where(game => game.UserID == userIdFromService)
             .ToListAsync();
@@ -27,7 +29,11 @@ public class GameStorageEFRepo : IGameStorageEFRepo
         User selectedUser = await _gameContext.Users.SingleAsync(user => user.UserID == userIdFromService);
         resultDTO.UserID = selectedUser.UserID;
         resultDTO.GamerTag = selectedUser.GamerTag;
-
+        }
+        else
+        {
+            resultDTO.selectedGames = await _gameContext.Games.ToListAsync();
+        }
         //return GameListDTO
         return resultDTO;
     }

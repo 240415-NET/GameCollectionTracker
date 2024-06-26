@@ -12,5 +12,6 @@ public interface IUserService
     public Task<List<PlayerHasGamesDTO>> GetAllUnMatchedPlayersFromDB();
     public Task<string> MergePlayerRecords(MergePlayerRecordsDTO playersToMerge);
     public Task<string> UpdateAdminStatus(Guid userID, bool newAdminStatus);
+    public string CheckNextLyrics(string submission, int lineNumber);
 }
 

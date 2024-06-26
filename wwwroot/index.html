@@ -95,6 +95,8 @@
       <!-- This is the start of the left side-bar section -->
       <div class="games_sidebar">
         <img src="/wwwroot/board2.jpg" alt="" class="backImage" />
+        <img src="/wwwroot/Hatted_Roseate_Spoonbill.jpg" alt="" class="hidden">
+        <img src="/wwwroot/R1.jpg" alt="" class="hidden">
         <!-- This is the standard login container -->
         <div id="LoginContainer">
           <h1>Login</h1>
@@ -177,7 +179,7 @@
             <button id="btnReturnFromPlayHistory">Return to Main</button><br />
           </div>
           <div><button id="btnLogout">Logout</button></div>
-          <div id="adFreeButtonBox"><br><br><button id="addFreeBtn">Buy Ad Free Version!</button></div>
+          <div id="adFreeButtonBox"><br><br><button id="addFreeBtn" class="myButton">Buy Ad Free Version!</button></div>
         </div>
         <!-- This section holds the Admin buttons which will be displayed in the side-bar if the logged in user is an Admin -->
         <div id="AdminMenu" class="hidden">
@@ -291,5 +293,14 @@
       </div>
     </div>
     <script src="/wwwroot/js/site.js"></script>
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script> -->
+    <!-- <script>!window.jQuery && document.write('<script src="jquery-1.4.3.min.js"><\/script>')</script> -->
+    <script src="/wwwroot/Raptor/jquery-1.4.1.min.js"></script>
+    <script src="/wwwroot/Raptor/jquery.raptorize.1.0.js"></script>
+    <script type="text/javascript">
+         $(window).load(function() {
+              $('.myButton').raptorize();
+         });
+    </script>    
   </body>
 </html>

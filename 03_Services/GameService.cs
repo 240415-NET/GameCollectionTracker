@@ -14,7 +14,7 @@ public class GameService : IGameService
     {
         _gameStorage = gameStorage;
     }
-    public async Task<GameListDTO> GetAllGamesForUserAsync(Guid userIdFromController)
+    public async Task<GameListDTO> GetAllGamesForUserAsync(Guid? userIdFromController)
     {
         return await _gameStorage.GetGamesFromDBForUserAsync(userIdFromController);
     }

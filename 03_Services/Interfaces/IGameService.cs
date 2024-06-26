@@ -12,7 +12,7 @@ public interface IGameService
 
     public Task<string> AllGamesPlayedByUserStats(Guid playerID);
 
-    public Task<GameListDTO> GetAllGamesForUserAsync(Guid userIdFromController);
+    public Task<GameListDTO> GetAllGamesForUserAsync(Guid? userIdFromController);
 
     public Task<GameUserDTO> GetGameForGameId(Guid gameIdFromController);
 
